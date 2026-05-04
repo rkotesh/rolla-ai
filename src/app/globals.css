@@ -1,0 +1,49 @@
+@import "tailwindcss";
+
+@theme {
+  --color-brand: #534AB7;
+  --color-brand-light: #CECBF6;
+  --color-brand-bg: #FAFAFA;
+  --font-sans: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
+}
+
+:root {
+  --background: #FAFAFA;
+  --foreground: #111827;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+::selection {
+  background-color: #CECBF6;
+  color: #534AB7;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+::-webkit-scrollbar-thumb {
+  background: #CECBF6;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #534AB7;
+}
+
+/* Smooth focus rings */
+*:focus-visible {
+  outline: 2px solid #534AB7;
+  outline-offset: 2px;
+}
