@@ -1,24 +1,24 @@
-import Database from "better-sqlite3";
-import path from "path";
+import { neon } from "@neondatabase/serverless";
 
-const DB_PATH = path.join(process.cwd(), "dev.db");
+function getSql() {
+  const url = process.env.DATABASE_URL;
+  if (!url) throw new Error("DATABASE_URL is not set");
+  return neon(url);
+}
 
-function getDb() {
-  const db = new Database(DB_PATH);
-
-  // Create leads table if it doesn't exist
-  db.exec(`
+// Auto-create the leads table if it doesn't exist yet
+async function ensureTable() {
+  const sql = getSql();
+  await sql`
     CREATE TABLE IF NOT EXISTS leads (
-      id TEXT PRIMARY KEY,
-      name TEXT NOT NULL,
-      email TEXT NOT NULL,
-      business TEXT,
-      message TEXT NOT NULL,
-      created_at TEXT DEFAULT (datetime('now'))
+      id          TEXT        PRIMARY KEY,
+      name        TEXT        NOT NULL,
+      email       TEXT        NOT NULL,
+      business    TEXT        DEFAULT '',
+      message     TEXT        NOT NULL,
+      created_at  TIMESTAMPTZ DEFAULT NOW()
     )
-  `);
-
-  return db;
+  `;
 }
 
 export type Lead = {
@@ -30,25 +30,25 @@ export type Lead = {
   created_at: string;
 };
 
-export function createLead(data: Omit<Lead, "id" | "created_at">): Lead {
-  const db = getDb();
+export async function createLead(
+  data: Omit<Lead, "id" | "created_at">
+): Promise<Lead> {
+  await ensureTable();
+  const sql = getSql();
   const id = crypto.randomUUID();
 
-  const stmt = db.prepare(`
+  const rows = await sql`
     INSERT INTO leads (id, name, email, business, message)
-    VALUES (?, ?, ?, ?, ?)
-  `);
+    VALUES (${id}, ${data.name}, ${data.email}, ${data.business}, ${data.message})
+    RETURNING *
+  `;
 
-  stmt.run(id, data.name, data.email, data.business ?? "", data.message);
-
-  const lead = db.prepare("SELECT * FROM leads WHERE id = ?").get(id) as Lead;
-  db.close();
-  return lead;
+  return rows[0] as Lead;
 }
 
-export function getAllLeads(): Lead[] {
-  const db = getDb();
-  const leads = db.prepare("SELECT * FROM leads ORDER BY created_at DESC").all() as Lead[];
-  db.close();
-  return leads;
+export async function getAllLeads(): Promise<Lead[]> {
+  await ensureTable();
+  const sql = getSql();
+  const rows = await sql`SELECT * FROM leads ORDER BY created_at DESC`;
+  return rows as Lead[];
 }
