@@ -3,7 +3,6 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import { useState, useEffect } from "react";
 
 const tools = [
   { name: "Make", color: "#6B6EFF", icon: "M" },
@@ -23,9 +22,6 @@ const floatingNodes = [
 ];
 
 export default function Hero() {
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => setMounted(true), []);
-
   return (
     <section className="relative min-h-screen flex items-center pt-20 overflow-hidden bg-gradient-to-br from-white via-[#FAFAFA] to-[#CECBF6]/20">
       {/* Animated background blobs */}
@@ -106,7 +102,7 @@ export default function Hero() {
                 id="hero-cta-primary"
                 className="bg-[#534AB7] hover:bg-[#43399b] text-white px-8 py-4 rounded-full font-semibold transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 flex items-center justify-center gap-2 text-base"
               >
-                Let's automate your business
+                Let&apos;s automate your business
                 <ArrowRight className="h-5 w-5" />
               </Link>
               <Link
@@ -129,8 +125,8 @@ export default function Hero() {
             </div>
           </motion.div>
 
-          {/* Right — Animated workflow diagram (client-only to prevent hydration mismatch) */}
-          {mounted && <motion.div
+          {/* Right — Animated workflow diagram */}
+          <motion.div
             initial={{ opacity: 0, scale: 0.92 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
@@ -211,7 +207,7 @@ export default function Hero() {
                 />
               </svg>
             </div>
-          </motion.div>}
+          </motion.div>
 
         </div>
       </div>

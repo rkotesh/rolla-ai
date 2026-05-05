@@ -3,6 +3,20 @@
 import { motion } from "framer-motion";
 import { XCircle, CheckCircle2 } from "lucide-react";
 
+const listVariants = {
+  hidden: {},
+  visible: {
+    transition: {
+      staggerChildren: 0.08,
+    },
+  },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 10 },
+  visible: { opacity: 1, y: 0 },
+};
+
 export default function ProblemSolution() {
   const problems = [
     "Manually copying data between apps",
@@ -21,11 +35,17 @@ export default function ProblemSolution() {
   return (
     <section className="py-24 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center max-w-3xl mx-auto mb-16">
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.5 }}
+          transition={{ duration: 0.55 }}
+          className="text-center max-w-3xl mx-auto mb-16"
+        >
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
             Every hour you spend on manual work is an hour not spent growing.
           </h2>
-        </div>
+        </motion.div>
 
         <div className="grid md:grid-cols-2 gap-8 lg:gap-12">
           {/* Problem Column */}
@@ -34,6 +54,7 @@ export default function ProblemSolution() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
+            whileHover={{ y: -6 }}
             className="bg-red-50/50 rounded-2xl p-8 border border-red-100"
           >
             <h3 className="text-xl font-semibold text-red-900 mb-6 flex items-center">
@@ -42,14 +63,20 @@ export default function ProblemSolution() {
               </span>
               The Problem
             </h3>
-            <ul className="space-y-4">
+            <motion.ul
+              variants={listVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              className="space-y-4"
+            >
               {problems.map((problem, idx) => (
-                <li key={idx} className="flex items-start">
+                <motion.li key={idx} variants={itemVariants} className="flex items-start">
                   <XCircle className="w-5 h-5 text-red-400 mt-0.5 mr-3 flex-shrink-0" />
                   <span className="text-gray-700">{problem}</span>
-                </li>
+                </motion.li>
               ))}
-            </ul>
+            </motion.ul>
           </motion.div>
 
           {/* Solution Column */}
@@ -58,6 +85,7 @@ export default function ProblemSolution() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.2 }}
+            whileHover={{ y: -6 }}
             className="bg-green-50/50 rounded-2xl p-8 border border-green-100 relative overflow-hidden"
           >
             <div className="absolute top-0 right-0 p-4 opacity-10">
@@ -69,14 +97,20 @@ export default function ProblemSolution() {
               </span>
               The Rolla Fix
             </h3>
-            <ul className="space-y-4 relative z-10">
+            <motion.ul
+              variants={listVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              className="space-y-4 relative z-10"
+            >
               {solutions.map((solution, idx) => (
-                <li key={idx} className="flex items-start">
+                <motion.li key={idx} variants={itemVariants} className="flex items-start">
                   <CheckCircle2 className="w-5 h-5 text-green-500 mt-0.5 mr-3 flex-shrink-0" />
                   <span className="text-gray-800 font-medium">{solution}</span>
-                </li>
+                </motion.li>
               ))}
-            </ul>
+            </motion.ul>
           </motion.div>
         </div>
       </div>

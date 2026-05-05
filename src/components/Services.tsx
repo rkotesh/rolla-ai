@@ -52,14 +52,20 @@ export default function Services() {
   return (
     <section id="services" className="py-24 bg-[#FAFAFA]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.4 }}
+          transition={{ duration: 0.55, ease: "easeOut" }}
+          className="text-center mb-16"
+        >
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
             What we build for you
           </h2>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
             From simple integrations to AI-powered systems and custom web apps — we cover every layer of your automation stack.
           </p>
-        </div>
+        </motion.div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {services.map((service, index) => (
@@ -69,6 +75,7 @@ export default function Services() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: service.delay }}
+              whileHover={{ y: -8, scale: 1.015 }}
               className={`bg-white rounded-2xl p-8 border hover:shadow-xl transition-all duration-300 group relative overflow-hidden ${
                 service.badge
                   ? "border-[#CECBF6] shadow-md"
@@ -84,12 +91,19 @@ export default function Services() {
 
               {/* AI card glow effect */}
               {service.title === "AI-Powered Automation" && (
-                <div className="absolute inset-0 bg-gradient-to-br from-purple-50/50 via-transparent to-transparent pointer-events-none" />
+                <motion.div
+                  className="absolute inset-0 bg-gradient-to-br from-purple-50/70 via-transparent to-transparent pointer-events-none"
+                  animate={{ opacity: [0.45, 1, 0.45] }}
+                  transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                />
               )}
 
-              <div className="w-14 h-14 bg-purple-50 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 relative z-10">
+              <motion.div
+                whileHover={{ rotate: 6 }}
+                className="w-14 h-14 bg-purple-50 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 relative z-10"
+              >
                 {service.icon}
-              </div>
+              </motion.div>
               <h3 className="text-xl font-bold text-gray-900 mb-3 relative z-10">{service.title}</h3>
               <p className="text-gray-600 leading-relaxed relative z-10">{service.description}</p>
             </motion.div>

@@ -27,7 +27,7 @@ export default function Tools() {
           transition={{ duration: 0.6 }}
         >
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-            Powered by the world's best no-code <span className="text-[#534AB7]">& AI</span> tools
+            Powered by the world&apos;s best no-code <span className="text-[#534AB7]">& AI</span> tools
           </h2>
           <p className="text-gray-500 mb-14 max-w-2xl mx-auto text-lg">
             We choose the right tool for your workflow — and now bring AI intelligence directly into your automations.
@@ -42,17 +42,21 @@ export default function Tools() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.4, delay: idx * 0.07 }}
+              whileHover={{ y: -7, scale: 1.03 }}
+              whileTap={{ scale: 0.98 }}
               className={`group border rounded-2xl p-5 flex flex-col items-center gap-3 transition-all duration-300 hover:shadow-lg cursor-default ${tool.ai
                   ? "bg-purple-50/60 border-purple-100 hover:border-[#534AB7] hover:bg-white"
                   : "bg-gray-50 hover:bg-white border-gray-100 hover:border-[#CECBF6]"
                 }`}
             >
-              <div
+              <motion.div
                 className="w-12 h-12 rounded-xl flex items-center justify-center text-white font-bold text-base shadow-sm group-hover:scale-110 transition-transform duration-300"
                 style={{ backgroundColor: tool.color }}
+                animate={tool.ai ? { boxShadow: ["0 8px 20px rgba(83, 74, 183, 0.12)", "0 12px 28px rgba(83, 74, 183, 0.28)", "0 8px 20px rgba(83, 74, 183, 0.12)"] } : undefined}
+                transition={tool.ai ? { duration: 2.4, repeat: Infinity, delay: idx * 0.15 } : undefined}
               >
                 {tool.letter}
-              </div>
+              </motion.div>
               <div className="text-center">
                 <p className="font-semibold text-gray-900 text-sm">
                   {tool.name}

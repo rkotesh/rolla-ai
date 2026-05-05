@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { Mail, CheckCircle2, AlertCircle, Loader2 } from "lucide-react";
 
 export default function Contact() {
@@ -30,7 +30,7 @@ export default function Contact() {
       } else {
         setStatus("error");
       }
-    } catch (error) {
+    } catch {
       setStatus("error");
     }
   };
@@ -46,10 +46,10 @@ export default function Contact() {
             transition={{ duration: 0.6 }}
           >
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
-              Let's talk about your workflow
+              Let&apos;s talk about your workflow
             </h2>
             <p className="text-lg text-gray-600 mb-10 leading-relaxed">
-              Tell us what you're doing manually — we'll tell you how to automate it. First consultation is completely free.
+              Tell us what you&apos;re doing manually — we&apos;ll tell you how to automate it. First consultation is completely free.
             </p>
 
             <div className="space-y-6">
@@ -74,28 +74,54 @@ export default function Contact() {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="bg-[#FAFAFA] rounded-2xl p-8 shadow-sm border border-gray-100"
           >
+            <AnimatePresence mode="wait">
             {status === "success" ? (
-              <div className="h-full flex flex-col items-center justify-center text-center space-y-4 py-12">
-                <CheckCircle2 className="w-16 h-16 text-green-500" />
+              <motion.div
+                key="success"
+                initial={{ opacity: 0, scale: 0.96 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.96 }}
+                transition={{ duration: 0.3 }}
+                className="h-full flex flex-col items-center justify-center text-center space-y-4 py-12"
+              >
+                <motion.div
+                  initial={{ scale: 0, rotate: -30 }}
+                  animate={{ scale: 1, rotate: 0 }}
+                  transition={{ type: "spring", stiffness: 260, damping: 18 }}
+                >
+                  <CheckCircle2 className="w-16 h-16 text-green-500" />
+                </motion.div>
                 <h3 className="text-2xl font-bold text-gray-900">Message sent!</h3>
-                <p className="text-gray-600">Thanks for reaching out. We'll get back to you within 24 hours to discuss your automation needs.</p>
+                <p className="text-gray-600">Thanks for reaching out. We&apos;ll get back to you within 24 hours to discuss your automation needs.</p>
                 <button
                   onClick={() => setStatus("idle")}
                   className="mt-4 text-[#534AB7] font-medium hover:underline"
                 >
                   Send another message
                 </button>
-              </div>
+              </motion.div>
             ) : (
-              <form onSubmit={handleSubmit} className="space-y-6">
+              <motion.form
+                key="form"
+                onSubmit={handleSubmit}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.25 }}
+                className="space-y-6"
+              >
                 {status === "error" && (
-                  <div className="bg-red-50 text-red-700 p-4 rounded-lg flex items-center text-sm font-medium">
+                  <motion.div
+                    initial={{ opacity: 0, x: -8 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    className="bg-red-50 text-red-700 p-4 rounded-lg flex items-center text-sm font-medium"
+                  >
                     <AlertCircle className="w-5 h-5 mr-2" />
                     Something went wrong. Please try again or email us directly.
-                  </div>
+                  </motion.div>
                 )}
 
-                <div>
+                <motion.div whileHover={{ y: -2 }}>
                   <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">Full Name</label>
                   <input
                     type="text"
@@ -106,9 +132,9 @@ export default function Contact() {
                     className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-[#534AB7] focus:border-transparent transition-all outline-none bg-white"
                     placeholder="Jane Doe"
                   />
-                </div>
+                </motion.div>
 
-                <div>
+                <motion.div whileHover={{ y: -2 }}>
                   <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
                   <input
                     type="email"
@@ -119,9 +145,9 @@ export default function Contact() {
                     className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-[#534AB7] focus:border-transparent transition-all outline-none bg-white"
                     placeholder="jane@company.com"
                   />
-                </div>
+                </motion.div>
 
-                <div>
+                <motion.div whileHover={{ y: -2 }}>
                   <label htmlFor="business" className="block text-sm font-medium text-gray-700 mb-2">Business / Company Name</label>
                   <input
                     type="text"
@@ -132,10 +158,10 @@ export default function Contact() {
                     className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-[#534AB7] focus:border-transparent transition-all outline-none bg-white"
                     placeholder="Acme Corp"
                   />
-                </div>
+                </motion.div>
 
-                <div>
-                  <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-2">What are you doing manually that you'd like to automate?</label>
+                <motion.div whileHover={{ y: -2 }}>
+                  <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-2">What are you doing manually that you&apos;d like to automate?</label>
                   <textarea
                     id="message"
                     required
@@ -145,11 +171,13 @@ export default function Contact() {
                     className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-[#534AB7] focus:border-transparent transition-all outline-none bg-white resize-none"
                     placeholder="We spend 10 hours a week copying data from..."
                   />
-                </div>
+                </motion.div>
 
-                <button
+                <motion.button
                   type="submit"
                   disabled={status === "loading"}
+                  whileHover={status === "loading" ? undefined : { y: -2, scale: 1.01 }}
+                  whileTap={status === "loading" ? undefined : { scale: 0.98 }}
                   className="w-full bg-[#534AB7] hover:bg-[#43399b] text-white py-3.5 rounded-lg font-medium transition-all shadow-md flex items-center justify-center disabled:opacity-70 disabled:cursor-not-allowed"
                 >
                   {status === "loading" ? (
@@ -160,9 +188,10 @@ export default function Contact() {
                   ) : (
                     "Send message"
                   )}
-                </button>
-              </form>
+                </motion.button>
+              </motion.form>
             )}
+            </AnimatePresence>
           </motion.div>
         </div>
       </div>
