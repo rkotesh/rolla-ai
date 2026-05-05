@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { ExternalLink } from "lucide-react";
+import { GithubIcon, LinkedinIcon } from "./SocialIcons";
 
 export default function Footer() {
   return (
@@ -35,11 +35,11 @@ export default function Footer() {
           </div>
 
           <div className="flex space-x-4">
-            <motion.a whileHover={{ y: -3, scale: 1.1 }} whileTap={{ scale: 0.96 }} href="https://linkedin.com/in/sankulakoteswararao" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-[#534AB7] transition-colors">
-              <ExternalLink className="w-5 h-5" />
+            <motion.a whileHover={{ y: -3, scale: 1.1 }} whileTap={{ scale: 0.96 }} href="https://linkedin.com/in/sankulakoteswararao" target="_blank" rel="noopener noreferrer" aria-label="Koteswararao Sankula on LinkedIn" className="text-gray-400 hover:text-[#534AB7] transition-colors">
+              <LinkedinIcon className="w-5 h-5" />
             </motion.a>
-            <motion.a whileHover={{ y: -3, scale: 1.1 }} whileTap={{ scale: 0.96 }} href="#" className="text-gray-400 hover:text-[#534AB7] transition-colors">
-              <ExternalLink className="w-5 h-5" />
+            <motion.a whileHover={{ y: -3, scale: 1.1 }} whileTap={{ scale: 0.96 }} href="https://github.com/rkotesh/" target="_blank" rel="noopener noreferrer" aria-label="Koteswararao Sankula on GitHub" className="text-gray-400 hover:text-[#534AB7] transition-colors">
+              <GithubIcon className="w-5 h-5" />
             </motion.a>
           </div>
           

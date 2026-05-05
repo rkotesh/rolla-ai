@@ -5,12 +5,12 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
 const tools = [
-  { name: "Make", color: "#6B6EFF", icon: "M" },
-  { name: "Zapier", color: "#FF4A00", icon: "Z" },
-  { name: "n8n", color: "#EA4B71", icon: "n" },
-  { name: "Claude", color: "#10A37F", icon: "AI" },
-  { name: "Notion", color: "#000000", icon: "N" },
-  { name: "Sheets", color: "#0F9D58", icon: "G" },
+  { name: "Make", color: "#6B6EFF", icon: "M", cx: "92%", cy: "50%", lineX: "368", lineY: "200" },
+  { name: "Zapier", color: "#FF4A00", icon: "Z", cx: "71%", cy: "86.3731%", lineX: "284", lineY: "345.4923" },
+  { name: "n8n", color: "#EA4B71", icon: "n", cx: "29%", cy: "86.3731%", lineX: "116", lineY: "345.4923" },
+  { name: "Claude", color: "#10A37F", icon: "AI", cx: "8%", cy: "50%", lineX: "32", lineY: "200" },
+  { name: "Notion", color: "#000000", icon: "N", cx: "29%", cy: "13.6269%", lineX: "116", lineY: "54.5077" },
+  { name: "Sheets", color: "#0F9D58", icon: "G", cx: "71%", cy: "13.6269%", lineX: "284", lineY: "54.5077" },
 ];
 
 const floatingNodes = [
@@ -148,17 +148,11 @@ export default function Hero() {
               </div>
 
               {/* Orbiting tool nodes */}
-              {tools.map((tool, i) => {
-                const angle = (i * 360) / tools.length;
-                const rad = (angle * Math.PI) / 180;
-                const r = 42; // % radius
-                const cx = 50 + r * Math.cos(rad);
-                const cy = 50 + r * Math.sin(rad);
-                return (
+              {tools.map((tool, i) => (
                   <motion.div
                     key={tool.name}
                     className="absolute z-10"
-                    style={{ left: `${cx}%`, top: `${cy}%`, transform: "translate(-50%, -50%)" }}
+                    style={{ left: tool.cx, top: tool.cy, transform: "translate(-50%, -50%)" }}
                     initial={{ opacity: 0, scale: 0 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ delay: 0.5 + i * 0.15, type: "spring", stiffness: 200 }}
@@ -173,23 +167,14 @@ export default function Hero() {
                     </motion.div>
                     <p className="text-center text-[10px] font-semibold text-gray-500 mt-1">{tool.name}</p>
                   </motion.div>
-                );
-              })}
+              ))}
 
               {/* Animated connecting lines SVG */}
               <svg className="absolute inset-0 w-full h-full" viewBox="0 0 400 400">
-                {tools.map((_, i) => {
-                  const angle = (i * 360) / tools.length;
-                  const rad = (angle * Math.PI) / 180;
-                  const r = 42;
-                  const cx = 50 + r * Math.cos(rad);
-                  const cy = 50 + r * Math.sin(rad);
-                  const x = (cx / 100) * 400;
-                  const y = (cy / 100) * 400;
-                  return (
+                {tools.map((tool, i) => (
                     <motion.line
                       key={i}
-                      x1="200" y1="200" x2={x} y2={y}
+                      x1="200" y1="200" x2={tool.lineX} y2={tool.lineY}
                       stroke="#CECBF6"
                       strokeWidth="2"
                       strokeDasharray="6 4"
@@ -197,8 +182,7 @@ export default function Hero() {
                       animate={{ pathLength: 1, opacity: 1 }}
                       transition={{ delay: 0.6 + i * 0.1, duration: 0.5 }}
                     />
-                  );
-                })}
+                ))}
                 {/* Animated pulse circle */}
                 <motion.circle
                   cx="200" cy="200" r="0" fill="none" stroke="#534AB7" strokeWidth="1.5" opacity="0.3"

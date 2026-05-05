@@ -1,7 +1,108 @@
 "use client";
 
+import { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
-import { ExternalLink } from "lucide-react";
+import Image from "next/image";
+import * as THREE from "three";
+import { GithubIcon, LinkedinIcon } from "./SocialIcons";
+
+function FounderOrbit() {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100);
+    camera.position.z = 5;
+
+    const renderer = new THREE.WebGLRenderer({
+      canvas,
+      alpha: true,
+      antialias: true,
+      preserveDrawingBuffer: true,
+    });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+    const group = new THREE.Group();
+    scene.add(group);
+
+    const ringMaterial = new THREE.MeshBasicMaterial({
+      color: 0xcecbf6,
+      transparent: true,
+      opacity: 0.55,
+      wireframe: true,
+    });
+    const ring = new THREE.Mesh(new THREE.TorusGeometry(1.72, 0.018, 12, 128), ringMaterial);
+    group.add(ring);
+
+    const glow = new THREE.Mesh(
+      new THREE.TorusGeometry(1.42, 0.012, 10, 96),
+      new THREE.MeshBasicMaterial({
+        color: 0xffffff,
+        transparent: true,
+        opacity: 0.25,
+        wireframe: true,
+      })
+    );
+    glow.rotation.x = Math.PI / 2.9;
+    group.add(glow);
+
+    const dots = new THREE.Points(
+      new THREE.BufferGeometry().setFromPoints(
+        Array.from({ length: 72 }, (_, index) => {
+          const angle = (index / 72) * Math.PI * 2;
+          const radius = 1.78 + (index % 3) * 0.025;
+          return new THREE.Vector3(Math.cos(angle) * radius, Math.sin(angle) * radius, 0);
+        })
+      ),
+      new THREE.PointsMaterial({
+        color: 0xffffff,
+        size: 0.028,
+        transparent: true,
+        opacity: 0.55,
+      })
+    );
+    group.add(dots);
+
+    const resize = () => {
+      const size = canvas.clientWidth;
+      renderer.setSize(size, size, false);
+      camera.aspect = 1;
+      camera.updateProjectionMatrix();
+    };
+
+    let frameId = 0;
+    const clock = new THREE.Clock();
+    const animate = () => {
+      const elapsed = clock.getElapsedTime();
+      group.rotation.z = elapsed * 0.22;
+      glow.rotation.z = -elapsed * 0.34;
+      ring.scale.setScalar(1 + Math.sin(elapsed * 1.4) * 0.025);
+      renderer.render(scene, camera);
+      frameId = requestAnimationFrame(animate);
+    };
+
+    resize();
+    window.addEventListener("resize", resize);
+    animate();
+
+    return () => {
+      window.removeEventListener("resize", resize);
+      cancelAnimationFrame(frameId);
+      renderer.dispose();
+      ring.geometry.dispose();
+      glow.geometry.dispose();
+      dots.geometry.dispose();
+      ringMaterial.dispose();
+      glow.material.dispose();
+      dots.material.dispose();
+    };
+  }, []);
+
+  return <canvas ref={canvasRef} className="absolute inset-0 h-full w-full" aria-hidden="true" />;
+}
 
 export default function About() {
   return (
@@ -45,14 +146,11 @@ export default function About() {
                 &quot;I&apos;m a Python developer and AI student — and I built Rolla to make automation accessible to everyone, not just those who can code.&quot;
               </p>
               <div className="flex items-center space-x-4">
-                <motion.a whileHover={{ y: -3, scale: 1.08 }} whileTap={{ scale: 0.96 }} href="https://linkedin.com/in/sankulakoteswararao" target="_blank" rel="noopener noreferrer" className="bg-white/10 hover:bg-white/20 p-3 rounded-full transition-colors">
-                  <ExternalLink className="w-5 h-5 text-white" />
+                <motion.a whileHover={{ y: -3, scale: 1.08 }} whileTap={{ scale: 0.96 }} href="https://linkedin.com/in/sankulakoteswararao" target="_blank" rel="noopener noreferrer" aria-label="Koteswararao Sankula on LinkedIn" className="bg-white/10 hover:bg-white/20 p-3 rounded-full transition-colors">
+                  <LinkedinIcon className="w-5 h-5 text-white" />
                 </motion.a>
-                <motion.a whileHover={{ y: -3, scale: 1.08 }} whileTap={{ scale: 0.96 }} href="#" className="bg-white/10 hover:bg-white/20 p-3 rounded-full transition-colors">
-                  <ExternalLink className="w-5 h-5 text-white" />
-                </motion.a>
-                <motion.a whileHover={{ y: -3, scale: 1.08 }} whileTap={{ scale: 0.96 }} href="#" className="bg-white/10 hover:bg-white/20 p-3 rounded-full transition-colors">
-                  <ExternalLink className="w-5 h-5 text-white" />
+                <motion.a whileHover={{ y: -3, scale: 1.08 }} whileTap={{ scale: 0.96 }} href="https://github.com/rkotesh/" target="_blank" rel="noopener noreferrer" aria-label="Koteswararao Sankula on GitHub" className="bg-white/10 hover:bg-white/20 p-3 rounded-full transition-colors">
+                  <GithubIcon className="w-5 h-5 text-white" />
                 </motion.a>
               </div>
             </motion.div>
@@ -66,11 +164,28 @@ export default function About() {
             >
               <motion.div
                 animate={{ y: [0, -10, 0] }}
+                whileHover={{ scale: 1.035, rotate: 1.5 }}
                 transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut" }}
-                className="w-48 h-48 md:w-64 md:h-64 rounded-full border-4 border-white/20 overflow-hidden mb-6 relative bg-white/10 flex items-center justify-center"
+                className="relative mb-6 h-56 w-56 overflow-visible md:h-72 md:w-72"
               >
-                <span className="text-6xl">👨‍💻</span>
-                {/* Fallback avatar: an emoji or initial if image is not provided. In real world, use next/image here */}
+                <FounderOrbit />
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.82 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.7, delay: 0.35, ease: "easeOut" }}
+                  className="absolute inset-[13%] overflow-hidden rounded-full border-4 border-white/25 bg-white/10 shadow-2xl"
+                >
+                  <Image
+                    src="/images/koteswararao-sankula.jpg"
+                    alt="Koteswararao Sankula"
+                    fill
+                    sizes="(min-width: 768px) 216px, 168px"
+                    className="object-cover object-[50%_28%]"
+                    priority
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#534AB7]/20 via-transparent to-white/10" />
+                </motion.div>
               </motion.div>
               <h3 className="text-2xl font-bold text-white mb-1">Koteswararao Sankula</h3>
               <p className="text-[#CECBF6] font-medium text-center">
