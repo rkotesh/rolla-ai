@@ -124,30 +124,40 @@ export async function POST(req: Request) {
       );
     }
 
-    // 1. Save to Neon Postgres database
-    const lead = await createLead({
-      name,
-      email,
-      business: business || "",
-      message,
-    });
+    const submission = {
+      name: String(name),
+      email: String(email),
+      business: business ? String(business) : "",
+      message: String(message),
+    };
+
+    let saved = true;
+    let lead = {
+      id: crypto.randomUUID(),
+      ...submission,
+      created_at: new Date().toISOString(),
+    };
+
+    try {
+      lead = await createLead(submission);
+    } catch (error) {
+      saved = false;
+      console.error("Lead database save failed:", error);
+    }
 
     // 2. Send email notification (non-blocking)
-    sendEmailNotification({ name, email, business: business || "", message }).catch(
+    sendEmailNotification(submission).catch(
       (err) => console.error("Email notification failed:", err.message)
     );
 
     // 3. Send to Zapier (non-blocking)
     sendZapierWebhook({
-      name,
-      email,
-      business: business || "",
-      message,
+      ...submission,
       leadId: lead.id,
       createdAt: lead.created_at,
     }).catch((err) => console.error("Zapier webhook failed:", err.message));
 
-    return NextResponse.json({ success: true, lead }, { status: 201 });
+    return NextResponse.json({ success: true, saved, lead }, { status: saved ? 201 : 202 });
   } catch (error) {
     console.error("Error creating lead:", error);
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
