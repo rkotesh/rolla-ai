@@ -2,12 +2,39 @@ import { NextResponse } from "next/server";
 import { createLead } from "@/lib/db";
 import nodemailer from "nodemailer";
 
-async function sendEmailNotification(data: {
+type ContactSubmission = {
   name: string;
   email: string;
   business: string;
   message: string;
+};
+
+async function sendZapierWebhook(data: ContactSubmission & {
+  leadId: string;
+  createdAt: string;
 }) {
+  const webhookUrl = process.env.ZAPIER_WEBHOOK_URL;
+
+  if (!webhookUrl) {
+    console.warn("Zapier webhook not sent: ZAPIER_WEBHOOK_URL is not configured");
+    return;
+  }
+
+  const response = await fetch(webhookUrl, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      source: "rolla-website-contact-form",
+      ...data,
+    }),
+  });
+
+  if (!response.ok) {
+    throw new Error(`Zapier webhook failed with status ${response.status}`);
+  }
+}
+
+async function sendEmailNotification(data: ContactSubmission) {
   const gmailUser = process.env.GMAIL_USER;
   const gmailPass = process.env.GMAIL_APP_PASSWORD;
   const notifyEmail = process.env.NOTIFY_EMAIL || "srkotesh13@gmail.com";
@@ -109,6 +136,16 @@ export async function POST(req: Request) {
     sendEmailNotification({ name, email, business: business || "", message }).catch(
       (err) => console.error("Email notification failed:", err.message)
     );
+
+    // 3. Send to Zapier (non-blocking)
+    sendZapierWebhook({
+      name,
+      email,
+      business: business || "",
+      message,
+      leadId: lead.id,
+      createdAt: lead.created_at,
+    }).catch((err) => console.error("Zapier webhook failed:", err.message));
 
     return NextResponse.json({ success: true, lead }, { status: 201 });
   } catch (error) {
