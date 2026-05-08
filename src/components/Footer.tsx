@@ -27,11 +27,12 @@ export default function Footer() {
             </p>
           </div>
 
-          <div className="flex space-x-8 mb-6 md:mb-0">
-            <Link href="#services" className="text-sm font-medium text-gray-600 hover:text-[#534AB7] transition-colors">Services</Link>
-            <Link href="#tools" className="text-sm font-medium text-gray-600 hover:text-[#534AB7] transition-colors">Tools</Link>
-            <Link href="#about" className="text-sm font-medium text-gray-600 hover:text-[#534AB7] transition-colors">About</Link>
-            <Link href="#contact" className="text-sm font-medium text-gray-600 hover:text-[#534AB7] transition-colors">Contact</Link>
+          <div className="flex flex-wrap justify-center gap-x-8 gap-y-4 mb-6 md:mb-0">
+            <Link href="/#services" className="text-sm font-medium text-gray-600 hover:text-[#534AB7] transition-colors">Services</Link>
+            <Link href="/#pricing" className="text-sm font-medium text-gray-600 hover:text-[#534AB7] transition-colors">Pricing</Link>
+            <Link href="/#results" className="text-sm font-medium text-gray-600 hover:text-[#534AB7] transition-colors">Results</Link>
+            <Link href="/#industries" className="text-sm font-medium text-gray-600 hover:text-[#534AB7] transition-colors">Industries</Link>
+            <Link href="/#contact" className="text-sm font-medium text-gray-600 hover:text-[#534AB7] transition-colors">Contact</Link>
           </div>
 
           <div className="flex space-x-4">

@@ -2,12 +2,14 @@
 
 import { useState, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { Menu, X } from "lucide-react";
+import { Menu, X, ChevronDown } from "lucide-react";
 import Link from "next/link";
 
 export default function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isIndustriesOpen, setIsIndustriesOpen] = useState(false);
+
 
   useEffect(() => {
     const handleScroll = () => {
@@ -18,9 +20,17 @@ export default function Navigation() {
   }, []);
 
   const navLinks = [
-    { name: "Services", href: "#services" },
-    { name: "Tools", href: "#tools" },
-    { name: "About", href: "#about" },
+    { name: "Services", href: "/#services" },
+    { name: "Pricing", href: "/#pricing" },
+    { name: "Results", href: "/#results" },
+  ];
+
+  const industries = [
+    { name: "Real Estate", href: "/industries/real-estate" },
+    { name: "Marketing Agencies", href: "/industries/marketing-agencies" },
+    { name: "E-commerce", href: "/industries/ecommerce" },
+    { name: "Recruitment", href: "/industries/recruitment" },
+    { name: "Coaches", href: "/industries/coaches" },
   ];
 
   return (
@@ -62,6 +72,40 @@ export default function Navigation() {
               </Link>
               </motion.div>
             ))}
+
+            {/* Industries Dropdown */}
+            <div 
+              className="relative"
+              onMouseEnter={() => setIsIndustriesOpen(true)}
+              onMouseLeave={() => setIsIndustriesOpen(false)}
+            >
+              <button className="flex items-center gap-1 text-gray-600 hover:text-[#534AB7] font-medium transition-colors py-2">
+                Industries
+                <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${isIndustriesOpen ? "rotate-180" : ""}`} />
+              </button>
+              
+              <AnimatePresence>
+                {isIndustriesOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 10 }}
+                    className="absolute top-full left-0 w-56 bg-white rounded-xl shadow-xl border border-gray-100 py-2 mt-1"
+                  >
+                    {industries.map((industry) => (
+                      <Link
+                        key={industry.name}
+                        href={industry.href}
+                        className="block px-4 py-2.5 text-sm text-gray-600 hover:text-[#534AB7] hover:bg-purple-50 transition-colors"
+                      >
+                        {industry.name}
+                      </Link>
+                    ))}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+
             <motion.div whileHover={{ y: -2, scale: 1.02 }} whileTap={{ scale: 0.98 }}>
             <Link
               href="#contact"
@@ -123,6 +167,22 @@ export default function Navigation() {
               </Link>
               </motion.div>
             ))}
+
+            {/* Mobile Industries */}
+            <div className="pt-2">
+              <p className="px-3 text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Industries</p>
+              {industries.map((industry) => (
+                <Link
+                  key={industry.name}
+                  href={industry.href}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="block px-3 py-2 text-sm font-medium text-gray-600 hover:text-[#534AB7]"
+                >
+                  {industry.name}
+                </Link>
+              ))}
+            </div>
+
             <motion.div whileTap={{ scale: 0.98 }}>
             <Link
               href="#contact"

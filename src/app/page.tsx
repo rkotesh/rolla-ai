@@ -1,8 +1,12 @@
 import type { Metadata } from "next";
 import Navigation from "@/components/Navigation";
 import Hero from "@/components/Hero";
+import IndiaAdvantageBanner from "@/components/IndiaAdvantageBanner";
 import ProblemSolution from "@/components/ProblemSolution";
 import Services from "@/components/Services";
+import Pricing from "@/components/Pricing";
+import Results from "@/components/Results";
+import IndustryBanner from "@/components/IndustryBanner";
 import Tools from "@/components/Tools";
 import Stats from "@/components/Stats";
 import HowItWorks from "@/components/HowItWorks";
@@ -37,8 +41,12 @@ export default function Home() {
     <main className="w-full relative bg-white">
       <Navigation />
       <Hero />
+      <IndiaAdvantageBanner />
       <ProblemSolution />
       <Services />
+      <Pricing />
+      <Results />
+      <IndustryBanner />
       <Tools />
       <Stats />
       <HowItWorks />
