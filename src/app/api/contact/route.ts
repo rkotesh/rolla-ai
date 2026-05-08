@@ -9,29 +9,20 @@ type ContactSubmission = {
   message: string;
 };
 
-async function sendZapierWebhook(data: ContactSubmission & {
-  leadId: string;
-  createdAt: string;
-}) {
-  const webhookUrl = process.env.ZAPIER_WEBHOOK_URL;
+export const runtime = "nodejs";
 
-  if (!webhookUrl) {
-    console.warn("Zapier webhook not sent: ZAPIER_WEBHOOK_URL is not configured");
-    return;
-  }
+function escapeHtml(value: string) {
+  return value.replace(/[&<>"']/g, (char) => {
+    const entities: Record<string, string> = {
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      '"': "&quot;",
+      "'": "&#39;",
+    };
 
-  const response = await fetch(webhookUrl, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      source: "rolla-website-contact-form",
-      ...data,
-    }),
+    return entities[char];
   });
-
-  if (!response.ok) {
-    throw new Error(`Zapier webhook failed with status ${response.status}`);
-  }
 }
 
 async function sendEmailNotification(data: ContactSubmission) {
@@ -40,8 +31,7 @@ async function sendEmailNotification(data: ContactSubmission) {
   const notifyEmail = process.env.NOTIFY_EMAIL || "srkotesh13@gmail.com";
 
   if (!gmailUser || !gmailPass || gmailPass === "your-16-char-app-password") {
-    console.warn("📧 Email not sent: Gmail credentials not configured in .env");
-    return;
+    throw new Error("Gmail credentials are not configured in .env");
   }
 
   const transporter = nodemailer.createTransport({
@@ -49,10 +39,17 @@ async function sendEmailNotification(data: ContactSubmission) {
     auth: { user: gmailUser, pass: gmailPass },
   });
 
+  const safeName = escapeHtml(data.name);
+  const safeEmail = escapeHtml(data.email);
+  const safeBusiness = escapeHtml(data.business || "-");
+  const safeMessage = escapeHtml(data.message).replace(/\r?\n/g, "<br>");
+  const replySubject = encodeURIComponent("Re: Your automation enquiry");
+  const replyBody = encodeURIComponent(`Hi ${data.name},`);
+
   const emailHtml = `
     <div style="font-family:'Segoe UI',Arial,sans-serif;max-width:600px;margin:0 auto;background:#fff;border:1px solid #e5e7eb;border-radius:12px;overflow:hidden;">
       <div style="background:#534AB7;padding:28px 32px;">
-        <h1 style="color:#fff;margin:0;font-size:22px;font-weight:700;">Rolla. — New Lead 🎯</h1>
+        <h1 style="color:#fff;margin:0;font-size:22px;font-weight:700;">Rolla. - New Lead</h1>
         <p style="color:#CECBF6;margin:6px 0 0;font-size:14px;">Someone just filled out your contact form</p>
       </div>
       <div style="padding:32px;">
@@ -62,7 +59,7 @@ async function sendEmailNotification(data: ContactSubmission) {
               <span style="font-size:12px;font-weight:600;color:#9ca3af;text-transform:uppercase;">Name</span>
             </td>
             <td style="padding:12px 0;border-bottom:1px solid #f3f4f6;">
-              <span style="font-size:15px;font-weight:600;color:#111827;">${data.name}</span>
+              <span style="font-size:15px;font-weight:600;color:#111827;">${safeName}</span>
             </td>
           </tr>
           <tr>
@@ -70,7 +67,7 @@ async function sendEmailNotification(data: ContactSubmission) {
               <span style="font-size:12px;font-weight:600;color:#9ca3af;text-transform:uppercase;">Email</span>
             </td>
             <td style="padding:12px 0;border-bottom:1px solid #f3f4f6;">
-              <a href="mailto:${data.email}" style="font-size:15px;color:#534AB7;text-decoration:none;">${data.email}</a>
+              <a href="mailto:${safeEmail}" style="font-size:15px;color:#534AB7;text-decoration:none;">${safeEmail}</a>
             </td>
           </tr>
           <tr>
@@ -78,20 +75,20 @@ async function sendEmailNotification(data: ContactSubmission) {
               <span style="font-size:12px;font-weight:600;color:#9ca3af;text-transform:uppercase;">Business</span>
             </td>
             <td style="padding:12px 0;border-bottom:1px solid #f3f4f6;">
-              <span style="font-size:15px;color:#374151;">${data.business || "—"}</span>
+              <span style="font-size:15px;color:#374151;">${safeBusiness}</span>
             </td>
           </tr>
         </table>
         <div style="margin-top:24px;">
           <p style="font-size:12px;font-weight:600;color:#9ca3af;text-transform:uppercase;margin:0 0 10px;">Their message</p>
           <div style="background:#f9fafb;border-left:3px solid #534AB7;border-radius:4px;padding:16px 20px;">
-            <p style="font-size:15px;color:#374151;line-height:1.7;margin:0;">${data.message}</p>
+            <p style="font-size:15px;color:#374151;line-height:1.7;margin:0;">${safeMessage}</p>
           </div>
         </div>
         <div style="margin-top:28px;text-align:center;">
-          <a href="mailto:${data.email}?subject=Re: Your automation enquiry&body=Hi ${data.name},"
+          <a href="mailto:${safeEmail}?subject=${replySubject}&body=${replyBody}"
              style="display:inline-block;background:#534AB7;color:#fff;text-decoration:none;font-size:14px;font-weight:600;padding:12px 28px;border-radius:50px;">
-            Reply to ${data.name} →
+            Reply to ${safeName}
           </a>
         </div>
       </div>
@@ -104,12 +101,12 @@ async function sendEmailNotification(data: ContactSubmission) {
   await transporter.sendMail({
     from: `"Rolla Website" <${gmailUser}>`,
     to: notifyEmail,
-    subject: `🎯 New lead from ${data.name} — Rolla`,
+    subject: `New lead from ${data.name} - Rolla`,
     html: emailHtml,
     replyTo: data.email,
   });
 
-  console.log(`📧 Notification sent to ${notifyEmail}`);
+  console.log(`Notification sent to ${notifyEmail}`);
 }
 
 export async function POST(req: Request) {
@@ -145,17 +142,7 @@ export async function POST(req: Request) {
       console.error("Lead database save failed:", error);
     }
 
-    // 2. Send email notification (non-blocking)
-    sendEmailNotification(submission).catch(
-      (err) => console.error("Email notification failed:", err.message)
-    );
-
-    // 3. Send to Zapier (non-blocking)
-    sendZapierWebhook({
-      ...submission,
-      leadId: lead.id,
-      createdAt: lead.created_at,
-    }).catch((err) => console.error("Zapier webhook failed:", err.message));
+    await sendEmailNotification(submission);
 
     return NextResponse.json({ success: true, saved, lead }, { status: saved ? 201 : 202 });
   } catch (error) {
