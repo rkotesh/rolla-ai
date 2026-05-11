@@ -7,7 +7,6 @@ import Link from "next/link";
 const plans = [
   {
     name: "Starter",
-    price: "contact us",
     priceSuffix: "From",
     subtitle: "Best for solopreneurs & small teams",
     features: [
@@ -23,7 +22,6 @@ const plans = [
   },
   {
     name: "Growth",
-    price: "contact us",
     priceSuffix: "From",
     subtitle: "Best for growing businesses",
     features: [
@@ -39,7 +37,6 @@ const plans = [
   },
   {
     name: "Custom",
-    price: "contact us",
     priceSuffix: "",
     subtitle: "For agencies & complex systems",
     features: [
@@ -100,10 +97,6 @@ export default function Pricing() {
               <div className="mb-8">
                 <h3 className="text-xl font-bold text-gray-900 mb-1">{plan.name}</h3>
                 <p className="text-sm text-gray-500 mb-6">{plan.subtitle}</p>
-                <div className="flex items-baseline gap-1">
-                  {plan.priceSuffix && <span className="text-sm font-medium text-gray-500">{plan.priceSuffix}</span>}
-                  <span className="text-4xl font-extrabold text-gray-900">{plan.price}</span>
-                </div>
               </div>
 
               <ul className="space-y-4 mb-10 flex-grow">
