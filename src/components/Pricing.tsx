@@ -7,7 +7,7 @@ import Link from "next/link";
 const plans = [
   {
     name: "Starter",
-    price: "$300",
+    price: "contact us",
     priceSuffix: "From",
     subtitle: "Best for solopreneurs & small teams",
     features: [
@@ -23,7 +23,7 @@ const plans = [
   },
   {
     name: "Growth",
-    price: "$700",
+    price: "contact us",
     priceSuffix: "From",
     subtitle: "Best for growing businesses",
     features: [
@@ -39,7 +39,7 @@ const plans = [
   },
   {
     name: "Custom",
-    price: "Let's talk",
+    price: "contact us",
     priceSuffix: "",
     subtitle: "For agencies & complex systems",
     features: [
