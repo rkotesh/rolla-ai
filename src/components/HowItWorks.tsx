@@ -8,20 +8,20 @@ export default function HowItWorks() {
   const steps = [
     {
       number: "01",
-      title: "Discovery call (Free)",
-      description: "We learn your workflow, your tools, and where you're losing time. No jargon, no pressure.",
+      title: "Discovery & Design (Free)",
+      description: "We align on your goals, map out the user journeys, and wireframe the visual layout. No jargon, no pressure.",
       icon: <PhoneCall className="w-6 h-6 text-[#534AB7]" />,
     },
     {
       number: "02",
       title: "We build it",
-      description: "Our team designs and builds your automation. You review it. We refine it.",
+      description: "Our team designs the UI, writes clean frontend/backend code, and integrates all components. You review as we build.",
       icon: <Hammer className="w-6 h-6 text-[#534AB7]" />,
     },
     {
       number: "03",
-      title: "It runs itself",
-      description: "Your workflow is live. We monitor it, support it, and improve it over time.",
+      title: "Launch & Scale",
+      description: "Your web platform is deployed to production. We monitor performance, optimize SEO, and support you post-launch.",
       icon: <Rocket className="w-6 h-6 text-[#534AB7]" />,
     },
   ];
@@ -37,7 +37,7 @@ export default function HowItWorks() {
           className="text-center mb-16"
         >
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-            From idea to automation in 3 steps
+            From concept to launch in 3 steps
           </h2>
         </motion.div>
 

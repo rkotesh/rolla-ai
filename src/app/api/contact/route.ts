@@ -43,7 +43,7 @@ async function sendEmailNotification(data: ContactSubmission) {
   const safeEmail = escapeHtml(data.email);
   const safeBusiness = escapeHtml(data.business || "-");
   const safeMessage = escapeHtml(data.message).replace(/\r?\n/g, "<br>");
-  const replySubject = encodeURIComponent("Re: Your automation enquiry");
+  const replySubject = encodeURIComponent("Re: Your web development enquiry");
   const replyBody = encodeURIComponent(`Hi ${data.name},`);
 
   const emailHtml = `
@@ -93,7 +93,7 @@ async function sendEmailNotification(data: ContactSubmission) {
         </div>
       </div>
       <div style="background:#f9fafb;padding:16px 32px;border-top:1px solid #e5e7eb;text-align:center;">
-        <p style="font-size:12px;color:#9ca3af;margin:0;">Rolla Automation Agency</p>
+        <p style="font-size:12px;color:#9ca3af;margin:0;">Rolla Web Development Agency</p>
       </div>
     </div>
   `;

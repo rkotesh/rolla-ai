@@ -28,43 +28,100 @@ function FounderOrbit() {
     const group = new THREE.Group();
     scene.add(group);
 
+    // 1. Torus Knot for a complex, premium 3D shape
+    const knotMaterial = new THREE.MeshBasicMaterial({
+      color: 0xcecbf6,
+      transparent: true,
+      opacity: 0.3,
+      wireframe: true,
+    });
+    const knot = new THREE.Mesh(
+      new THREE.TorusKnotGeometry(1.65, 0.015, 120, 16, 2, 3),
+      knotMaterial
+    );
+    group.add(knot);
+
+    // 2. Main Outer Orbit Ring
     const ringMaterial = new THREE.MeshBasicMaterial({
       color: 0xcecbf6,
       transparent: true,
-      opacity: 0.55,
+      opacity: 0.6,
       wireframe: true,
     });
-    const ring = new THREE.Mesh(new THREE.TorusGeometry(1.72, 0.018, 12, 128), ringMaterial);
+    const ring = new THREE.Mesh(new THREE.TorusGeometry(1.85, 0.01, 12, 128), ringMaterial);
     group.add(ring);
 
-    const glow = new THREE.Mesh(
-      new THREE.TorusGeometry(1.42, 0.012, 10, 96),
-      new THREE.MeshBasicMaterial({
-        color: 0xffffff,
-        transparent: true,
-        opacity: 0.25,
-        wireframe: true,
-      })
-    );
-    glow.rotation.x = Math.PI / 2.9;
+    // 3. Inner Orbit Glow Ring
+    const glowMaterial = new THREE.MeshBasicMaterial({
+      color: 0xffffff,
+      transparent: true,
+      opacity: 0.2,
+      wireframe: true,
+    });
+    const glow = new THREE.Mesh(new THREE.TorusGeometry(1.48, 0.008, 10, 96), glowMaterial);
+    glow.rotation.x = Math.PI / 3;
     group.add(glow);
 
-    const dots = new THREE.Points(
-      new THREE.BufferGeometry().setFromPoints(
-        Array.from({ length: 72 }, (_, index) => {
-          const angle = (index / 72) * Math.PI * 2;
-          const radius = 1.78 + (index % 3) * 0.025;
-          return new THREE.Vector3(Math.cos(angle) * radius, Math.sin(angle) * radius, 0);
-        })
-      ),
-      new THREE.PointsMaterial({
-        color: 0xffffff,
-        size: 0.028,
-        transparent: true,
-        opacity: 0.55,
-      })
-    );
+    // 4. Dot Ring
+    const dotCount = 96;
+    const dotsGeometry = new THREE.BufferGeometry();
+    const dotsPositions = new Float32Array(dotCount * 3);
+    for (let i = 0; i < dotCount; i++) {
+      const angle = (i / dotCount) * Math.PI * 2;
+      dotsPositions[i * 3] = Math.cos(angle) * 1.8;
+      dotsPositions[i * 3 + 1] = Math.sin(angle) * 1.8;
+      dotsPositions[i * 3 + 2] = 0;
+    }
+    dotsGeometry.setAttribute("position", new THREE.BufferAttribute(dotsPositions, 3));
+    const dotsMaterial = new THREE.PointsMaterial({
+      color: 0xffffff,
+      size: 0.03,
+      transparent: true,
+      opacity: 0.65,
+    });
+    const dots = new THREE.Points(dotsGeometry, dotsMaterial);
     group.add(dots);
+
+    // 5. Floating background particles (space dust effect)
+    const particleCount = 100;
+    const particlesGeometry = new THREE.BufferGeometry();
+    const particlesPositions = new Float32Array(particleCount * 3);
+    for (let i = 0; i < particleCount * 3; i += 3) {
+      const u = Math.random();
+      const v = Math.random();
+      const theta = u * 2.0 * Math.PI;
+      const phi = Math.acos(2.0 * v - 1.0);
+      const r = 1.9 + Math.random() * 1.2; // Sphere shell
+      particlesPositions[i] = r * Math.sin(phi) * Math.cos(theta);
+      particlesPositions[i + 1] = r * Math.sin(phi) * Math.sin(theta);
+      particlesPositions[i + 2] = r * Math.cos(phi);
+    }
+    particlesGeometry.setAttribute("position", new THREE.BufferAttribute(particlesPositions, 3));
+    const particlesMaterial = new THREE.PointsMaterial({
+      color: 0xcecbf6,
+      size: 0.025,
+      transparent: true,
+      opacity: 0.5,
+    });
+    const particles = new THREE.Points(particlesGeometry, particlesMaterial);
+    scene.add(particles);
+
+    // 6. Mouse movement tracking for interactive 3D rotation/tilt
+    let mouseX = 0;
+    let mouseY = 0;
+    let targetX = 0;
+    let targetY = 0;
+
+    const onMouseMove = (event: MouseEvent) => {
+      const rect = canvas.getBoundingClientRect();
+      const x = event.clientX - rect.left;
+      const y = event.clientY - rect.top;
+      // Normalize to [-1, 1]
+      mouseX = (x / rect.width) * 2 - 1;
+      mouseY = -(y / rect.height) * 2 + 1;
+    };
+
+    window.addEventListener("mousemove", onMouseMove);
 
     const resize = () => {
       const size = canvas.clientWidth;
@@ -77,9 +134,30 @@ function FounderOrbit() {
     const clock = new THREE.Clock();
     const animate = () => {
       const elapsed = clock.getElapsedTime();
-      group.rotation.z = elapsed * 0.22;
-      glow.rotation.z = -elapsed * 0.34;
-      ring.scale.setScalar(1 + Math.sin(elapsed * 1.4) * 0.025);
+
+      // Smoothly interpolate towards mouse position (Damping)
+      targetX = THREE.MathUtils.lerp(targetX, mouseX * 0.45, 0.05);
+      targetY = THREE.MathUtils.lerp(targetY, mouseY * 0.45, 0.05);
+
+      // Group rotates normally + tilts with mouse movement
+      group.rotation.z = elapsed * 0.15;
+      group.rotation.x = targetY;
+      group.rotation.y = targetX;
+
+      // Independent rotations for meshes inside group
+      knot.rotation.x = elapsed * 0.25;
+      knot.rotation.y = -elapsed * 0.2;
+      glow.rotation.z = -elapsed * 0.3;
+
+      // Pulse effects
+      const scaleVal = 1 + Math.sin(elapsed * 1.5) * 0.035;
+      ring.scale.setScalar(scaleVal);
+      dots.scale.setScalar(1 + Math.cos(elapsed * 1.5) * 0.02);
+
+      // Background particles rotate slowly
+      particles.rotation.y = elapsed * 0.03;
+      particles.rotation.x = elapsed * 0.015;
+
       renderer.render(scene, camera);
       frameId = requestAnimationFrame(animate);
     };
@@ -90,14 +168,19 @@ function FounderOrbit() {
 
     return () => {
       window.removeEventListener("resize", resize);
+      window.removeEventListener("mousemove", onMouseMove);
       cancelAnimationFrame(frameId);
       renderer.dispose();
+      knot.geometry.dispose();
       ring.geometry.dispose();
       glow.geometry.dispose();
-      dots.geometry.dispose();
+      dotsGeometry.dispose();
+      particlesGeometry.dispose();
+      knotMaterial.dispose();
       ringMaterial.dispose();
-      glow.material.dispose();
-      dots.material.dispose();
+      glowMaterial.dispose();
+      dotsMaterial.dispose();
+      particlesMaterial.dispose();
     };
   }, []);
 
@@ -136,14 +219,14 @@ export default function About() {
             >
               <h2 className="text-3xl md:text-5xl font-bold mb-6 leading-tight">
                 Built by a developer,<br />
-                <span className="text-[#CECBF6]">designed for non-developers</span>
+                <span className="text-[#CECBF6]">designed for your business</span>
               </h2>
               <div className="w-16 h-1 bg-[#CECBF6] mb-8 opacity-50" />
               <p className="text-lg text-indigo-100 mb-6 leading-relaxed">
-                &quot;I started Rolla because I kept seeing small businesses lose hours every day to tasks that software could handle in seconds.&quot;
+                &quot;I started Rolla to bridge the gap between complex technology and clean, user-friendly digital experiences.&quot;
               </p>
               <p className="text-lg text-indigo-100 mb-8 leading-relaxed">
-                &quot;I&apos;m a Python developer and AI student — and I built Rolla to make automation accessible to everyone, not just those who can code.&quot;
+                &quot;I&apos;m a full-stack developer focused on building high-performance websites and web applications that help businesses launch, scale, and thrive online.&quot;
               </p>
               <div className="flex items-center space-x-4">
                 <motion.a whileHover={{ y: -3, scale: 1.08 }} whileTap={{ scale: 0.96 }} href="https://linkedin.com/in/sankulakoteswararao" target="_blank" rel="noopener noreferrer" aria-label="Koteswararao Sankula on LinkedIn" className="bg-white/10 hover:bg-white/20 p-3 rounded-full transition-colors">
@@ -177,7 +260,7 @@ export default function About() {
                   className="absolute inset-[13%] overflow-hidden rounded-full border-4 border-white/25 bg-white/10 shadow-2xl"
                 >
                   <Image
-                    src="/images/koteswararao-sankula.jpg"
+                    src="/images/koteswararao-sankula.png"
                     alt="Koteswararao Sankula"
                     fill
                     sizes="(min-width: 768px) 216px, 168px"
@@ -189,8 +272,8 @@ export default function About() {
               </motion.div>
               <h3 className="text-2xl font-bold text-white mb-1">Koteswararao Sankula</h3>
               <p className="text-[#CECBF6] font-medium text-center">
-                Founder, Rolla · Python Developer<br />
-                <span className="text-indigo-200 text-sm">B.Tech AI&ML 2026</span>
+                Founder, Rolla · Full-Stack Developer<br />
+                <span className="text-indigo-200 text-sm">B.Tech Computer Science 2026</span>
               </p>
             </motion.div>
           </div>

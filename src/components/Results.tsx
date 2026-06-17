@@ -6,25 +6,25 @@ import { TrendingUp, Clock, Zap } from "lucide-react";
 const results = [
   {
     industry: "Real Estate Agency",
-    headline: "Saved 12 hours/week on lead management",
-    body: "We automated their lead capture from Facebook Ads → CRM → follow-up email sequence. The team stopped manually copying data and closed 30% more deals in the first month.",
-    stat: "12 hrs/week saved · 30% more deals closed",
+    headline: "40% increase in online lead generation",
+    body: "We designed and built a custom Django and React marketing site with an integrated booking calendar and interactive property filter. Potential buyers can view listings instantly and schedule viewings in just two clicks.",
+    stat: "40% more online leads · 1.2s page load speed",
     icon: <Clock className="w-6 h-6" />,
     color: "blue",
   },
   {
-    industry: "Marketing Agency",
-    headline: "Client reporting went from 4 hours to 15 minutes",
-    body: "Built an automated reporting workflow pulling data from Google Ads, Meta Ads, and Sheets — generating a formatted PDF report and emailing it to clients every Monday at 9am.",
-    stat: "4 hrs → 15 mins · 100% on-time delivery",
+    industry: "SaaS Start-up",
+    headline: "Launched custom client dashboard in 4 weeks",
+    body: "Built a secure, modern React web portal with user authentication, custom data visualization charts, and payment management (Stripe) allowing their clients to manage subscriptions directly.",
+    stat: "4 weeks to launch · 100% self-serve onboarding",
     icon: <TrendingUp className="w-6 h-6" />,
     color: "purple",
   },
   {
     industry: "E-commerce Brand",
-    headline: "Zero missed orders with automated fulfillment alerts",
-    body: "Connected Shopify → Slack → Email → Google Sheets. Every new order triggers instant team notifications and auto-updates their inventory tracker.",
-    stat: "0 missed orders · 3 tools connected in 1 day",
+    headline: "25% boost in checkout conversions",
+    body: "Redesigned their storefront with a modern, responsive headless Shopify setup. We optimized the checkout flow and page speed, leading to a massive drop in cart abandonment.",
+    stat: "25% increase in conversions · 50% bounce rate reduction",
     icon: <Zap className="w-6 h-6" />,
     color: "green",
   },
@@ -52,7 +52,7 @@ export default function Results() {
             Real Results. Real Businesses.
           </motion.h2>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            See how we help businesses reclaim their time and scale their operations through smart automation.
+            See how we help businesses grow their online presence and launch high-performance digital products.
           </p>
         </div>
 

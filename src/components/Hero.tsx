@@ -5,12 +5,12 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
 const tools = [
-  { name: "Make", color: "#6B6EFF", icon: "M", cx: "92%", cy: "50%", lineX: "368", lineY: "200" },
-  { name: "Zapier", color: "#FF4A00", icon: "Z", cx: "71%", cy: "86.3731%", lineX: "284", lineY: "345.4923" },
-  { name: "n8n", color: "#EA4B71", icon: "n", cx: "29%", cy: "86.3731%", lineX: "116", lineY: "345.4923" },
-  { name: "Claude", color: "#10A37F", icon: "AI", cx: "8%", cy: "50%", lineX: "32", lineY: "200" },
-  { name: "Notion", color: "#000000", icon: "N", cx: "29%", cy: "13.6269%", lineX: "116", lineY: "54.5077" },
-  { name: "Sheets", color: "#0F9D58", icon: "G", cx: "71%", cy: "13.6269%", lineX: "284", lineY: "54.5077" },
+  { name: "Django", color: "#092E20", icon: "Dj", cx: "92%", cy: "50%", lineX: "368", lineY: "200" },
+  { name: "React", color: "#61DAFB", icon: "R", cx: "71%", cy: "86.3731%", lineX: "284", lineY: "345.4923" },
+  { name: "Python", color: "#3776AB", icon: "Py", cx: "29%", cy: "86.3731%", lineX: "116", lineY: "345.4923" },
+  { name: "MongoDB", color: "#47A248", icon: "M", cx: "8%", cy: "50%", lineX: "32", lineY: "200" },
+  { name: "Node.js", color: "#339933", icon: "JS", cx: "29%", cy: "13.6269%", lineX: "116", lineY: "54.5077" },
+  { name: "Express", color: "#000000", icon: "Ex", cx: "71%", cy: "13.6269%", lineX: "284", lineY: "54.5077" },
 ];
 
 const floatingNodes = [
@@ -62,21 +62,21 @@ export default function Hero() {
               Now accepting new clients — 2026
             </motion.div>
 
-            {/* AI Pill */}
+            {/* Web Dev Pill */}
             <motion.div
               initial={{ opacity: 0, x: -10 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.45 }}
-              className="inline-flex items-center gap-2 bg-gradient-to-r from-[#534AB7]/10 to-[#10A37F]/10 border border-[#534AB7]/20 text-gray-700 px-4 py-1.5 rounded-full text-sm font-semibold mb-8 ml-3"
+              className="inline-flex items-center gap-2 bg-gradient-to-r from-[#534AB7]/10 to-[#3178C6]/10 border border-[#534AB7]/20 text-gray-700 px-4 py-1.5 rounded-full text-sm font-semibold mb-8 ml-3"
             >
               <span className="text-[#534AB7]">✦</span>
-              AI-Powered Automation
+              Custom Web Solutions
             </motion.div>
 
             <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-gray-900 leading-[1.08] mb-6">
-              Your business{" "}
+              Your vision,{" "}
               <span className="text-[#534AB7] relative">
-                on autopilot.
+                built in code.
                 <svg className="absolute -bottom-2 left-0 w-full" viewBox="0 0 300 8" fill="none">
                   <motion.path
                     d="M2 6 C80 2, 160 2, 298 6"
@@ -92,7 +92,7 @@ export default function Hero() {
             </h1>
 
             <p className="text-lg md:text-xl text-gray-600 mb-10 leading-relaxed max-w-xl">
-              We build smart automated workflows — and intelligent AI-powered systems — using Make, Zapier, n8n, and GPT-4, so you stop doing things manually and start growing faster.
+              We design and build fast, modern, and bespoke websites and web applications tailored to your business needs, so you can scale with ease.
             </p>
 
             {/* CTAs */}
@@ -102,7 +102,7 @@ export default function Hero() {
                 id="hero-cta-primary"
                 className="bg-[#534AB7] hover:bg-[#43399b] text-white px-8 py-4 rounded-full font-semibold transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 flex items-center justify-center gap-2 text-base"
               >
-                Let&apos;s automate your business
+                Start your project
                 <ArrowRight className="h-5 w-5" />
               </Link>
               <Link
@@ -116,7 +116,7 @@ export default function Hero() {
 
             {/* Trust line */}
             <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-gray-500 font-medium">
-              {["No coding required", "Built for non-technical teams", "Results in days"].map((t, i) => (
+              {["MERN & Django Specialists", "High Performance & Scalable", "Responsive & Clean Code"].map((t, i) => (
                 <span key={i} className="flex items-center gap-1.5">
                   <span className="w-1.5 h-1.5 rounded-full bg-[#534AB7] inline-block" />
                   {t}

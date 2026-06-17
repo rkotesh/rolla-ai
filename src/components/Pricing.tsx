@@ -8,13 +8,13 @@ const plans = [
   {
     name: "Starter",
     priceSuffix: "From",
-    subtitle: "Best for solopreneurs & small teams",
+    subtitle: "Best for single-page & landing sites",
     features: [
-      "1 automated workflow",
-      "Up to 3 app integrations",
-      "Email + Slack notifications",
-      "2 rounds of revisions",
-      "30-day support",
+      "Custom landing or marketing page",
+      "Fully responsive modern layout",
+      "SEO setup & sub-second loading",
+      "Contact form integration",
+      "30-day post-launch support",
     ],
     cta: "Get Started",
     popular: false,
@@ -23,12 +23,12 @@ const plans = [
   {
     name: "Growth",
     priceSuffix: "From",
-    subtitle: "Best for growing businesses",
+    subtitle: "Best for multi-page & CMS sites",
     features: [
-      "Up to 5 workflows",
-      "Unlimited app integrations",
-      "Lead & CRM automation",
-      "AI-powered logic (GPT-4)",
+      "Custom multi-page website",
+      "Headless CMS integration (Sanity)",
+      "Payment gateway setup (Stripe)",
+      "Custom micro-animations",
       "Priority support for 60 days",
     ],
     cta: "Book a Call",
@@ -38,13 +38,13 @@ const plans = [
   {
     name: "Custom",
     priceSuffix: "",
-    subtitle: "For agencies & complex systems",
+    subtitle: "For full-stack web applications",
     features: [
-      "Unlimited workflows",
-      "Custom AI agents",
-      "Web app development",
-      "Dedicated Slack channel",
-      "Ongoing retainer available",
+      "Bespoke SaaS platform/portal",
+      "Database design & secure auth",
+      "Custom APIs & integrations",
+      "Dedicated developer support",
+      "Ongoing maintenance retainer",
     ],
     cta: "Contact Us",
     popular: false,
@@ -70,7 +70,7 @@ export default function Pricing() {
             Transparent Pricing. Indian Value.
           </motion.h2>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Get agency-quality automation at a fraction of the cost. No hidden fees, no complexity.
+            Get agency-quality web development at a fraction of the cost. No hidden fees, no complexity.
           </p>
         </div>
 
@@ -128,7 +128,7 @@ export default function Pricing() {
           <div className="inline-flex items-center gap-3 bg-purple-50 px-6 py-4 rounded-2xl border border-[#CECBF6]/50">
             <HelpCircle className="w-5 h-5 text-[#534AB7]" />
             <p className="text-sm text-gray-700 font-medium">
-              💡 <span className="text-gray-900 font-bold">India-based team.</span> Agency-quality automation at startup-friendly prices — typically 40–60% less than US/UK agencies.
+              💡 <span className="text-gray-900 font-bold">India-based team.</span> Agency-quality development at startup-friendly prices — typically 40–60% less than US/UK agencies.
             </p>
           </div>
         </div>

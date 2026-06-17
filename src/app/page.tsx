@@ -8,29 +8,29 @@ import Pricing from "@/components/Pricing";
 import Results from "@/components/Results";
 import IndustryBanner from "@/components/IndustryBanner";
 import Tools from "@/components/Tools";
-import Stats from "@/components/Stats";
 import HowItWorks from "@/components/HowItWorks";
 import About from "@/components/About";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
-  title: "Rolla | Automate your business. No code needed.",
+  title: "Rolla | Custom Website & Web Application Development",
   description:
-    "Rolla is a no-code automation agency that builds smart workflows using Make, Zapier, and n8n — so you stop doing things manually and start focusing on what matters.",
+    "Rolla is a digital agency that builds beautiful, high-performance websites and web applications tailored to your business — so you stand out, engage users, and scale faster.",
   keywords: [
-    "automation agency",
-    "no-code automation",
-    "workflow automation",
-    "make automation",
-    "zapier expert",
-    "n8n workflows",
-    "business automation India",
+    "web development agency",
+    "custom web applications",
+    "django developer",
+    "python developer",
+    "mern stack developer",
+    "react developer",
+    "full stack web development",
+    "digital agency India",
   ],
   openGraph: {
-    title: "Rolla | Automate your business. No code needed.",
+    title: "Rolla | Custom Website & Web Application Development",
     description:
-      "We build smart automated workflows using Make, Zapier, and n8n. First consultation is free.",
+      "We design and build bespoke high-performance websites and web applications. First consultation is free.",
     type: "website",
     url: "https://rolla.agency",
   },
@@ -48,7 +48,6 @@ export default function Home() {
       <Results />
       <IndustryBanner />
       <Tools />
-      <Stats />
       <HowItWorks />
       <About />
       <Contact />

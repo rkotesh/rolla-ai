@@ -1,6 +1,5 @@
 "use client";
 
-import { motion } from "framer-motion";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
@@ -11,7 +10,7 @@ export default function IndiaAdvantageBanner() {
         <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4 text-center">
           <p className="text-sm font-medium text-gray-700">
             <span className="mr-2">🇮🇳</span>
-            India-based team · Agency-quality automation · Startup-friendly pricing
+            India-based team · Agency-quality development · Startup-friendly pricing
             <span className="hidden sm:inline mx-2">—</span>
             <span className="block sm:inline text-gray-500 font-normal">
               typically 40–60% less than US or UK agencies

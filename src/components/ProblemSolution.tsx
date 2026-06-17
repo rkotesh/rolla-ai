@@ -19,17 +19,17 @@ const itemVariants = {
 
 export default function ProblemSolution() {
   const problems = [
-    "Manually copying data between apps",
-    "Sending the same follow-up emails every day",
-    "Updating spreadsheets that could update themselves",
-    "Missing leads because no one followed up in time",
+    "Slow loading times that drive potential visitors away",
+    "Rigid templates that limit your unique brand identity",
+    "Difficult content management systems that waste time",
+    "Poor mobile layout and bad user experience (UX)",
   ];
 
   const solutions = [
-    "Automated data sync across all your tools",
-    "Email sequences triggered automatically",
-    "Live dashboards that update themselves",
-    "Instant lead notifications and CRM entries",
+    "High-performance Django & MERN architecture",
+    "Fully bespoke designs tailored to your brand goals",
+    "Intuitively organized database & CMS interfaces",
+    "Responsive, mobile-first design with smooth interactions",
   ];
 
   return (
@@ -43,7 +43,7 @@ export default function ProblemSolution() {
           className="text-center max-w-3xl mx-auto mb-16"
         >
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-            Every hour you spend on manual work is an hour not spent growing.
+            A generic template won&apos;t help you stand out. A slow site will actively lose you clients.
           </h2>
         </motion.div>
 

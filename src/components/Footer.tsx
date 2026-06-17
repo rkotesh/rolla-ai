@@ -23,7 +23,7 @@ export default function Footer() {
             </Link>
             </motion.div>
             <p className="text-sm text-gray-500 font-medium">
-              Automate your business. No code needed.
+              Custom websites & web applications built for growth.
             </p>
           </div>
 
@@ -47,7 +47,7 @@ export default function Footer() {
         </div>
         
         <div className="mt-8 pt-8 border-t border-gray-100 text-center flex flex-col md:flex-row justify-between items-center text-sm text-gray-500">
-          <p>© {new Date().getFullYear()} Rolla Automation Agency. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} Rolla. All rights reserved.</p>
           <p className="mt-2 md:mt-0">Founded by <span className="font-semibold text-gray-700">Koteswararao Sankula</span>  and co-founded by <span className="font-semibold text-gray-700">Narendra Kumar</span></p>
         </div>
       </div>

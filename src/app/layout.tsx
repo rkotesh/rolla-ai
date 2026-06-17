@@ -8,8 +8,8 @@ const jakarta = Plus_Jakarta_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "Rolla | Automate your business. No code needed.",
-  description: "Rolla is a no-code automation agency helping businesses build smart automated workflows using Make, Zapier, and n8n.",
+  title: "Rolla | Custom Website & Web Application Development",
+  description: "Rolla is a digital agency helping businesses build custom, high-performance websites and web applications tailored to their needs.",
 };
 
 export default function RootLayout({

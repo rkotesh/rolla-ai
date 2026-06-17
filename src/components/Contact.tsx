@@ -46,27 +46,27 @@ export default function Contact() {
             transition={{ duration: 0.6 }}
           >
             <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6 tracking-tight">
-              Ready to automate your <span className="text-[#534AB7]">growth?</span>
+              Ready to build your digital <span className="text-[#534AB7]">future?</span>
             </h2>
             <p className="text-xl text-gray-600 mb-12 leading-relaxed max-w-lg">
-              Pick a time for a free 30-minute discovery call, or send us a message about your specific needs.
+              Pick a time for a free 30-minute discovery call, or send us a message about your project requirements.
             </p>
 
             <div className="space-y-10 mb-12">
               {[
                 { 
                   title: "Discovery Call", 
-                  desc: "We'll dive into your current manual processes and identify the biggest automation opportunities.",
+                  desc: "We'll discuss your goals, target audience, and the features you need for your website or web app.",
                   icon: <Clock className="w-5 h-5" />
                 },
                 { 
-                  title: "Custom Audit", 
-                  desc: "Receive a tailored blueprint of how your automation stack should look.",
+                  title: "Custom Blueprint", 
+                  desc: "Receive a high-level technical blueprint and architectural recommendations for your project.",
                   icon: <Zap className="w-5 h-5" />
                 },
                 { 
-                  title: "Direct ROI", 
-                  desc: "We focus on workflows that save at least 10+ hours per week from day one.",
+                  title: "High-Performance Code", 
+                  desc: "We build for speed, clean UX, and search engine optimization (SEO) from day one.",
                   icon: <TrendingUp className="w-5 h-5" />
                 },
               ].map((item, i) => (
@@ -142,7 +142,7 @@ export default function Contact() {
                   <CheckCircle2 className="w-16 h-16 text-green-500" />
                 </motion.div>
                 <h3 className="text-2xl font-bold text-gray-900">Message sent!</h3>
-                <p className="text-gray-600">Thanks for reaching out. We&apos;ll get back to you within 24 hours to discuss your automation needs.</p>
+                <p className="text-gray-600">Thanks for reaching out. We&apos;ll get back to you within 24 hours to discuss your project requirements.</p>
                 <button
                   onClick={() => setStatus("idle")}
                   className="mt-4 text-[#534AB7] font-medium hover:underline"
@@ -211,7 +211,7 @@ export default function Contact() {
                 </motion.div>
 
                 <motion.div whileHover={{ y: -2 }}>
-                  <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-2">What are you doing manually that you&apos;d like to automate?</label>
+                  <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-2">Tell us about your project requirements</label>
                   <textarea
                     id="message"
                     required
@@ -219,7 +219,7 @@ export default function Contact() {
                     value={formData.message}
                     onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                     className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-[#534AB7] focus:border-transparent transition-all outline-none bg-white resize-none"
-                    placeholder="We spend 10 hours a week copying data from..."
+                    placeholder="Describe what you want to build, key features, target timeline..."
                   />
                 </motion.div>
 
