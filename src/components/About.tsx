@@ -28,11 +28,11 @@ function FounderOrbit() {
     const group = new THREE.Group();
     scene.add(group);
 
-    // 1. Torus Knot for a complex, premium 3D shape
+    // Torus Knot — electric indigo wireframe
     const knotMaterial = new THREE.MeshBasicMaterial({
-      color: 0xcecbf6,
+      color: 0x6366f1,
       transparent: true,
-      opacity: 0.3,
+      opacity: 0.25,
       wireframe: true,
     });
     const knot = new THREE.Mesh(
@@ -41,28 +41,28 @@ function FounderOrbit() {
     );
     group.add(knot);
 
-    // 2. Main Outer Orbit Ring
+    // Outer Orbit Ring
     const ringMaterial = new THREE.MeshBasicMaterial({
-      color: 0xcecbf6,
+      color: 0xa5b4fc,
       transparent: true,
-      opacity: 0.6,
+      opacity: 0.45,
       wireframe: true,
     });
     const ring = new THREE.Mesh(new THREE.TorusGeometry(1.85, 0.01, 12, 128), ringMaterial);
     group.add(ring);
 
-    // 3. Inner Orbit Glow Ring
+    // Inner Glow Ring
     const glowMaterial = new THREE.MeshBasicMaterial({
-      color: 0xffffff,
+      color: 0x6366f1,
       transparent: true,
-      opacity: 0.2,
+      opacity: 0.15,
       wireframe: true,
     });
     const glow = new THREE.Mesh(new THREE.TorusGeometry(1.48, 0.008, 10, 96), glowMaterial);
     glow.rotation.x = Math.PI / 3;
     group.add(glow);
 
-    // 4. Dot Ring
+    // Dot Ring
     const dotCount = 96;
     const dotsGeometry = new THREE.BufferGeometry();
     const dotsPositions = new Float32Array(dotCount * 3);
@@ -74,16 +74,16 @@ function FounderOrbit() {
     }
     dotsGeometry.setAttribute("position", new THREE.BufferAttribute(dotsPositions, 3));
     const dotsMaterial = new THREE.PointsMaterial({
-      color: 0xffffff,
-      size: 0.03,
+      color: 0xa5b4fc,
+      size: 0.035,
       transparent: true,
-      opacity: 0.65,
+      opacity: 0.7,
     });
     const dots = new THREE.Points(dotsGeometry, dotsMaterial);
     group.add(dots);
 
-    // 5. Floating background particles (space dust effect)
-    const particleCount = 100;
+    // Background particles
+    const particleCount = 80;
     const particlesGeometry = new THREE.BufferGeometry();
     const particlesPositions = new Float32Array(particleCount * 3);
     for (let i = 0; i < particleCount * 3; i += 3) {
@@ -91,32 +91,30 @@ function FounderOrbit() {
       const v = Math.random();
       const theta = u * 2.0 * Math.PI;
       const phi = Math.acos(2.0 * v - 1.0);
-      const r = 1.9 + Math.random() * 1.2; // Sphere shell
+      const r = 1.9 + Math.random() * 1.2;
       particlesPositions[i] = r * Math.sin(phi) * Math.cos(theta);
       particlesPositions[i + 1] = r * Math.sin(phi) * Math.sin(theta);
       particlesPositions[i + 2] = r * Math.cos(phi);
     }
     particlesGeometry.setAttribute("position", new THREE.BufferAttribute(particlesPositions, 3));
     const particlesMaterial = new THREE.PointsMaterial({
-      color: 0xcecbf6,
-      size: 0.025,
+      color: 0x6366f1,
+      size: 0.022,
       transparent: true,
-      opacity: 0.5,
+      opacity: 0.45,
     });
     const particles = new THREE.Points(particlesGeometry, particlesMaterial);
     scene.add(particles);
 
-    // 6. Mouse movement tracking for interactive 3D rotation/tilt
     let mouseX = 0;
     let mouseY = 0;
     let targetX = 0;
     let targetY = 0;
-
+ 
     const onMouseMove = (event: MouseEvent) => {
       const rect = canvas.getBoundingClientRect();
       const x = event.clientX - rect.left;
       const y = event.clientY - rect.top;
-      // Normalize to [-1, 1]
       mouseX = (x / rect.width) * 2 - 1;
       mouseY = -(y / rect.height) * 2 + 1;
     };
@@ -134,30 +132,19 @@ function FounderOrbit() {
     const clock = new THREE.Clock();
     const animate = () => {
       const elapsed = clock.getElapsedTime();
-
-      // Smoothly interpolate towards mouse position (Damping)
       targetX = THREE.MathUtils.lerp(targetX, mouseX * 0.45, 0.05);
       targetY = THREE.MathUtils.lerp(targetY, mouseY * 0.45, 0.05);
-
-      // Group rotates normally + tilts with mouse movement
       group.rotation.z = elapsed * 0.15;
       group.rotation.x = targetY;
       group.rotation.y = targetX;
-
-      // Independent rotations for meshes inside group
       knot.rotation.x = elapsed * 0.25;
       knot.rotation.y = -elapsed * 0.2;
       glow.rotation.z = -elapsed * 0.3;
-
-      // Pulse effects
       const scaleVal = 1 + Math.sin(elapsed * 1.5) * 0.035;
       ring.scale.setScalar(scaleVal);
       dots.scale.setScalar(1 + Math.cos(elapsed * 1.5) * 0.02);
-
-      // Background particles rotate slowly
       particles.rotation.y = elapsed * 0.03;
       particles.rotation.x = elapsed * 0.015;
-
       renderer.render(scene, camera);
       frameId = requestAnimationFrame(animate);
     };
@@ -189,61 +176,98 @@ function FounderOrbit() {
 
 export default function About() {
   return (
-    <section id="about" className="py-24 bg-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="about" className="py-24 bg-rolla-bg relative overflow-hidden">
+      <div className="section-divider absolute top-0 left-0 right-0" />
+      <div className="absolute inset-0 bg-grid opacity-30 pointer-events-none" />
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 32 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.25 }}
           transition={{ duration: 0.65, ease: "easeOut" }}
-          className="bg-[#534AB7] rounded-[2.5rem] p-8 md:p-16 text-white relative overflow-hidden shadow-2xl"
+          className="border border-[#1e2028] relative overflow-hidden"
         >
-          {/* Background Elements */}
-          <motion.div
-            className="absolute top-0 right-0 w-[500px] h-[500px] bg-white opacity-5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3"
-            animate={{ scale: [1, 1.12, 1], x: ["33%", "26%", "33%"] }}
-            transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
-          />
-          <motion.div
-            className="absolute bottom-0 left-0 w-[300px] h-[300px] bg-black opacity-10 rounded-full blur-2xl translate-y-1/2 -translate-x-1/4"
-            animate={{ scale: [1, 1.18, 1], x: ["-25%", "-18%", "-25%"] }}
-            transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-          />
+          {/* Top accent border */}
+          <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-[#6366F1] via-[#A5B4FC] to-transparent" />
 
-          <div className="relative z-10 grid md:grid-cols-2 gap-12 items-center">
+          {/* Background glow */}
+          <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-[#6366F1] opacity-[0.04] blur-3xl rounded-full translate-x-1/2 -translate-y-1/4 pointer-events-none" />
+
+          <div className="relative z-10 grid md:grid-cols-2 gap-0">
+            {/* Left — Text */}
             <motion.div
               initial={{ opacity: 0, x: -20 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
+              className="p-8 md:p-14 border-r border-[#1e2028]"
             >
-              <h2 className="text-3xl md:text-5xl font-bold mb-6 leading-tight">
-                Built by a developer,<br />
-                <span className="text-[#CECBF6]">designed for your business</span>
+              <div className="sys-label mb-6">↳ Founder Letter · 2026</div>
+              <h2 className="text-3xl md:text-4xl font-bold text-white mb-6 leading-tight">
+                Built by a developer,{" "}
+                <span className="font-serif italic text-[#A5B4FC]">
+                  designed for your business
+                </span>
               </h2>
-              <div className="w-16 h-1 bg-[#CECBF6] mb-8 opacity-50" />
-              <p className="text-lg text-indigo-100 mb-6 leading-relaxed">
-                &quot;I started Rolla to bridge the gap between complex technology and clean, user-friendly digital experiences.&quot;
+              <div className="w-10 h-[2px] bg-[#6366F1] mb-8" />
+              <p className="text-[#C4C9D4] text-sm leading-relaxed mb-5">
+                &ldquo;I started Rolla to bridge the gap between complex technology and clean, user-friendly digital experiences.&rdquo;
               </p>
-              <p className="text-lg text-indigo-100 mb-8 leading-relaxed">
-                &quot;I&apos;m a full-stack developer focused on building high-performance websites and web applications that help businesses launch, scale, and thrive online.&quot;
+              <p className="text-[#C4C9D4] text-sm leading-relaxed mb-10">
+                &ldquo;I&apos;m a full-stack developer focused on building high-performance websites and web applications that help businesses launch, scale, and thrive online.&rdquo;
               </p>
-              <div className="flex items-center space-x-4">
-                <motion.a whileHover={{ y: -3, scale: 1.08 }} whileTap={{ scale: 0.96 }} href="https://linkedin.com/in/sankulakoteswararao" target="_blank" rel="noopener noreferrer" aria-label="Koteswararao Sankula on LinkedIn" className="bg-white/10 hover:bg-white/20 p-3 rounded-full transition-colors">
-                  <LinkedinIcon className="w-5 h-5 text-white" />
+
+              {/* Team */}
+              <div className="space-y-4 mb-10">
+                {[
+                  { name: "Koteswararao Sankula", role: "Founder · Full-Stack Engineer", detail: "B.Tech CS, 2026" },
+                  { name: "Narendra Kumar", role: "Co-Founder · Systems Architect", detail: "B.Tech CS, 2026" },
+                ].map((person, i) => (
+                  <div key={i} className="flex items-start gap-3 p-3 border border-[#1e2028] bg-[#08090C]/60">
+                    <div className="w-1.5 h-full min-h-[32px] bg-[#6366F1] shrink-0" />
+                    <div>
+                      <p className="text-white text-sm font-bold">{person.name}</p>
+                      <p className="font-mono text-[0.6rem] text-[#C4C9D4] uppercase tracking-wider">{person.role}</p>
+                      <p className="font-mono text-[0.55rem] text-[#8a91a0] mt-0.5">{person.detail}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <div className="flex items-center gap-3">
+                <motion.a
+                  whileHover={{ y: -2, scale: 1.08 }}
+                  whileTap={{ scale: 0.96 }}
+                  href="https://linkedin.com/in/sankulakoteswararao"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="LinkedIn"
+                  className="border border-[#1e2028] hover:border-[#6366F1]/55 p-2.5 transition-colors bg-[#0D0E12]"
+                >
+                  <LinkedinIcon className="w-4 h-4 text-[#C4C9D4] hover:text-[#A5B4FC]" />
                 </motion.a>
-                <motion.a whileHover={{ y: -3, scale: 1.08 }} whileTap={{ scale: 0.96 }} href="https://github.com/rkotesh/" target="_blank" rel="noopener noreferrer" aria-label="Koteswararao Sankula on GitHub" className="bg-white/10 hover:bg-white/20 p-3 rounded-full transition-colors">
-                  <GithubIcon className="w-5 h-5 text-white" />
+                <motion.a
+                  whileHover={{ y: -2, scale: 1.08 }}
+                  whileTap={{ scale: 0.96 }}
+                  href="https://github.com/rkotesh/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="GitHub"
+                  className="border border-[#1e2028] hover:border-[#6366F1]/55 p-2.5 transition-colors bg-[#0D0E12]"
+                >
+                  <GithubIcon className="w-4 h-4 text-[#C4C9D4] hover:text-[#A5B4FC]" />
                 </motion.a>
               </div>
             </motion.div>
 
+            {/* Right — Orbit visual */}
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.2 }}
-              className="flex flex-col items-center justify-center"
+              className="flex flex-col items-center justify-center p-8 md:p-14"
             >
               <motion.div
                 animate={{ y: [0, -10, 0] }}
@@ -257,7 +281,7 @@ export default function About() {
                   whileInView={{ opacity: 1, scale: 1 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.7, delay: 0.35, ease: "easeOut" }}
-                  className="absolute inset-[13%] overflow-hidden rounded-full border-4 border-white/25 bg-white/10 shadow-2xl"
+                  className="absolute inset-[13%] overflow-hidden rounded-full border-2 border-[#6366F1]/20 bg-[#0D0E12] shadow-2xl"
                 >
                   <Image
                     src="/images/koteswararao-sankula.png"
@@ -267,14 +291,20 @@ export default function About() {
                     className="object-cover object-[50%_28%]"
                     priority
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#534AB7]/20 via-transparent to-white/10" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#6366F1]/10 via-transparent to-transparent" />
                 </motion.div>
               </motion.div>
-              <h3 className="text-2xl font-bold text-white mb-1">Koteswararao Sankula</h3>
-              <p className="text-[#CECBF6] font-medium text-center">
-                Founder, Rolla · Full-Stack Developer<br />
-                <span className="text-indigo-200 text-sm">B.Tech Computer Science 2026</span>
-              </p>
+
+              <div className="text-center">
+                <h3 className="text-lg font-bold text-white mb-1">Koteswararao Sankula</h3>
+                <p className="font-mono text-[0.6rem] text-[#6366F1] uppercase tracking-widest">
+                  Founder · Rolla Digital Engineering
+                </p>
+                <div className="flex items-center justify-center gap-2 mt-3">
+                  <div className="w-1.5 h-1.5 rounded-full bg-[#4ADE80] animate-pulse" />
+                  <span className="font-mono text-[0.55rem] text-[#4ADE80] uppercase tracking-widest">Available for New Projects</span>
+                </div>
+              </div>
             </motion.div>
           </div>
         </motion.div>

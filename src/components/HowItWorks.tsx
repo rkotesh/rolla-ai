@@ -8,88 +8,105 @@ export default function HowItWorks() {
   const steps = [
     {
       number: "01",
-      title: "Discovery & Design (Free)",
-      description: "We align on your goals, map out the user journeys, and wireframe the visual layout. No jargon, no pressure.",
-      icon: <PhoneCall className="w-6 h-6 text-[#534AB7]" />,
+      code: "PHASE.DISCOVERY",
+      title: "Discovery & Design",
+      subtitle: "Free — No obligation",
+      description:
+        "We align on your goals, map out user journeys, and wireframe the visual layout. No jargon, no pressure. Pure clarity.",
+      icon: PhoneCall,
     },
     {
       number: "02",
-      title: "We build it",
-      description: "Our team designs the UI, writes clean frontend/backend code, and integrates all components. You review as we build.",
-      icon: <Hammer className="w-6 h-6 text-[#534AB7]" />,
+      code: "PHASE.BUILD",
+      title: "We Build It",
+      subtitle: "Iterative development",
+      description:
+        "Our team designs the UI, writes clean frontend/backend code, and integrates all components. You review as we build.",
+      icon: Hammer,
     },
     {
       number: "03",
+      code: "PHASE.LAUNCH",
       title: "Launch & Scale",
-      description: "Your web platform is deployed to production. We monitor performance, optimize SEO, and support you post-launch.",
-      icon: <Rocket className="w-6 h-6 text-[#534AB7]" />,
+      subtitle: "Production deployment",
+      description:
+        "Your platform is deployed to production. We monitor performance, optimize SEO, and provide post-launch support.",
+      icon: Rocket,
     },
   ];
 
   return (
-    <section id="how-it-works" className="py-24 bg-[#FAFAFA]">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="how-it-works" className="py-24 bg-rolla-bg relative overflow-hidden">
+      <div className="section-divider absolute top-0 left-0 right-0" />
+      <div className="absolute inset-0 bg-grid opacity-30 pointer-events-none" />
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        {/* Header */}
         <motion.div
-          initial={{ opacity: 0, y: 24 }}
+          initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.5 }}
           transition={{ duration: 0.55 }}
-          className="text-center mb-16"
+          className="mb-16"
         >
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-            From concept to launch in 3 steps
+          <div className="sys-label mb-4">↳ Project Lifecycle</div>
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white leading-tight">
+            From Concept to Launch{" "}
+            <span className="font-serif italic text-[#A5B4FC]">in 3 Phases</span>
           </h2>
         </motion.div>
 
-        <div className="relative">
-          {/* Connecting Line */}
-          <motion.div
-            initial={{ scaleX: 0 }}
-            whileInView={{ scaleX: 1 }}
-            viewport={{ once: true, amount: 0.4 }}
-            transition={{ duration: 0.9, ease: "easeOut" }}
-            className="hidden md:block absolute top-1/2 left-0 w-full h-0.5 bg-gray-200 -translate-y-1/2 z-0 origin-left"
-          />
-
-          <div className="grid md:grid-cols-3 gap-8 relative z-10">
-            {steps.map((step, idx) => (
+        {/* Steps */}
+        <div className="grid md:grid-cols-3 gap-px bg-[#1e2028] relative">
+          {steps.map((step, idx) => {
+            const Icon = step.icon;
+            return (
               <motion.div
                 key={idx}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: idx * 0.2 }}
-                whileHover={{ y: -8, scale: 1.02 }}
-                className="bg-white rounded-2xl p-8 border border-gray-100 shadow-sm text-center relative"
+                transition={{ duration: 0.5, delay: idx * 0.1 }}
+                whileHover={{ y: -3 }}
+                className="bg-rolla-bg p-8 md:p-10 group hover:bg-[#0D0E12] transition-all duration-300 relative hover:shadow-[0_12px_30px_rgba(0,0,0,0.4)]"
               >
-                <motion.div
-                  animate={{ scale: [1, 1.12, 1] }}
-                  transition={{ duration: 2.5, repeat: Infinity, delay: idx * 0.35 }}
-                  className="absolute -top-4 left-1/2 -translate-x-1/2 w-8 h-8 bg-[#534AB7] text-white rounded-full flex items-center justify-center font-bold text-sm shadow-md"
-                >
-                  {step.number}
-                </motion.div>
-                <motion.div
-                  whileHover={{ rotate: -6 }}
-                  className="w-16 h-16 bg-purple-50 rounded-full flex items-center justify-center mx-auto mb-6 mt-2"
-                >
-                  {step.icon}
-                </motion.div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3">{step.title}</h3>
-                <p className="text-gray-600 leading-relaxed">{step.description}</p>
+                {/* Top accent */}
+                <div className="absolute top-0 left-0 right-0 h-[2.5px] bg-gradient-to-r from-[#6366F1] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+
+                {/* Phase header */}
+                <div className="flex items-center gap-3 mb-6">
+                  <span className="font-mono text-3xl font-bold text-[#1e2028] group-hover:text-[#252830] transition-colors">{step.number}</span>
+                  <div>
+                    <div className="font-mono text-[0.55rem] text-[#818CF8] uppercase tracking-widest">
+                      {step.code}
+                    </div>
+                    <div className="font-mono text-[0.55rem] text-[#8a91a0] uppercase tracking-wider">
+                      {step.subtitle}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Icon */}
+                <div className="w-10 h-10 border border-[#1e2028] group-hover:border-[#6366F1]/40 flex items-center justify-center mb-6 transition-colors duration-300 bg-rolla-bg">
+                  <Icon className="w-4 h-4 text-[#6366F1] group-hover:scale-1.05 transition-transform" strokeWidth={1.5} />
+                </div>
+
+                <h3 className="text-lg font-bold text-white mb-3">{step.title}</h3>
+                <p className="text-[#C4C9D4] text-sm leading-relaxed">{step.description}</p>
               </motion.div>
-            ))}
-          </div>
+            );
+          })}
         </div>
 
-        <div className="mt-16 text-center">
+        {/* CTA */}
+        <div className="mt-12">
           <motion.div whileHover={{ x: 4 }} whileTap={{ scale: 0.98 }} className="inline-flex">
-          <Link
-            href="#contact"
-            className="inline-flex items-center text-[#534AB7] font-semibold text-lg hover:text-[#43399b] transition-colors"
-          >
-            Book your free discovery call <span className="ml-2">→</span>
-          </Link>
+            <Link
+              href="#contact"
+              className="font-mono text-xs text-[#818CF8] hover:text-[#A5B4FC] transition-colors uppercase tracking-widest flex items-center gap-2"
+            >
+              ↳ Book your free discovery call
+            </Link>
           </motion.div>
         </div>
       </div>

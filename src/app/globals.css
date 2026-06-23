@@ -1,49 +1,276 @@
 @import "tailwindcss";
 
+/* ─── DESIGN TOKENS ─────────────────────────────────────────────────── */
 @theme {
-  --color-brand: #534AB7;
-  --color-brand-light: #CECBF6;
-  --color-brand-bg: #FAFAFA;
-  --font-sans: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
+  /* Backgrounds */
+  --color-rolla-bg:      #08090C;
+  --color-rolla-bg-2:    #0D0E12;
+  --color-rolla-bg-3:    #111318;
+  --color-rolla-surface: #13151B;
+
+  /* Text — high contrast on dark backgrounds */
+  --color-rolla-text:    #FFFFFF;         /* pure white: max contrast on #08090C  */
+  --color-rolla-body:    #C4C9D4;         /* readable body copy on dark bg        */
+  --color-rolla-muted:   #8A91A0;         /* secondary / caption text             */
+  --color-rolla-dim:     #6B7280;         /* very muted labels                    */
+
+  /* Accent — Electric Indigo */
+  --color-brand:         #6366F1;
+  --color-brand-light:   #A5B4FC;
+  --color-brand-dim:     #1E2048;
+  --color-brand-glow:    rgba(99,102,241,0.15);
+
+  /* Borders */
+  --color-grid:          #1E2028;
+  --color-grid-bright:   #252830;
+
+  /* Fonts */
+  --font-sans:  var(--font-jakarta),   ui-sans-serif,  system-ui, sans-serif;
+  --font-serif: var(--font-cormorant), Georgia,        serif;
+  --font-mono:  var(--font-mono),      "Courier New",  monospace;
 }
 
+/* ─── CSS VARS ──────────────────────────────────────────────────────── */
 :root {
-  --background: #FAFAFA;
-  --foreground: #111827;
+  --background: #08090C;
+  --foreground: #FFFFFF;
 }
+
+/* ─── RESET ─────────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
 
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-html {
-  scroll-behavior: smooth;
+h1, h2, h3, h4 {
+  color: #FFFFFF;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
 }
 
+/* ─── TYPOGRAPHY HELPERS ─────────────────────────────────────────────── */
+.font-serif   { font-family: var(--font-serif); }
+.font-mono-rolla { font-family: var(--font-mono); }
+
+/* Readable body copy */
+.body-copy    { color: #C4C9D4; }
+.text-muted   { color: #8A91A0; }
+.text-dim     { color: #6B7280; }
+
+/* ─── SELECTION ──────────────────────────────────────────────────────── */
 ::selection {
-  background-color: #CECBF6;
-  color: #534AB7;
+  background-color: rgba(99,102,241,0.35);
+  color: #E0E3FF;
 }
 
-/* Custom scrollbar */
-::-webkit-scrollbar {
-  width: 6px;
-}
-::-webkit-scrollbar-track {
-  background: #f1f1f1;
-}
-::-webkit-scrollbar-thumb {
-  background: #CECBF6;
-  border-radius: 3px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: #534AB7;
-}
+/* ─── SCROLLBAR ──────────────────────────────────────────────────────── */
+::-webkit-scrollbar       { width: 3px; }
+::-webkit-scrollbar-track { background: #08090C; }
+::-webkit-scrollbar-thumb { background: #1E2028; border-radius: 0; }
+::-webkit-scrollbar-thumb:hover { background: #6366F1; }
 
-/* Smooth focus rings */
+/* ─── FOCUS RING ─────────────────────────────────────────────────────── */
 *:focus-visible {
-  outline: 2px solid #534AB7;
+  outline: 1px solid #6366F1;
   outline-offset: 2px;
 }
+
+/* ─── PAGE ENTRANCE ──────────────────────────────────────────────────── */
+@keyframes pageFadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+main {
+  animation: pageFadeIn 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* ─── SECTION DIVIDER ─────────────────────────────────────────────────── */
+.section-divider {
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(to right, transparent, #1E2028 20%, #1E2028 80%, transparent);
+}
+
+/* ─── GRID BACKGROUNDS ───────────────────────────────────────────────── */
+.bg-grid {
+  background-image:
+    linear-gradient(to right, #1E2028 1px, transparent 1px),
+    linear-gradient(to bottom, #1E2028 1px, transparent 1px);
+  background-size: 56px 56px;
+}
+
+.bg-dot-grid {
+  background-image: radial-gradient(circle, #252830 1px, transparent 1px);
+  background-size: 22px 22px;
+}
+
+/* ─── SYSTEM LABEL ───────────────────────────────────────────────────── */
+.sys-label {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #6366F1;
+}
+
+/* ─── BUTTONS ────────────────────────────────────────────────────────── */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  background: #FFFFFF;
+  color: #000000;
+  border: 1px solid #FFFFFF;
+  font-family: var(--font-sans);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  padding: 0.75rem 1.75rem;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+.btn-primary:hover {
+  background: #6366F1;
+  border-color: #6366F1;
+  color: #FFFFFF;
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  background: transparent;
+  color: #C4C9D4;
+  border: 1px solid #2a2d38;
+  font-family: var(--font-sans);
+  font-size: 0.8rem;
+  font-weight: 500;
+  padding: 0.75rem 1.75rem;
+  transition: border-color 0.2s, color 0.2s;
+}
+.btn-secondary:hover {
+  border-color: #6366F1;
+  color: #FFFFFF;
+}
+
+.btn-mono {
+  display: inline-flex;
+  align-items: center;
+  background: transparent;
+  color: #C4C9D4;
+  border: 1px solid #2a2d38;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.65rem 1.5rem;
+  transition: border-color 0.2s, color 0.2s;
+}
+.btn-mono:hover {
+  border-color: #6366F1;
+  color: #A5B4FC;
+}
+
+/* ─── CARD ───────────────────────────────────────────────────────────── */
+.card-surface {
+  background: #0D0E12;
+  border: 1px solid #1E2028;
+  transition: border-color 0.25s, box-shadow 0.25s;
+}
+.card-surface:hover {
+  border-color: #2a2d38;
+  box-shadow: 0 0 28px rgba(99,102,241,0.08);
+}
+
+/* ─── GLOW UTILITIES ─────────────────────────────────────────────────── */
+.glow-brand {
+  box-shadow: 0 0 40px rgba(99,102,241,0.2), 0 0 80px rgba(99,102,241,0.06);
+}
+.text-glow-brand {
+  text-shadow: 0 0 24px rgba(165,180,252,0.45);
+}
+
+/* ─── LINK UNDERLINE ANIMATION ───────────────────────────────────────── */
+.link-hover {
+  position: relative;
+  display: inline-block;
+}
+.link-hover::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: #6366F1;
+  transition: width 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.link-hover:hover::after { width: 100%; }
+
+/* ─── SCANLINE OVERLAY ───────────────────────────────────────────────── */
+.scanline::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0,0,0,0.03) 2px,
+    rgba(0,0,0,0.03) 4px
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ─── ANIMATION KEYFRAMES ────────────────────────────────────────────── */
+
+/* Pulse glow on accent elements */
+@keyframes glowPulse {
+  0%, 100% { box-shadow: 0 0 16px rgba(99,102,241,0.2); }
+  50%       { box-shadow: 0 0 36px rgba(99,102,241,0.45); }
+}
+.animate-glow-pulse {
+  animation: glowPulse 3s ease-in-out infinite;
+}
+
+/* Floating / levitate  */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-10px); }
+}
+.animate-float {
+  animation: float 4s ease-in-out infinite;
+}
+
+/* Shimmer (gradient sweep left-to-right) */
+@keyframes shimmer {
+  from { background-position: -200% center; }
+  to   { background-position:  200% center; }
+}
+.shimmer-text {
+  background: linear-gradient(90deg, #6366F1 0%, #C7D2FE 40%, #6366F1 80%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: shimmer 4s linear infinite;
+}
+
+/* Border draw-in animation */
+@keyframes borderIn {
+  from { clip-path: inset(0 100% 0 0); }
+  to   { clip-path: inset(0 0% 0 0); }
+}
+.border-draw {
+  animation: borderIn 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* ─── ACCENT COLOUR ──────────────────────────────────────────────────── */
+.text-accent    { color: #6366F1; }
+.bg-accent      { background-color: #6366F1; }
+.border-accent  { border-color: #6366F1; }

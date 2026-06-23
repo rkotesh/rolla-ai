@@ -142,9 +142,25 @@ export async function POST(req: Request) {
       console.error("Lead database save failed:", error);
     }
 
-    await sendEmailNotification(submission);
+    let emailSent = true;
+    try {
+      await sendEmailNotification(submission);
+    } catch (emailError) {
+      emailSent = false;
+      console.error("Email notification failed to send:", emailError);
+    }
 
-    return NextResponse.json({ success: true, saved, lead }, { status: saved ? 201 : 202 });
+    if (!saved && !emailSent) {
+      return NextResponse.json(
+        { error: "Failed to save lead and send email notification" },
+        { status: 500 }
+      );
+    }
+
+    return NextResponse.json(
+      { success: true, saved, emailSent, lead },
+      { status: saved ? 201 : 202 }
+    );
   } catch (error) {
     console.error("Error creating lead:", error);
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });

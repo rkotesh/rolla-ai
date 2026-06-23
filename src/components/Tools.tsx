@@ -3,63 +3,82 @@
 import { motion } from "framer-motion";
 
 const tools = [
-  { name: "Python", color: "#3776AB", letter: "Py", desc: "Powerful general-purpose programming", featured: true },
-  { name: "Django", color: "#092E20", letter: "Dj", desc: "High-level Python web framework", featured: true },
-  { name: "React", color: "#61DAFB", letter: "R", desc: "Interactive frontend UI library", featured: true },
-  { name: "Node.js", color: "#339933", letter: "Node", desc: "JavaScript server environment", featured: true },
-  { name: "MongoDB", color: "#47A248", letter: "M", desc: "NoSQL document database", featured: false },
-  { name: "Express.js", color: "#000000", letter: "Ex", desc: "Fast minimalist framework for Node", featured: false },
+  { name: "Python", code: "LANG", letter: "Py", desc: "General-purpose programming", core: true },
+  { name: "Django", code: "WEB", letter: "Dj", desc: "High-level Python web framework", core: true },
+  { name: "React", code: "UI", letter: "R", desc: "Interactive frontend UI library", core: true },
+  { name: "Node.js", code: "RUNTIME", letter: "N", desc: "JavaScript server environment", core: true },
+  { name: "MongoDB", code: "DB", letter: "M", desc: "NoSQL document database", core: false },
+  { name: "Express.js", code: "API", letter: "Ex", desc: "Fast framework for Node", core: false },
 ];
+
+const letters: Record<string, string> = {
+  Py: "#3776AB",
+  Dj: "#092E20",
+  R: "#61DAFB",
+  N: "#339933",
+  M: "#47A248",
+  Ex: "#888",
+};
 
 export default function Tools() {
   return (
-    <section id="tools" className="py-24 bg-white border-y border-gray-100 overflow-hidden">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+    <section id="tools" className="py-24 bg-[#0D0E12] relative overflow-hidden">
+      <div className="section-divider absolute top-0 left-0 right-0" />
+      <div className="section-divider absolute bottom-0 left-0 right-0" />
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
+          className="mb-16"
         >
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-            Powered by modern, industry-standard <span className="text-[#534AB7]">technologies</span>
+          <div className="sys-label mb-4">↳ Technology Stack</div>
+          <h2 className="text-3xl md:text-4xl font-bold text-white leading-tight">
+            Powered by Modern,{" "}
+            <span className="font-serif italic text-[#A5B4FC]">Industry-Standard</span>{" "}
+            Technologies
           </h2>
-          <p className="text-gray-500 mb-14 max-w-2xl mx-auto text-lg">
-            We use the best tools and frameworks to build blazing-fast, secure, and easily maintainable web solutions.
-          </p>
         </motion.div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-5xl mx-auto">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-px bg-[#1e2028]">
           {tools.map((tool, idx) => (
             <motion.div
               key={idx}
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 12 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.4, delay: idx * 0.07 }}
-              whileHover={{ y: -7, scale: 1.03 }}
-              whileTap={{ scale: 0.98 }}
-              className={`group border rounded-2xl p-5 flex flex-col items-center gap-3 transition-all duration-300 hover:shadow-lg cursor-default ${tool.featured
-                  ? "bg-purple-50/60 border-purple-100 hover:border-[#534AB7] hover:bg-white"
-                  : "bg-gray-50 hover:bg-white border-gray-100 hover:border-[#CECBF6]"
-                }`}
+              transition={{ duration: 0.4, delay: idx * 0.05 }}
+              whileHover={{ y: -3 }}
+              className="bg-[#0D0E12] p-6 flex flex-col gap-4 group hover:bg-[#111318] transition-all duration-300 relative hover:shadow-[0_12px_30px_rgba(0,0,0,0.4)]"
             >
-              <motion.div
-                className="w-12 h-12 rounded-xl flex items-center justify-center text-white font-bold text-base shadow-sm group-hover:scale-110 transition-transform duration-300"
-                style={{ backgroundColor: tool.color }}
-                animate={tool.featured ? { boxShadow: ["0 8px 20px rgba(83, 74, 183, 0.12)", "0 12px 28px rgba(83, 74, 183, 0.28)", "0 8px 20px rgba(83, 74, 183, 0.12)"] } : undefined}
-                transition={tool.featured ? { duration: 2.4, repeat: Infinity, delay: idx * 0.15 } : undefined}
+              {/* Top accent */}
+              <div className="absolute top-0 left-0 right-0 h-[1.5px] bg-gradient-to-r from-transparent via-[#6366F1] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+
+              {/* Icon */}
+              <div
+                className="w-9 h-9 flex items-center justify-center text-white font-bold text-sm font-mono transition-transform duration-300 group-hover:scale-1.05"
+                style={{ backgroundColor: letters[tool.letter] ?? "#333", boxShadow: `0 0 12px ${letters[tool.letter] ?? "#333"}30` }}
               >
                 {tool.letter}
-              </motion.div>
-              <div className="text-center">
-                <p className="font-semibold text-gray-900 text-sm">
-                  {tool.name}
-                  {tool.featured && (
-                    <span className="ml-1 text-[9px] bg-[#534AB7] text-white px-1.5 py-0.5 rounded-full font-bold align-middle">CORE</span>
+              </div>
+
+              {/* Content */}
+              <div>
+                <div className="flex items-center gap-1.5 mb-1.5">
+                  <span className="font-mono text-[0.55rem] text-[#818CF8]/80 uppercase tracking-wider">
+                    {tool.code}
+                  </span>
+                  {tool.core && (
+                    <span className="font-mono text-[0.45rem] text-[#818CF8] border border-[#6366F1]/40 px-1 py-0.5 uppercase tracking-widest bg-[#6366F1]/5">
+                      Core
+                    </span>
                   )}
-                </p>
-                <p className="text-xs text-gray-400 mt-0.5 leading-tight">{tool.desc}</p>
+                </div>
+                <p className="text-xs font-bold text-white">{tool.name}</p>
+                <p className="text-[0.65rem] text-[#C4C9D4] mt-1 leading-tight">{tool.desc}</p>
               </div>
             </motion.div>
           ))}

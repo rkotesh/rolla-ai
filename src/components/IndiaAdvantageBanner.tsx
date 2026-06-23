@@ -1,30 +1,36 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { motion } from "framer-motion";
 
 export default function IndiaAdvantageBanner() {
   return (
-    <div className="bg-[#534AB7]/5 border-y border-[#534AB7]/10 py-3">
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ delay: 0.2 }}
+      className="bg-[#0D0E12] border-y border-[#1e2028] py-2.5"
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4 text-center">
-          <p className="text-sm font-medium text-gray-700">
-            <span className="mr-2">🇮🇳</span>
-            India-based team · Agency-quality development · Startup-friendly pricing
-            <span className="hidden sm:inline mx-2">—</span>
-            <span className="block sm:inline text-gray-500 font-normal">
-              typically 40–60% less than US or UK agencies
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-6 text-center">
+          <div className="flex items-center gap-2">
+            <span className="font-mono text-[0.6rem] text-[#818CF8] uppercase tracking-widest">
+              ↳ Announcement
             </span>
-          </p>
-          <Link 
-            href="#pricing" 
-            className="text-xs font-bold text-[#534AB7] hover:text-[#43399b] flex items-center gap-1 transition-colors group"
+            <span className="text-[#1e2028]">|</span>
+            <p className="text-xs text-[#C4C9D4] font-sans">
+              India-based elite engineering — typically{" "}
+              <span className="text-[#A5B4FC] font-semibold">40–60% less</span> than US or UK agencies. Agency quality. Startup prices.
+            </p>
+          </div>
+          <Link
+            href="#pricing"
+            className="font-mono text-[0.6rem] text-[#818CF8] hover:text-[#A5B4FC] uppercase tracking-widest transition-colors flex items-center gap-1 whitespace-nowrap"
           >
-            See Pricing
-            <ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
+            View Pricing ↳
           </Link>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }

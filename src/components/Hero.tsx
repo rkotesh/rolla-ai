@@ -1,211 +1,462 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform, type Variants, AnimatePresence } from "framer-motion";
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { useRef, useEffect, useCallback, useState } from "react";
 
-const tools = [
-  { name: "Django", color: "#092E20", icon: "Dj", cx: "92%", cy: "50%", lineX: "368", lineY: "200" },
-  { name: "React", color: "#61DAFB", icon: "R", cx: "71%", cy: "86.3731%", lineX: "284", lineY: "345.4923" },
-  { name: "Python", color: "#3776AB", icon: "Py", cx: "29%", cy: "86.3731%", lineX: "116", lineY: "345.4923" },
-  { name: "MongoDB", color: "#47A248", icon: "M", cx: "8%", cy: "50%", lineX: "32", lineY: "200" },
-  { name: "Node.js", color: "#339933", icon: "JS", cx: "29%", cy: "13.6269%", lineX: "116", lineY: "54.5077" },
-  { name: "Express", color: "#000000", icon: "Ex", cx: "71%", cy: "13.6269%", lineX: "284", lineY: "54.5077" },
-];
+/* ─────────────────────────────────────────────────────────────
+   FLOATING PARTICLE FIELD
+   Lightweight canvas-based particles for depth and elegance
+───────────────────────────────────────────────────────────── */
+function ParticleField() {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
 
-const floatingNodes = [
-  { x: "10%", y: "20%", delay: 0 },
-  { x: "80%", y: "15%", delay: 0.4 },
-  { x: "5%", y: "65%", delay: 0.8 },
-  { x: "85%", y: "60%", delay: 1.2 },
-  { x: "50%", y: "80%", delay: 0.6 },
-];
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
 
-export default function Hero() {
+    let w = 0, h = 0;
+    const particles: { x: number; y: number; r: number; vx: number; vy: number; alpha: number; }[] = [];
+
+    const resize = () => {
+      w = canvas.width  = canvas.offsetWidth;
+      h = canvas.height = canvas.offsetHeight;
+    };
+
+    const spawn = () => {
+      particles.length = 0;
+      const count = Math.floor((w * h) / 18000);
+      for (let i = 0; i < count; i++) {
+        particles.push({
+          x: Math.random() * w,
+          y: Math.random() * h,
+          r: Math.random() * 1.5 + 0.5,
+          vx: (Math.random() - 0.5) * 0.22,
+          vy: (Math.random() - 0.5) * 0.22,
+          alpha: Math.random() * 0.5 + 0.15,
+        });
+      }
+    };
+
+    let raf = 0;
+    const draw = () => {
+      ctx.clearRect(0, 0, w, h);
+      for (const p of particles) {
+        p.x += p.vx; p.y += p.vy;
+        if (p.x < 0) p.x = w;
+        if (p.x > w) p.x = 0;
+        if (p.y < 0) p.y = h;
+        if (p.y > h) p.y = 0;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(99,102,241,${p.alpha})`;
+        ctx.fill();
+      }
+      raf = requestAnimationFrame(draw);
+    };
+
+    const ro = new ResizeObserver(() => { resize(); spawn(); });
+    ro.observe(canvas);
+    resize(); spawn(); draw();
+
+    return () => { ro.disconnect(); cancelAnimationFrame(raf); };
+  }, []);
+
   return (
-    <section className="relative min-h-screen flex items-center pt-20 overflow-hidden bg-gradient-to-br from-white via-[#FAFAFA] to-[#CECBF6]/20">
-      {/* Animated background blobs */}
-      <div className="absolute top-0 right-0 w-[700px] h-[700px] rounded-full bg-[#CECBF6]/25 blur-3xl pointer-events-none" />
-      <div className="absolute bottom-0 left-0 w-[500px] h-[500px] rounded-full bg-[#534AB7]/8 blur-3xl pointer-events-none" />
+    <canvas
+      ref={canvasRef}
+      className="absolute inset-0 w-full h-full pointer-events-none"
+      aria-hidden="true"
+    />
+  );
+}
 
-      {/* Floating tool nodes (background) */}
-      {floatingNodes.map((node, i) => (
-        <motion.div
-          key={i}
-          className="absolute w-3 h-3 rounded-full bg-[#534AB7]/20 hidden lg:block"
-          style={{ left: node.x, top: node.y }}
-          animate={{ y: [0, -12, 0], opacity: [0.4, 0.9, 0.4] }}
-          transition={{ duration: 3 + i * 0.5, repeat: Infinity, delay: node.delay }}
+/* ─────────────────────────────────────────────────────────────
+   ANIMATED COUNTER — counts up on mount
+───────────────────────────────────────────────────────────── */
+function Counter({ target, suffix = "" }: { target: number; suffix?: string }) {
+  const [val, setVal] = useState(0);
+  const ref = useRef<HTMLSpanElement>(null);
+
+  useEffect(() => {
+    let frame = 0;
+    const dur = 1400;
+    const start = performance.now();
+    const tick = (now: number) => {
+      const t = Math.min((now - start) / dur, 1);
+      const eased = 1 - Math.pow(1 - t, 3); // ease out cubic
+      setVal(Math.round(eased * target));
+      if (t < 1) frame = requestAnimationFrame(tick);
+    };
+
+    const observer = new IntersectionObserver(([e]) => {
+      if (e.isIntersecting) { requestAnimationFrame(tick); observer.disconnect(); }
+    }, { threshold: 0.5 });
+
+    if (ref.current) observer.observe(ref.current);
+    return () => { observer.disconnect(); cancelAnimationFrame(frame); };
+  }, [target]);
+
+  return <span ref={ref}>{val}{suffix}</span>;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   SYSTEM DIAGRAM (terminal window graphic)
+───────────────────────────────────────────────────────────── */
+function SystemDiagram() {
+  const nodes = [
+    { label: "Discovery", sub: "Requirements",  x: 20,  y: 50,  delay: 0.3 },
+    { label: "Design",    sub: "UI/UX Arch.",   x: 175, y: 18,  delay: 0.5 },
+    { label: "Build",     sub: "Full-Stack",    x: 330, y: 50,  delay: 0.7 },
+    { label: "Deploy",    sub: "Production",    x: 175, y: 110, delay: 0.9 },
+  ];
+  const edges = [
+    { x1: 100, y1: 64, x2: 166, y2: 31 },
+    { x1: 202, y1: 18, x2: 320, y2: 50 },
+    { x1: 335, y1: 72, x2: 215, y2: 100 },
+    { x1: 170, y1: 110, x2: 98,  y2: 78 },
+  ];
+
+  return (
+    <svg viewBox="0 0 430 180" className="w-full" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <pattern id="diag-grid" width="32" height="32" patternUnits="userSpaceOnUse">
+          <path d="M32 0L0 0 0 32" fill="none" stroke="#1e2028" strokeWidth="0.5" />
+        </pattern>
+        <marker id="arr" markerWidth="5" markerHeight="5" refX="2.5" refY="2.5" orient="auto">
+          <polygon points="0 0, 5 2.5, 0 5" fill="#6366F1" opacity="0.7" />
+        </marker>
+      </defs>
+      <rect width="430" height="180" fill="url(#diag-grid)" />
+
+      {/* Edges */}
+      {edges.map((e, i) => (
+        <motion.line
+          key={i} x1={e.x1} y1={e.y1} x2={e.x2} y2={e.y2}
+          stroke="#6366F1" strokeWidth="1" strokeDasharray="5 3"
+          markerEnd="url(#arr)" opacity={0}
+          animate={{ opacity: 0.55 }}
+          transition={{ delay: 0.6 + i * 0.18, duration: 0.5 }}
         />
       ))}
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full py-16 lg:py-0">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+      {/* Nodes */}
+      {nodes.map((n, i) => (
+        <motion.g
+          key={i}
+          initial={{ opacity: 0, scale: 0.5 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: n.delay, type: "spring", stiffness: 220, damping: 24 }}
+        >
+          <rect x={n.x} y={n.y - 8} width="80" height="38" rx="1" fill="#0d0e12" stroke="#252830" strokeWidth="1" />
+          <rect x={n.x} y={n.y - 8} width="80" height="2" fill="#6366F1" />
+          <motion.circle cx={n.x + 71} cy={n.y - 4} r={3} fill="#4ADE80"
+            animate={{ opacity: [0.4, 1, 0.4] }}
+            transition={{ duration: 2, repeat: Infinity, delay: i * 0.4 }}
+          />
+          <text x={n.x + 40} y={n.y + 9}  textAnchor="middle" fill="#FFFFFF" fontSize="8.5" fontFamily="monospace" fontWeight="600">{n.label}</text>
+          <text x={n.x + 40} y={n.y + 22} textAnchor="middle" fill="#8a91a0" fontSize="6"   fontFamily="monospace">{n.sub}</text>
+        </motion.g>
+      ))}
+    </svg>
+  );
+}
 
-          {/* Left — Text */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, ease: "easeOut" }}
-          >
-            {/* Badge */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.2 }}
-              className="inline-flex items-center gap-2 bg-purple-50 border border-purple-100 text-[#534AB7] px-4 py-1.5 rounded-full text-sm font-semibold mb-8"
-            >
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#534AB7] opacity-75" />
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-[#534AB7]" />
-              </span>
-              Now accepting new clients — 2026
-            </motion.div>
+/* ─────────────────────────────────────────────────────────────
+   STAGGER VARIANTS
+───────────────────────────────────────────────────────────── */
+const stagger: Variants = {
+  hidden:  {},
+  visible: { transition: { staggerChildren: 0.11, delayChildren: 0.08 } },
+};
+const fade: Variants = {
+  hidden:  { opacity: 0, y: 28 },
+  visible: { opacity: 1, y: 0  },
+};
 
-            {/* Web Dev Pill */}
-            <motion.div
-              initial={{ opacity: 0, x: -10 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.45 }}
-              className="inline-flex items-center gap-2 bg-gradient-to-r from-[#534AB7]/10 to-[#3178C6]/10 border border-[#534AB7]/20 text-gray-700 px-4 py-1.5 rounded-full text-sm font-semibold mb-8 ml-3"
-            >
-              <span className="text-[#534AB7]">✦</span>
-              Custom Web Solutions
-            </motion.div>
+/* ─────────────────────────────────────────────────────────────
+   HERO
+───────────────────────────────────────────────────────────── */
+export default function Hero() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({ target: sectionRef, offset: ["start start", "end start"] });
+  const yText   = useTransform(scrollYProgress, [0, 1], ["0%", "20%"]);
+  const opacity = useTransform(scrollYProgress, [0, 0.65], [1, 0]);
 
-            <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-gray-900 leading-[1.08] mb-6">
-              Your vision,{" "}
-              <span className="text-[#534AB7] relative">
-                built in code.
-                <svg className="absolute -bottom-2 left-0 w-full" viewBox="0 0 300 8" fill="none">
-                  <motion.path
-                    d="M2 6 C80 2, 160 2, 298 6"
-                    stroke="#CECBF6"
-                    strokeWidth="3"
-                    strokeLinecap="round"
-                    initial={{ pathLength: 0 }}
-                    animate={{ pathLength: 1 }}
-                    transition={{ duration: 1, delay: 0.8 }}
-                  />
-                </svg>
-              </span>
-            </h1>
+  return (
+    <section ref={sectionRef} className="relative min-h-screen flex items-center pt-[60px] overflow-hidden bg-[#08090C]">
 
-            <p className="text-lg md:text-xl text-gray-600 mb-10 leading-relaxed max-w-xl">
-              We design and build fast, modern, and bespoke websites and web applications tailored to your business needs, so you can scale with ease.
-            </p>
+      {/* ── Background layers ── */}
+      <div className="absolute inset-0 bg-grid opacity-55 pointer-events-none" />
+      <ParticleField />
 
-            {/* CTAs */}
-            <div className="flex flex-col sm:flex-row gap-4 mb-10">
-              <Link
-                href="#contact"
-                id="hero-cta-primary"
-                className="bg-[#534AB7] hover:bg-[#43399b] text-white px-8 py-4 rounded-full font-semibold transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 flex items-center justify-center gap-2 text-base"
-              >
-                Start your project
-                <ArrowRight className="h-5 w-5" />
-              </Link>
-              <Link
-                href="#how-it-works"
-                id="hero-cta-secondary"
-                className="bg-white border-2 border-gray-200 hover:border-[#534AB7] text-gray-700 hover:text-[#534AB7] px-8 py-4 rounded-full font-semibold transition-all flex items-center justify-center gap-2 text-base"
-              >
-                See how it works
-              </Link>
-            </div>
-
-            {/* Trust line */}
-            <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-gray-500 font-medium">
-              {["MERN & Django Specialists", "High Performance & Scalable", "Responsive & Clean Code"].map((t, i) => (
-                <span key={i} className="flex items-center gap-1.5">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#534AB7] inline-block" />
-                  {t}
-                </span>
-              ))}
-            </div>
-          </motion.div>
-
-          {/* Right — Animated workflow diagram */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.92 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
-            className="relative hidden lg:flex items-center justify-center"
-          >
-            <div className="relative w-full max-w-lg aspect-square">
-              {/* Central automation hub */}
-              <div className="absolute inset-0 flex items-center justify-center z-10">
-                <motion.div
-                  animate={{ scale: [1, 1.05, 1] }}
-                  transition={{ duration: 3, repeat: Infinity }}
-                  className="w-28 h-28 bg-[#534AB7] rounded-3xl shadow-2xl flex flex-col items-center justify-center text-white"
-                >
-                  <svg className="w-10 h-10 mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z" />
-                  </svg>
-                  <span className="text-xs font-bold tracking-wide">ROLLA</span>
-                </motion.div>
-              </div>
-
-              {/* Orbiting tool nodes */}
-              {tools.map((tool, i) => (
-                  <motion.div
-                    key={tool.name}
-                    className="absolute z-10"
-                    style={{ left: tool.cx, top: tool.cy, transform: "translate(-50%, -50%)" }}
-                    initial={{ opacity: 0, scale: 0 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ delay: 0.5 + i * 0.15, type: "spring", stiffness: 200 }}
-                  >
-                    <motion.div
-                      animate={{ y: [0, -6, 0] }}
-                      transition={{ duration: 2.5 + i * 0.3, repeat: Infinity, delay: i * 0.2 }}
-                      className="w-14 h-14 rounded-2xl shadow-lg flex items-center justify-center text-white font-bold text-xl border-2 border-white"
-                      style={{ backgroundColor: tool.color }}
-                    >
-                      {tool.icon}
-                    </motion.div>
-                    <p className="text-center text-[10px] font-semibold text-gray-500 mt-1">{tool.name}</p>
-                  </motion.div>
-              ))}
-
-              {/* Animated connecting lines SVG */}
-              <svg className="absolute inset-0 w-full h-full" viewBox="0 0 400 400">
-                {tools.map((tool, i) => (
-                    <motion.line
-                      key={i}
-                      x1="200" y1="200" x2={tool.lineX} y2={tool.lineY}
-                      stroke="#CECBF6"
-                      strokeWidth="2"
-                      strokeDasharray="6 4"
-                      initial={{ pathLength: 0, opacity: 0 }}
-                      animate={{ pathLength: 1, opacity: 1 }}
-                      transition={{ delay: 0.6 + i * 0.1, duration: 0.5 }}
-                    />
-                ))}
-                {/* Animated pulse circle */}
-                <motion.circle
-                  cx="200" cy="200" r="0" fill="none" stroke="#534AB7" strokeWidth="1.5" opacity="0.3"
-                  animate={{ r: [0, 85], opacity: [0.5, 0] }}
-                  transition={{ duration: 2.5, repeat: Infinity, ease: "easeOut", delay: 1 }}
-                />
-              </svg>
-            </div>
-          </motion.div>
-
-        </div>
-      </div>
-
-      {/* Scroll indicator */}
+      {/* Breathing glow orbs */}
       <motion.div
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 text-gray-400"
-        animate={{ y: [0, 8, 0] }}
-        transition={{ duration: 1.5, repeat: Infinity }}
+        animate={{ opacity: [0.05, 0.12, 0.05], scale: [1, 1.1, 1] }}
+        transition={{ duration: 9, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute -top-32 -left-32 w-[700px] h-[700px] rounded-full bg-[#6366F1] blur-[130px] pointer-events-none"
+      />
+      <motion.div
+        animate={{ opacity: [0.03, 0.07, 0.03], scale: [1, 1.08, 1] }}
+        transition={{ duration: 11, repeat: Infinity, ease: "easeInOut", delay: 4 }}
+        className="absolute bottom-0 right-0 w-[550px] h-[550px] rounded-full bg-[#818CF8] blur-[140px] pointer-events-none"
+      />
+
+      {/* Radial vignette */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{ background: "radial-gradient(ellipse 75% 65% at 50% 45%, transparent, #08090C 72%)" }}
+      />
+
+      {/* ── Content ── */}
+      <motion.div style={{ y: yText, opacity }} className="relative z-10 w-full">
+        <div className="max-w-[1440px] mx-auto px-5 sm:px-8 lg:px-14 py-20 lg:py-0 lg:min-h-screen flex items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center w-full">
+
+            {/* ════════ LEFT — COPY ════════ */}
+            <motion.div variants={stagger} initial="hidden" animate="visible">
+
+              {/* Status pill */}
+              <motion.div variants={fade} className="flex items-center gap-2.5 mb-10">
+                <motion.span
+                  animate={{ opacity: [0.4, 1, 0.4] }}
+                  transition={{ duration: 2, repeat: Infinity }}
+                  className="inline-block w-2 h-2 rounded-full bg-[#4ADE80]"
+                />
+                <span className="font-mono text-[0.62rem] text-[#4ADE80] uppercase tracking-[0.2em]">
+                  Now Accepting New Clients · 2026
+                </span>
+              </motion.div>
+
+              {/* ── HEADLINE ──
+                  Pure white on #08090C → maximum contrast
+                  Serif italic for elegance on "Software of" line
+              */}
+              <motion.h1
+                variants={fade}
+                className="font-bold tracking-tight leading-[0.93] mb-8"
+              >
+                {/* Line 1 — solid white, large */}
+                <span
+                  className="block text-white"
+                  style={{ fontSize: "clamp(2.8rem, 6vw, 5.2rem)" }}
+                >
+                  Custom Web
+                </span>
+
+                {/* Line 2 — indigo gradient, serif italic */}
+                <span
+                  className="block font-serif italic"
+                  style={{
+                    fontSize: "clamp(2.8rem, 6vw, 5.2rem)",
+                    background: "linear-gradient(95deg, #c7d2fe 0%, #818CF8 45%, #6366F1 100%)",
+                    WebkitBackgroundClip: "text",
+                    WebkitTextFillColor: "transparent",
+                    backgroundClip: "text",
+                  }}
+                >
+                  Software of
+                </span>
+
+                {/* Line 3 — white + trademark */}
+                <span
+                  className="block text-white"
+                  style={{ fontSize: "clamp(2.8rem, 6vw, 5.2rem)" }}
+                >
+                  Tomorrow.
+                  <sup className="font-sans font-light text-[#6366F1] ml-1" style={{ fontSize: "0.32em", verticalAlign: "super" }}>
+                    ™
+                  </sup>
+                </span>
+              </motion.h1>
+
+              {/* Divider line */}
+              <motion.div
+                variants={fade}
+                className="w-12 h-[1px] bg-gradient-to-r from-[#6366F1] to-transparent mb-8"
+              />
+
+              {/* Subheading — #C4C9D4 for readability on dark bg */}
+              <motion.p
+                variants={fade}
+                className="text-[#C4C9D4] text-base leading-[1.75] mb-12 max-w-[510px]"
+              >
+                Rolla builds high-performance websites and web applications
+                tailored to your business — so you launch faster, convert better,
+                and scale without limits. India-based engineering.
+                Startup-friendly pricing.
+              </motion.p>
+
+              {/* CTAs */}
+              <motion.div variants={fade} className="flex flex-col sm:flex-row items-start gap-3 mb-14">
+                <Link
+                  href="#contact"
+                  id="hero-cta-primary"
+                  className="
+                    group relative overflow-hidden
+                    inline-flex items-center gap-2
+                    bg-white text-black
+                    text-[13px] font-semibold px-7 py-3.5
+                    transition-all duration-250
+                    hover:bg-[#6366F1] hover:text-white
+                  "
+                >
+                  Start Your Project
+                  <motion.span
+                    className="inline-block"
+                    whileHover={{ x: 4, y: -4 }}
+                    transition={{ type: "spring", stiffness: 400, damping: 20 }}
+                  >
+                    ↗
+                  </motion.span>
+                </Link>
+                <Link
+                  href="#how-it-works"
+                  id="hero-cta-secondary"
+                  className="
+                    inline-flex items-center gap-2
+                    border border-[#2a2d38] text-[#C4C9D4]
+                    hover:border-[#6366F1] hover:text-white
+                    text-[13px] font-medium px-7 py-3.5
+                    transition-all duration-250
+                  "
+                >
+                  How It Works
+                </Link>
+              </motion.div>
+
+              {/* Animated stats */}
+              <motion.div variants={fade} className="flex flex-wrap gap-10">
+                {[
+                  { target: 50, suffix: "%",   label: "Cost savings vs US/UK" },
+                  { target: 2,  suffix: "s",   label: "Avg page load time" },
+                  { target: 100, suffix: "%",  label: "Bespoke — no templates" },
+                ].map((s, i) => (
+                  <motion.div
+                    key={i}
+                    whileHover={{ y: -3 }}
+                    transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                    className="flex flex-col"
+                  >
+                    {/* Counter in bold white — high contrast */}
+                    <span className="font-mono text-[1.55rem] font-bold text-white leading-none">
+                      <Counter target={s.target} suffix={s.suffix} />
+                    </span>
+                    <span className="font-mono text-[0.57rem] text-[#C4C9D4] uppercase tracking-[0.16em] mt-1.5">
+                      {s.label}
+                    </span>
+                  </motion.div>
+                ))}
+              </motion.div>
+            </motion.div>
+
+            {/* ════════ RIGHT — TERMINAL ════════ */}
+            <motion.div
+              initial={{ opacity: 0, x: 50, scale: 0.94 }}
+              animate={{ opacity: 1, x: 0, scale: 1 }}
+              transition={{ duration: 0.85, delay: 0.55, ease: "easeOut" }}
+              className="hidden lg:block"
+            >
+              <motion.div
+                whileHover={{ y: -8 }}
+                transition={{ type: "spring", stiffness: 180, damping: 28 }}
+              >
+                {/* Ambient glow behind terminal */}
+                <div className="absolute inset-0 translate-x-3 translate-y-3 bg-[#6366F1] opacity-[0.07] blur-2xl" />
+
+                {/* Terminal */}
+                <div className="relative border border-[#1e2028]">
+                  {/* Title bar */}
+                  <div className="flex items-center gap-2 px-4 py-2.5 bg-[#0d0e12] border-b border-[#1e2028]">
+                    <div className="flex gap-1.5">
+                      <div className="w-2.5 h-2.5 rounded-full bg-[#FF5F57]" />
+                      <div className="w-2.5 h-2.5 rounded-full bg-[#FEBC2E]" />
+                      <div className="w-2.5 h-2.5 rounded-full bg-[#28C840]" />
+                    </div>
+                    <span className="font-mono text-[0.57rem] text-[#8a91a0] ml-2">rolla — pipeline/core.ts</span>
+                    <div className="ml-auto flex items-center gap-1.5">
+                      <motion.span
+                        animate={{ opacity: [0.5, 1, 0.5] }}
+                        transition={{ duration: 1.8, repeat: Infinity }}
+                        className="w-1.5 h-1.5 rounded-full bg-[#4ADE80]"
+                      />
+                      <span className="font-mono text-[0.52rem] text-[#4ADE80] uppercase tracking-wider">LIVE</span>
+                    </div>
+                  </div>
+
+                  {/* Diagram */}
+                  <div className="bg-[#0d0e12] p-5">
+                    <SystemDiagram />
+                    <div className="mt-2 flex items-center justify-between">
+                      <span className="font-mono text-[0.55rem] text-[#6366F1] uppercase tracking-widest">
+                        sys.pipeline.v2.1
+                      </span>
+                      <span className="font-mono text-[0.55rem] text-[#4ADE80] uppercase tracking-widest">
+                        ● All systems operational
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Code block */}
+                  <div className="bg-[#0a0b0e] border-t border-[#1e2028] p-5 space-y-1.5 font-mono text-[0.62rem]">
+                    {[
+                      { ln: "01", kw: "#6366F1", code: "import",  rest: "{ Project } from 'rolla/core';" },
+                      { ln: "02", kw: "#A5B4FC", code: "const",   rest: "client = await Project.init();" },
+                      { ln: "03", kw: "#4ADE80", code: "await",   rest: "client.design({ bespoke: true });" },
+                      { ln: "04", kw: "#4ADE80", code: "await",   rest: "client.build({ stack: 'MERN' });" },
+                      { ln: "05", kw: "#F59E0B", code: "return",  rest: "client.deploy({ env: 'production' });" },
+                    ].map((l, i) => (
+                      <motion.div
+                        key={i}
+                        initial={{ opacity: 0, x: -10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: 1.3 + i * 0.12 }}
+                        className="flex gap-4"
+                      >
+                        <span className="text-[#252830] select-none w-4 text-right shrink-0">{l.ln}</span>
+                        <span className="text-[#C4C9D4]">
+                          <span style={{ color: l.kw }}>{l.code} </span>
+                          {l.rest}
+                        </span>
+                      </motion.div>
+                    ))}
+                    {/* Blinking cursor */}
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ delay: 2.0 }}
+                      className="flex gap-4"
+                    >
+                      <span className="text-[#252830] select-none w-4 text-right shrink-0">06</span>
+                      <motion.span
+                        className="inline-block w-[5px] h-[10px] bg-[#6366F1]"
+                        animate={{ opacity: [1, 0, 1] }}
+                        transition={{ duration: 0.9, repeat: Infinity }}
+                      />
+                    </motion.div>
+                  </div>
+                </div>
+              </motion.div>
+            </motion.div>
+          </div>
+        </div>
+      </motion.div>
+
+      {/* ── Scroll cue ── */}
+      <motion.div
+        className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 2.2 }}
       >
-        <span className="text-xs font-medium tracking-widest uppercase">Scroll</span>
-        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-        </svg>
+        <motion.div
+          animate={{ scaleY: [0, 1, 0], y: [0, 20, 0] }}
+          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+          className="w-[1px] h-10 bg-gradient-to-b from-[#6366F1] to-transparent origin-top"
+        />
+        <span className="font-mono text-[0.5rem] text-[#3a3d4e] uppercase tracking-[0.22em]">Scroll</span>
       </motion.div>
     </section>
   );

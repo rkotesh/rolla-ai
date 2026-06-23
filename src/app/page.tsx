@@ -38,7 +38,7 @@ export const metadata: Metadata = {
 
 export default function Home() {
   return (
-    <main className="w-full relative bg-white">
+    <main className="w-full relative bg-rolla-bg">
       <Navigation />
       <Hero />
       <IndiaAdvantageBanner />
