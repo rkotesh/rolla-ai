@@ -4,7 +4,7 @@ import { motion, useScroll, useTransform, type Variants } from "framer-motion";
 import Link from "next/link";
 import { useRef, useEffect, useState } from "react";
 import { SpotlightCard } from "./SpotlightCard";
-import { ArrowUpRight, CheckCircle2, Sparkles, Terminal, Activity, Layers } from "lucide-react";
+import { ArrowUpRight, Sparkles, Activity } from "lucide-react";
 
 /* ─────────────────────────────────────────────────────────────
    ANIMATED PARTICLES
@@ -118,7 +118,7 @@ export default function Hero() {
   const yText   = useTransform(scrollYProgress, [0, 1], ["0%", "14%"]);
   const opacity = useTransform(scrollYProgress, [0, 0.75], [1, 0]);
 
-  const [activeTab, setActiveTab] = useState<"architecture" | "specs" | "audit">("architecture");
+  const [activeTab, setActiveTab] = useState<"architecture" | "specs">("architecture");
 
   return (
     <section ref={sectionRef} className="relative min-h-screen flex items-center pt-28 sm:pt-32 pb-20 overflow-hidden bg-[#FAF7F2]">
@@ -235,7 +235,6 @@ export default function Hero() {
                       {[
                         { id: "architecture", label: "Pipeline" },
                         { id: "specs", label: "Stack" },
-                        { id: "audit", label: "Vitals" },
                       ].map((tab) => (
                         <button
                           key={tab.id}
@@ -315,33 +314,7 @@ export default function Hero() {
                     </motion.div>
                   )}
 
-                  {activeTab === "audit" && (
-                    <motion.div
-                      key="audit"
-                      initial={{ opacity: 0, y: 8 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      className="space-y-4"
-                    >
-                      <div className="p-5 bg-white rounded-2xl border border-black/[0.06] shadow-xs flex items-center justify-between">
-                        <div>
-                          <span className="text-xs text-[#686C78] font-medium">Core Web Vitals Score</span>
-                          <p className="text-3xl font-extrabold text-emerald-600 mt-0.5">100 / 100</p>
-                        </div>
-                        <CheckCircle2 className="w-9 h-9 text-emerald-500" />
-                      </div>
 
-                      <div className="grid grid-cols-2 gap-3">
-                        <div className="p-4 bg-white rounded-2xl border border-black/[0.06] shadow-xs">
-                          <span className="text-[0.68rem] text-[#686C78] uppercase font-bold">First Contentful Paint</span>
-                          <p className="text-xl font-bold text-[#0F1014] mt-1">0.4s</p>
-                        </div>
-                        <div className="p-4 bg-white rounded-2xl border border-black/[0.06] shadow-xs">
-                          <span className="text-[0.68rem] text-[#686C78] uppercase font-bold">Largest Contentful</span>
-                          <p className="text-xl font-bold text-[#0F1014] mt-1">0.8s</p>
-                        </div>
-                      </div>
-                    </motion.div>
-                  )}
                 </div>
 
                 {/* Footer Bar */}

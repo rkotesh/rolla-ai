@@ -81,7 +81,7 @@ export default function Footer() {
             <p className="text-sm text-[#686C78] leading-relaxed mb-6 max-w-[220px]">
               Custom web applications and enterprise software built for exponential scale.
             </p>
-            <div className="flex gap-2.5">
+            <div className="flex gap-2.5 mb-5">
               <motion.a
                 whileHover={{ scale: 1.1, y: -2 }}
                 whileTap={{ scale: 0.95 }}
@@ -104,6 +104,28 @@ export default function Footer() {
               >
                 <GithubIcon className="w-4 h-4" />
               </motion.a>
+            </div>
+
+            {/* Contact info */}
+            <div className="space-y-2">
+              <a
+                href="tel:+919182015717"
+                className="flex items-center gap-2 text-xs text-[#686C78] hover:text-[#0F1014] transition-colors group"
+              >
+                <span className="w-6 h-6 rounded-lg bg-white border border-black/[0.08] flex items-center justify-center shrink-0 group-hover:border-[#2554F6]/30 transition-colors">
+                  📞
+                </span>
+                <span className="font-mono">+91 91820 15717</span>
+              </a>
+              <a
+                href="mailto:srkotesh23@gmail.com"
+                className="flex items-center gap-2 text-xs text-[#686C78] hover:text-[#0F1014] transition-colors group"
+              >
+                <span className="w-6 h-6 rounded-lg bg-white border border-black/[0.08] flex items-center justify-center shrink-0 group-hover:border-[#2554F6]/30 transition-colors">
+                  ✉️
+                </span>
+                <span className="font-mono">srkotesh23@gmail.com</span>
+              </a>
             </div>
           </div>
 
