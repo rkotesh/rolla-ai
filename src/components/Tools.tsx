@@ -3,8 +3,8 @@
 import { motion } from "framer-motion";
 
 const tools = [
-  { name: "Python", code: "LANG", letter: "Py", desc: "General-purpose programming", core: true },
-  { name: "Django", code: "WEB", letter: "Dj", desc: "High-level Python web framework", core: true },
+  { name: "Java", code: "LANG", letter: "Ja", desc: "Enterprise-grade programming", core: true },
+  { name: "Spring Boot", code: "WEB", letter: "Sb", desc: "Java backend web framework", core: true },
   { name: "React", code: "UI", letter: "R", desc: "Interactive frontend UI library", core: true },
   { name: "Node.js", code: "RUNTIME", letter: "N", desc: "JavaScript server environment", core: true },
   { name: "MongoDB", code: "DB", letter: "M", desc: "NoSQL document database", core: false },
@@ -12,8 +12,8 @@ const tools = [
 ];
 
 const letters: Record<string, string> = {
-  Py: "#3776AB",
-  Dj: "#092E20",
+  Ja: "#F80000",
+  Sb: "#6DB33F",
   R: "#61DAFB",
   N: "#339933",
   M: "#47A248",

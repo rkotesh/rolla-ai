@@ -9,7 +9,7 @@ const results = [
     metric: "+40%",
     metricLabel: "Online Lead Generation",
     headline: "Launched custom property search & booking platform",
-    body: "We designed and built a custom Django and React marketing site with an integrated booking calendar and interactive property filter. Potential buyers can view listings instantly and schedule viewings in two clicks.",
+    body: "We designed and built a custom Java Spring Boot and React marketing site with an integrated booking calendar and interactive property filter. Potential buyers can view listings instantly and schedule viewings in two clicks.",
     stats: [
       { label: "Lead Growth", value: "+40%" },
       { label: "Page Load", value: "1.2s" },

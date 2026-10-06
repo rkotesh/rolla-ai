@@ -10,14 +10,14 @@ const services = [
     description:
       "Bespoke SaaS platforms, client portals, internal dashboards, and custom database web applications built from scratch.",
     icon: Layers,
-    tags: ["Django", "React", "PostgreSQL"],
+    tags: ["Spring Boot", "React", "PostgreSQL"],
     badge: "POPULAR",
   },
   {
     index: "02",
     title: "E-Commerce Solutions",
     description:
-      "High-converting online stores built on modern architectures (Shopify, Django, Node.js, Stripe) for frictionless payments.",
+      "High-converting online stores built on modern architectures (Shopify, Spring Boot, Node.js, Stripe) for frictionless payments.",
     icon: Store,
     tags: ["Shopify", "Stripe", "Node.js"],
     badge: null,

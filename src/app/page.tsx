@@ -20,8 +20,8 @@ export const metadata: Metadata = {
   keywords: [
     "web development agency",
     "custom web applications",
-    "django developer",
-    "python developer",
+    "java developer",
+    "spring boot developer",
     "mern stack developer",
     "react developer",
     "full stack web development",

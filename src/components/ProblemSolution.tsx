@@ -11,7 +11,7 @@ export default function ProblemSolution() {
   ];
 
   const solutions = [
-    "High-performance Django & MERN stack architecture",
+    "High-performance Java, Spring Boot & MERN stack architecture",
     "Fully bespoke designs tailored to your brand goals",
     "Intuitively organized databases & CMS interfaces",
     "Responsive, mobile-first design with smooth UX",

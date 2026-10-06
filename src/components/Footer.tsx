@@ -40,7 +40,7 @@ const footerCols = [
     title: "Capabilities",
     links: [
       { name: "MERN Stack", href: "/#tools" },
-      { name: "Django & Python", href: "/#tools" },
+      { name: "Java & Spring Boot", href: "/#tools" },
       { name: "Performance Optimization", href: "/#services" },
       { name: "SEO Engineering", href: "/#services" },
     ],

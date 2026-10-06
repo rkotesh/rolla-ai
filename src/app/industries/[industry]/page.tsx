@@ -42,7 +42,7 @@ const industryData: Record<string, IndustryDetails> = {
       },
       {
         title: "Lead Capture & Booking",
-        desc: "Convert visitors with custom inquiry forms and automated call scheduling integrations."
+        desc: "Convert visitors with custom inquiry forms and integrated call scheduling & booking systems."
       }
     ],
     stat: "40% increase in mobile inquiries"
