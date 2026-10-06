@@ -271,7 +271,7 @@ export default function Hero() {
                       <div className="p-4 bg-white rounded-2xl border border-black/[0.06] shadow-xs">
                         <div className="flex items-center justify-between mb-2">
                           <span className="text-xs font-mono font-bold text-[#2554F6]">02 / BUILD & AUDIT</span>
-                          <span className="text-[0.68rem] bg-blue-50 text-blue-700 px-2 py-0.5 rounded-full font-semibold">Spring Boot 3</span>
+                          <span className="text-[0.68rem] bg-blue-50 text-blue-700 px-2 py-0.5 rounded-full font-semibold">Java Based</span>
                         </div>
                         <p className="text-sm font-bold text-[#0F1014]">Multi-tenant Backend & PostgreSQL</p>
                         <p className="text-xs text-[#686C78] mt-1">Hardened API routing with continuous staging previews.</p>
