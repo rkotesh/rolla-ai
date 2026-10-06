@@ -1,42 +1,38 @@
 @import "tailwindcss";
 
-/* ─── DESIGN TOKENS ─────────────────────────────────────────────────── */
+/* ─── LINEAR & APPLE BENTO LUXURY DESIGN TOKENS ─────────────────────── */
 @theme {
-  /* Backgrounds */
-  --color-rolla-bg:      #08090C;
-  --color-rolla-bg-2:    #0D0E12;
-  --color-rolla-bg-3:    #111318;
-  --color-rolla-surface: #13151B;
+  /* Warm Luxury Silk Cream Canvas */
+  --color-rolla-bg:        #FAF7F2;       /* Silk cream */
+  --color-rolla-bg-subtle: #F4EFE6;       /* Sand cream */
+  --color-rolla-surface:   #FFFFFF;       /* Crisp white for cards */
 
-  /* Text — high contrast on dark backgrounds */
-  --color-rolla-text:    #FFFFFF;         /* pure white: max contrast on #08090C  */
-  --color-rolla-body:    #C4C9D4;         /* readable body copy on dark bg        */
-  --color-rolla-muted:   #8A91A0;         /* secondary / caption text             */
-  --color-rolla-dim:     #6B7280;         /* very muted labels                    */
+  /* Deep Obsidian Typography */
+  --color-rolla-text:      #0F1014;       /* Jet obsidian black */
+  --color-rolla-body:      #33363F;       /* Warm obsidian charcoal */
+  --color-rolla-muted:     #686C78;       /* Slate stone */
+  --color-rolla-dim:       #9B9FA9;       /* Light neutral */
 
-  /* Accent — Electric Indigo */
-  --color-brand:         #6366F1;
-  --color-brand-light:   #A5B4FC;
-  --color-brand-dim:     #1E2048;
-  --color-brand-glow:    rgba(99,102,241,0.15);
+  /* Modern Linear / Apple Accents */
+  --color-brand:           #2554F6;       /* Electric Cobalt */
+  --color-brand-purple:    #6366F1;       /* Electric Indigo */
+  --color-brand-glow:      rgba(37, 84, 246, 0.14);
 
-  /* Borders */
-  --color-grid:          #1E2028;
-  --color-grid-bright:   #252830;
+  /* Subtle Luxury Borders */
+  --color-border-subtle:   rgba(15, 16, 20, 0.08);
+  --color-border-hover:    rgba(15, 16, 20, 0.18);
 
-  /* Fonts */
+  /* Typography */
   --font-sans:  var(--font-jakarta),   ui-sans-serif,  system-ui, sans-serif;
   --font-serif: var(--font-cormorant), Georgia,        serif;
   --font-mono:  var(--font-mono),      "Courier New",  monospace;
 }
 
-/* ─── CSS VARS ──────────────────────────────────────────────────────── */
 :root {
-  --background: #08090C;
-  --foreground: #FFFFFF;
+  --background: #FAF7F2;
+  --foreground: #0F1014;
 }
 
-/* ─── RESET ─────────────────────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; }
 
 html { scroll-behavior: smooth; }
@@ -50,227 +46,127 @@ body {
 }
 
 h1, h2, h3, h4 {
-  color: #FFFFFF;
+  color: #0F1014;
+  letter-spacing: -0.03em;
+  font-weight: 800;
   text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
 }
 
 /* ─── TYPOGRAPHY HELPERS ─────────────────────────────────────────────── */
 .font-serif   { font-family: var(--font-serif); }
 .font-mono-rolla { font-family: var(--font-mono); }
 
-/* Readable body copy */
-.body-copy    { color: #C4C9D4; }
-.text-muted   { color: #8A91A0; }
-.text-dim     { color: #6B7280; }
-
 /* ─── SELECTION ──────────────────────────────────────────────────────── */
 ::selection {
-  background-color: rgba(99,102,241,0.35);
-  color: #E0E3FF;
+  background-color: #2554F6;
+  color: #FFFFFF;
 }
 
 /* ─── SCROLLBAR ──────────────────────────────────────────────────────── */
-::-webkit-scrollbar       { width: 3px; }
-::-webkit-scrollbar-track { background: #08090C; }
-::-webkit-scrollbar-thumb { background: #1E2028; border-radius: 0; }
-::-webkit-scrollbar-thumb:hover { background: #6366F1; }
+::-webkit-scrollbar       { width: 6px; }
+::-webkit-scrollbar-track { background: #FAF7F2; }
+::-webkit-scrollbar-thumb { background: #D6CFC3; border-radius: 9999px; }
+::-webkit-scrollbar-thumb:hover { background: #2554F6; }
 
 /* ─── FOCUS RING ─────────────────────────────────────────────────────── */
 *:focus-visible {
-  outline: 1px solid #6366F1;
+  outline: 2px solid #2554F6;
   outline-offset: 2px;
 }
 
-/* ─── PAGE ENTRANCE ──────────────────────────────────────────────────── */
-@keyframes pageFadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-main {
-  animation: pageFadeIn 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
-}
-
-/* ─── SECTION DIVIDER ─────────────────────────────────────────────────── */
+/* ─── SOFT SECTION DIVIDER ───────────────────────────────────────────── */
 .section-divider {
   width: 100%;
   height: 1px;
-  background: linear-gradient(to right, transparent, #1E2028 20%, #1E2028 80%, transparent);
+  background: linear-gradient(90deg, transparent, rgba(15, 16, 20, 0.08) 20%, rgba(15, 16, 20, 0.08) 80%, transparent);
 }
 
-/* ─── GRID BACKGROUNDS ───────────────────────────────────────────────── */
-.bg-grid {
+/* ─── SUBTLE BACKGROUND GRIDS ────────────────────────────────────────── */
+.bg-subtle-grid {
   background-image:
-    linear-gradient(to right, #1E2028 1px, transparent 1px),
-    linear-gradient(to bottom, #1E2028 1px, transparent 1px);
-  background-size: 56px 56px;
+    linear-gradient(to right, rgba(15, 16, 20, 0.035) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(15, 16, 20, 0.035) 1px, transparent 1px);
+  background-size: 48px 48px;
 }
 
 .bg-dot-grid {
-  background-image: radial-gradient(circle, #252830 1px, transparent 1px);
-  background-size: 22px 22px;
+  background-image: radial-gradient(circle, rgba(15, 16, 20, 0.07) 1px, transparent 1px);
+  background-size: 24px 24px;
 }
 
-/* ─── SYSTEM LABEL ───────────────────────────────────────────────────── */
-.sys-label {
-  font-family: var(--font-mono);
-  font-size: 0.62rem;
-  letter-spacing: 0.18em;
+/* ─── LUXURY BENTO PILLS & LABELS ────────────────────────────────────── */
+.bento-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(15, 16, 20, 0.09);
+  padding: 0.35rem 0.95rem;
+  border-radius: 9999px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #0F1014;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
-  color: #6366F1;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
 }
 
-/* ─── BUTTONS ────────────────────────────────────────────────────────── */
+/* ─── APPLE & LINEAR BUTTONS ─────────────────────────────────────────── */
 .btn-primary {
   display: inline-flex;
   align-items: center;
-  background: #FFFFFF;
-  color: #000000;
-  border: 1px solid #FFFFFF;
+  justify-content: center;
+  background: #0F1014;
+  color: #FFFFFF;
+  border-radius: 9999px;
   font-family: var(--font-sans);
-  font-size: 0.8rem;
-  font-weight: 600;
-  letter-spacing: 0.02em;
-  padding: 0.75rem 1.75rem;
-  transition: background 0.2s, color 0.2s, border-color 0.2s;
+  font-size: 0.92rem;
+  font-weight: 700;
+  padding: 0.9rem 2rem;
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 14px rgba(15, 16, 20, 0.16);
+  cursor: pointer;
 }
 .btn-primary:hover {
-  background: #6366F1;
-  border-color: #6366F1;
-  color: #FFFFFF;
+  background: #2554F6;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(37, 84, 246, 0.35);
 }
 
 .btn-secondary {
   display: inline-flex;
   align-items: center;
-  background: transparent;
-  color: #C4C9D4;
-  border: 1px solid #2a2d38;
+  justify-content: center;
+  background: #FFFFFF;
+  color: #0F1014;
+  border: 1px solid rgba(15, 16, 20, 0.12);
+  border-radius: 9999px;
   font-family: var(--font-sans);
-  font-size: 0.8rem;
-  font-weight: 500;
-  padding: 0.75rem 1.75rem;
-  transition: border-color 0.2s, color 0.2s;
+  font-size: 0.92rem;
+  font-weight: 700;
+  padding: 0.9rem 2rem;
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+  cursor: pointer;
 }
 .btn-secondary:hover {
-  border-color: #6366F1;
-  color: #FFFFFF;
+  border-color: rgba(15, 16, 20, 0.3);
+  background: #FAF7F2;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
 }
 
-.btn-mono {
-  display: inline-flex;
-  align-items: center;
-  background: transparent;
-  color: #C4C9D4;
-  border: 1px solid #2a2d38;
-  font-family: var(--font-mono);
-  font-size: 0.68rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  padding: 0.65rem 1.5rem;
-  transition: border-color 0.2s, color 0.2s;
+/* ─── BENTO CARD CLASS ───────────────────────────────────────────────── */
+.bento-card {
+  background: #FFFFFF;
+  border: 1px solid rgba(15, 16, 20, 0.08);
+  border-radius: 1.75rem; /* rounded-3xl */
+  box-shadow: 0 10px 30px rgba(15, 16, 20, 0.035), 0 1px 3px rgba(0, 0, 0, 0.02);
+  transition: transform 0.26s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.26s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.26s ease;
 }
-.btn-mono:hover {
-  border-color: #6366F1;
-  color: #A5B4FC;
+.bento-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(37, 84, 246, 0.25);
+  box-shadow: 0 20px 48px rgba(15, 16, 20, 0.07), 0 4px 12px rgba(37, 84, 246, 0.06);
 }
-
-/* ─── CARD ───────────────────────────────────────────────────────────── */
-.card-surface {
-  background: #0D0E12;
-  border: 1px solid #1E2028;
-  transition: border-color 0.25s, box-shadow 0.25s;
-}
-.card-surface:hover {
-  border-color: #2a2d38;
-  box-shadow: 0 0 28px rgba(99,102,241,0.08);
-}
-
-/* ─── GLOW UTILITIES ─────────────────────────────────────────────────── */
-.glow-brand {
-  box-shadow: 0 0 40px rgba(99,102,241,0.2), 0 0 80px rgba(99,102,241,0.06);
-}
-.text-glow-brand {
-  text-shadow: 0 0 24px rgba(165,180,252,0.45);
-}
-
-/* ─── LINK UNDERLINE ANIMATION ───────────────────────────────────────── */
-.link-hover {
-  position: relative;
-  display: inline-block;
-}
-.link-hover::after {
-  content: '';
-  position: absolute;
-  bottom: -1px;
-  left: 0;
-  width: 0;
-  height: 1px;
-  background: #6366F1;
-  transition: width 0.3s cubic-bezier(0.22, 1, 0.36, 1);
-}
-.link-hover:hover::after { width: 100%; }
-
-/* ─── SCANLINE OVERLAY ───────────────────────────────────────────────── */
-.scanline::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: repeating-linear-gradient(
-    0deg,
-    transparent,
-    transparent 2px,
-    rgba(0,0,0,0.03) 2px,
-    rgba(0,0,0,0.03) 4px
-  );
-  pointer-events: none;
-  z-index: 0;
-}
-
-/* ─── ANIMATION KEYFRAMES ────────────────────────────────────────────── */
-
-/* Pulse glow on accent elements */
-@keyframes glowPulse {
-  0%, 100% { box-shadow: 0 0 16px rgba(99,102,241,0.2); }
-  50%       { box-shadow: 0 0 36px rgba(99,102,241,0.45); }
-}
-.animate-glow-pulse {
-  animation: glowPulse 3s ease-in-out infinite;
-}
-
-/* Floating / levitate  */
-@keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50%       { transform: translateY(-10px); }
-}
-.animate-float {
-  animation: float 4s ease-in-out infinite;
-}
-
-/* Shimmer (gradient sweep left-to-right) */
-@keyframes shimmer {
-  from { background-position: -200% center; }
-  to   { background-position:  200% center; }
-}
-.shimmer-text {
-  background: linear-gradient(90deg, #6366F1 0%, #C7D2FE 40%, #6366F1 80%);
-  background-size: 200% auto;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  animation: shimmer 4s linear infinite;
-}
-
-/* Border draw-in animation */
-@keyframes borderIn {
-  from { clip-path: inset(0 100% 0 0); }
-  to   { clip-path: inset(0 0% 0 0); }
-}
-.border-draw {
-  animation: borderIn 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
-}
-
-/* ─── ACCENT COLOUR ──────────────────────────────────────────────────── */
-.text-accent    { color: #6366F1; }
-.bg-accent      { background-color: #6366F1; }
-.border-accent  { border-color: #6366F1; }

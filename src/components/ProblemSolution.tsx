@@ -1,138 +1,126 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { X, Check, AlertCircle, Sparkles } from "lucide-react";
+import { SpotlightCard } from "./SpotlightCard";
 
 export default function ProblemSolution() {
   const problems = [
-    "Slow loading times that drive potential visitors away",
-    "Rigid templates that limit your unique brand identity",
-    "Difficult CMS systems that waste your team's time",
-    "Poor mobile layout and broken user experience (UX)",
+    "Sluggish 4s+ page load speeds that leak inbound customer revenue daily",
+    "Rigid pre-built templates that choke custom brand and product workflows",
+    "Fragile CMS architectures that break under simple marketing changes",
+    "Broken responsive user experience that destroys mobile conversion funnels",
   ];
 
   const solutions = [
-    "High-performance Java, Spring Boot & MERN stack architecture",
-    "Fully bespoke designs tailored to your brand goals",
-    "Intuitively organized databases & CMS interfaces",
-    "Responsive, mobile-first design with smooth UX",
+    "Ultra-responsive Java, Spring Boot & modern React architectures",
+    "100% bespoke engineering designed precisely around your business goals",
+    "Structured, rock-solid databases & intuitive admin control panels",
+    "Engineered mobile-first UX with sub-second page transitions",
   ];
 
-  const itemVars = {
-    hidden: { opacity: 0, x: -8 },
-    visible: { opacity: 1, x: 0 },
-  };
-
   return (
-    <section className="py-24 bg-rolla-bg relative overflow-hidden">
-      {/* Background grid */}
-      <div className="absolute inset-0 bg-grid opacity-50 pointer-events-none" />
+    <section className="py-24 bg-[#FAF7F2] relative overflow-hidden">
       <div className="section-divider absolute top-0 left-0 right-0" />
-      <div className="section-divider absolute bottom-0 left-0 right-0" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Section Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.5 }}
-          transition={{ duration: 0.55 }}
-          className="max-w-3xl mx-auto mb-16"
+          viewport={{ once: true, amount: 0.4 }}
+          transition={{ duration: 0.5 }}
+          className="max-w-3xl mx-auto text-center mb-16"
         >
-          <div className="sys-label mb-4">↳ Problem / Solution Matrix</div>
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white leading-tight">
-            A generic template{" "}
-            <span className="font-serif italic text-[#A5B4FC]">
-              won&apos;t help you stand out.
-            </span>
-            <br />
-            <span className="text-[#C4C9D4] font-light text-2xl md:text-3xl mt-2 block">
-              A slow site will actively lose you clients.
-            </span>
+          <div className="bento-pill mb-4">↳ The Difference</div>
+          <h2 className="text-4xl sm:text-5xl font-extrabold text-[#0F1014] tracking-tight mb-4">
+            A generic template won&apos;t make you{" "}
+            <span className="font-serif italic font-normal text-[#2554F6]">stand out.</span>
           </h2>
+          <p className="text-lg text-[#686C78] max-w-xl mx-auto">
+            A slow website actively costs you clients. We replace bloated themes with custom-engineered software.
+          </p>
         </motion.div>
 
-        <div className="grid md:grid-cols-2 gap-px bg-[#1e2028]">
-          {/* Problem Column */}
+        {/* Bento Comparison Cards */}
+        <div className="grid md:grid-cols-2 gap-8 items-stretch">
+          {/* Problem Card */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            whileHover={{ scale: 1.005 }}
-            className="bg-rolla-bg p-8 md:p-12 transition-all duration-300 hover:shadow-[inset_0_0_24px_rgba(239,68,68,0.03)]"
+            transition={{ duration: 0.5 }}
           >
-            <div className="flex items-center gap-3 mb-8">
-              <span className="font-mono text-[0.6rem] text-red-400/70 uppercase tracking-widest">
-                STATUS: FAILING
-              </span>
-              <div className="w-2 h-2 rounded-full bg-red-400 animate-pulse" />
-            </div>
-            <h3 className="text-lg font-bold text-white mb-6 font-sans">
-              Category-Defining Challenges
-            </h3>
-            <motion.ul
-              variants={{ visible: { transition: { staggerChildren: 0.08 } } }}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              className="space-y-5"
-            >
-              {problems.map((problem, idx) => (
-                <motion.li
-                  key={idx}
-                  variants={itemVars}
-                  className="flex items-start gap-4"
-                >
-                  <div className="flex-shrink-0 mt-0.5 w-5 h-5 border border-red-400/40 flex items-center justify-center">
-                    <span className="text-red-400 font-mono text-[0.65rem]">✕</span>
-                  </div>
-                  <span className="text-[#C4C9D4] text-sm leading-relaxed">{problem}</span>
-                </motion.li>
-              ))}
-            </motion.ul>
+            <SpotlightCard className="p-8 sm:p-10 h-full flex flex-col justify-between">
+              <div>
+                <div className="flex items-center justify-between mb-8">
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-red-50 border border-red-200 text-red-700 text-xs font-bold uppercase tracking-wider">
+                    <AlertCircle className="w-3.5 h-3.5" />
+                    Off-the-shelf Templates
+                  </span>
+                  <span className="text-xs font-mono text-[#9B9FA9]">STATUS: FAILING</span>
+                </div>
+
+                <h3 className="text-2xl font-bold text-[#0F1014] mb-6">
+                  Typical Website Bottlenecks
+                </h3>
+
+                <ul className="space-y-4">
+                  {problems.map((problem, idx) => (
+                    <li key={idx} className="flex items-start gap-3.5">
+                      <div className="w-5 h-5 rounded-full bg-red-100 flex items-center justify-center text-red-600 mt-0.5 shrink-0">
+                        <X className="w-3 h-3" strokeWidth={3} />
+                      </div>
+                      <span className="text-sm font-medium text-[#33363F] leading-relaxed">{problem}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <div className="mt-8 pt-6 border-t border-black/[0.06] text-xs text-[#686C78]">
+                Average bounce rate: <span className="font-bold text-red-600">65%+ on slow templates</span>
+              </div>
+            </SpotlightCard>
           </motion.div>
 
-          {/* Solution Column */}
+          {/* Solution Card */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, x: 20 }}
+            whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.15 }}
-            whileHover={{ scale: 1.005 }}
-            className="bg-[#0D0E12] p-8 md:p-12 relative transition-all duration-300 hover:shadow-[inset_0_0_24px_rgba(99,102,241,0.05)]"
+            transition={{ duration: 0.5, delay: 0.1 }}
           >
-            {/* Accent line */}
-            <div className="absolute left-0 top-0 bottom-0 w-[2px] bg-gradient-to-b from-transparent via-[#6366F1] to-transparent" />
+            <SpotlightCard className="p-8 sm:p-10 h-full flex flex-col justify-between border-2 border-[#2554F6]/30 shadow-[0_16px_40px_rgba(37,84,246,0.06)]">
+              <div>
+                <div className="flex items-center justify-between mb-8">
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#2554F6]/10 border border-[#2554F6]/20 text-[#2554F6] text-xs font-bold uppercase tracking-wider">
+                    <Sparkles className="w-3.5 h-3.5" />
+                    Engineered by Rolla
+                  </span>
+                  <span className="text-xs font-mono text-emerald-600 font-bold">STATUS: OPTIMAL</span>
+                </div>
 
-            <div className="flex items-center gap-3 mb-8">
-              <span className="font-mono text-[0.6rem] text-[#4ADE80]/70 uppercase tracking-widest">
-                STATUS: SOLVED
-              </span>
-              <div className="w-2 h-2 rounded-full bg-[#4ADE80]" />
-            </div>
-            <h3 className="text-lg font-bold text-white mb-6 font-sans">
-              ↳ Engineered Solutions
-            </h3>
-            <motion.ul
-              variants={{ visible: { transition: { staggerChildren: 0.08 } } }}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              className="space-y-5"
-            >
-              {solutions.map((solution, idx) => (
-                <motion.li
-                  key={idx}
-                  variants={itemVars}
-                  className="flex items-start gap-4"
-                >
-                  <div className="flex-shrink-0 mt-0.5 w-5 h-5 border border-[#6366F1]/40 flex items-center justify-center">
-                    <span className="text-[#6366F1] font-mono text-[0.65rem]">✓</span>
-                  </div>
-                  <span className="text-white text-sm leading-relaxed font-medium">{solution}</span>
-                </motion.li>
-              ))}
-            </motion.ul>
+                <h3 className="text-2xl font-bold text-[#0F1014] mb-6">
+                  High-Performance Custom Build
+                </h3>
+
+                <ul className="space-y-4">
+                  {solutions.map((solution, idx) => (
+                    <li key={idx} className="flex items-start gap-3.5">
+                      <div className="w-5 h-5 rounded-full bg-[#2554F6] flex items-center justify-center text-white mt-0.5 shrink-0">
+                        <Check className="w-3 h-3" strokeWidth={3} />
+                      </div>
+                      <span className="text-sm font-semibold text-[#0F1014] leading-relaxed">{solution}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <div className="mt-8 pt-6 border-t border-black/[0.06] text-xs text-[#2554F6] font-semibold flex items-center justify-between">
+                <span>Production outcome</span>
+                <span className="font-bold">Sub-second page load guaranteed</span>
+              </div>
+            </SpotlightCard>
           </motion.div>
         </div>
       </div>

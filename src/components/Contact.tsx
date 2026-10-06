@@ -2,13 +2,38 @@
 
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { Mail, CheckCircle2, AlertCircle, Loader2, Clock, Zap, TrendingUp } from "lucide-react";
+import { Mail, CheckCircle2, AlertCircle, Loader2, Clock, Zap, TrendingUp, Send } from "lucide-react";
+import { SpotlightCard } from "./SpotlightCard";
 
 const inputClass =
-  "w-full bg-[#0D0E12] border border-[#1e2028] text-white text-sm px-4 py-3 focus:border-[#6366F1] focus:outline-none transition-colors duration-200 placeholder-[#3A3D4E] font-sans";
+  "w-full bg-[#FAF7F2] border border-black/[0.1] text-[#0F1014] text-sm px-4 py-3.5 rounded-xl focus:border-[#2554F6]/50 focus:outline-none focus:ring-2 focus:ring-[#2554F6]/10 transition-all duration-200 placeholder-[#686C78] font-sans";
 
 const labelClass =
-  "block font-mono text-[0.6rem] uppercase tracking-widest text-[#C4C9D4] mb-2";
+  "block font-mono text-[0.68rem] uppercase tracking-widest text-[#33363F] mb-2 font-semibold";
+
+const steps = [
+  {
+    title: "Discovery Scope",
+    desc: "Clarify user flows, security posture, and database schema needs.",
+    icon: Clock,
+    code: "STEP-01",
+    color: "#2554F6",
+  },
+  {
+    title: "Custom Architecture",
+    desc: "Receive comprehensive stack diagrams and benchmark projections.",
+    icon: Zap,
+    code: "STEP-02",
+    color: "#6366F1",
+  },
+  {
+    title: "Rapid Deployment",
+    desc: "Production delivery with zero fluff, live QA links, and 100% code ownership.",
+    icon: TrendingUp,
+    code: "STEP-03",
+    color: "#059669",
+  },
+];
 
 export default function Contact() {
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
@@ -40,88 +65,83 @@ export default function Contact() {
   };
 
   return (
-    <section id="contact" className="py-24 bg-[#0D0E12] relative overflow-hidden">
-      <div className="section-divider absolute top-0 left-0 right-0" />
-      <div className="section-divider absolute bottom-0 left-0 right-0" />
+    <section id="contact" className="py-28 bg-[#FAF7F2] relative overflow-hidden">
+      {/* Ambient blobs */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-1/4 left-0 w-96 h-96 bg-[#2554F6]/4 rounded-full blur-[100px]" />
+        <div className="absolute bottom-0 right-0 w-80 h-80 bg-[#6366F1]/4 rounded-full blur-[80px]" />
+      </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="grid md:grid-cols-2 gap-px bg-[#1e2028]">
-          {/* Left — Info */}
+        <div className="grid md:grid-cols-12 gap-6 items-stretch">
+          {/* Left — Info Card */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="bg-[#0D0E12] p-8 md:p-12"
+            transition={{ duration: 0.5 }}
+            className="md:col-span-5"
           >
-            <div className="sys-label mb-6">↳ Initiate Engagement</div>
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-6 leading-tight">
-              Ready to build your{" "}
-              <span className="font-serif italic text-[#A5B4FC]">digital future?</span>
-            </h2>
-            <p className="text-[#C4C9D4] text-sm mb-12 leading-relaxed max-w-md">
-              Pick a time for a free 30-minute discovery call, or send us a message about your project requirements. No obligation, no jargon.
-            </p>
+            <SpotlightCard
+              className="bg-white rounded-[26px] border border-black/[0.07] p-8 md:p-10 shadow-[0_10px_40px_rgba(15,16,20,0.07)] h-full flex flex-col justify-between"
+              spotlightColor="rgba(37,84,246,0.06)"
+            >
+              <div>
+                <div className="bento-pill mb-6">↳ Direct Engagement Channel</div>
+                <h2 className="text-2xl md:text-4xl font-bold text-[#0F1014] mb-5 leading-tight">
+                  Ready to deploy your{" "}
+                  <span className="font-serif italic font-normal text-[#2554F6]">
+                    digital future?
+                  </span>
+                </h2>
+                <p className="text-[#686C78] text-sm leading-relaxed mb-8">
+                  Book a free 30-minute scoping session with our lead architects. We evaluate requirements, estimate milestone phases, and provide technical feedback.
+                </p>
 
-            <div className="space-y-8 mb-12">
-              {[
-                {
-                  title: "Discovery Call",
-                  desc: "We discuss your goals, target audience, and the features you need.",
-                  icon: Clock,
-                  code: "STEP-01",
-                },
-                {
-                  title: "Custom Blueprint",
-                  desc: "Receive a high-level technical blueprint and architectural recommendations.",
-                  icon: Zap,
-                  code: "STEP-02",
-                },
-                {
-                  title: "High-Performance Code",
-                  desc: "We build for speed, clean UX, and search engine optimization from day one.",
-                  icon: TrendingUp,
-                  code: "STEP-03",
-                },
-              ].map((item, i) => {
-                const Icon = item.icon;
-                return (
-                  <div key={i} className="flex items-start gap-4">
-                    <div className="w-8 h-8 border border-[#1e2028] flex items-center justify-center shrink-0 bg-[#0D0E12]">
-                      <Icon className="w-3.5 h-3.5 text-[#6366F1]" strokeWidth={1.5} />
-                    </div>
-                    <div>
-                      <div className="flex items-center gap-2 mb-1">
-                        <span className="font-mono text-[0.55rem] text-[#818CF8] uppercase tracking-widest">
-                          {item.code}
-                        </span>
+                <div className="space-y-5 mb-8">
+                  {steps.map((item, i) => {
+                    const Icon = item.icon;
+                    return (
+                      <div key={i} className="flex items-start gap-3.5 group cursor-default">
+                        <div
+                          className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 transition-all duration-200 group-hover:scale-110"
+                          style={{ backgroundColor: `${item.color}12` }}
+                        >
+                          <Icon className="w-5 h-5" style={{ color: item.color }} strokeWidth={2} />
+                        </div>
+                        <div>
+                          <div className="font-mono text-[0.6rem] uppercase tracking-widest font-semibold mb-0.5" style={{ color: item.color }}>
+                            {item.code}
+                          </div>
+                          <h4 className="text-sm font-bold text-[#0F1014] mb-0.5">{item.title}</h4>
+                          <p className="text-xs text-[#686C78] leading-relaxed">{item.desc}</p>
+                        </div>
                       </div>
-                      <h4 className="text-sm font-bold text-white mb-1">{item.title}</h4>
-                      <p className="text-xs text-[#C4C9D4] leading-relaxed max-w-xs">{item.desc}</p>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-
-            {/* Email block */}
-            <div className="border border-[#1e2028] p-5 bg-[#08090C]/40">
-              <div className="flex items-center gap-2 mb-3">
-                <Mail className="w-3.5 h-3.5 text-[#6366F1]" strokeWidth={1.5} />
-                <span className="font-mono text-[0.55rem] text-[#818CF8] uppercase tracking-widest">
-                  Direct Channel
-                </span>
+                    );
+                  })}
+                </div>
               </div>
-              <a
-                href="mailto:rolla.aiagency@gmail.com"
-                className="text-sm font-bold text-white hover:text-[#A5B4FC] transition-colors"
-              >
-                rolla.aiagency@gmail.com
-              </a>
-              <p className="font-mono text-[0.55rem] text-[#8a91a0] mt-2 uppercase tracking-wider">
-                Response time: Usually &lt; 12 hours
-              </p>
-            </div>
+
+              {/* Direct email box */}
+              <div className="rounded-2xl bg-[#F4EFE6] border border-black/[0.06] p-4">
+                <div className="flex items-center gap-2 mb-1.5">
+                  <Mail className="w-4 h-4 text-[#2554F6]" strokeWidth={2} />
+                  <span className="font-mono text-[0.6rem] text-[#686C78] uppercase tracking-widest font-semibold">
+                    Instant Dispatch
+                  </span>
+                </div>
+                <a
+                  href="mailto:rolla.aiagency@gmail.com"
+                  className="text-sm font-bold text-[#0F1014] hover:text-[#2554F6] transition-colors"
+                >
+                  rolla.aiagency@gmail.com
+                </a>
+                <p className="font-mono text-[0.6rem] text-[#059669] mt-1.5 uppercase tracking-wider font-semibold flex items-center gap-1.5">
+                  <span className="w-1.5 h-1.5 bg-[#059669] rounded-full animate-pulse inline-block" />
+                  Engineering Response &lt; 12 Hours
+                </p>
+              </div>
+            </SpotlightCard>
           </motion.div>
 
           {/* Right — Form */}
@@ -129,143 +149,147 @@ export default function Contact() {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="bg-[#0D0E12] p-8 md:p-12"
+            transition={{ duration: 0.5, delay: 0.15 }}
+            className="md:col-span-7"
           >
-            <div className="sys-label mb-6">↳ Project Inquiry Form</div>
-            <p className="text-xs text-[#C4C9D4] mb-8">
-              Submit your project details below and our team will get back to you with a custom blueprint within 24 hours.
-            </p>
+            <SpotlightCard
+              className="bg-white rounded-[26px] border border-black/[0.07] p-8 md:p-12 shadow-[0_10px_40px_rgba(15,16,20,0.07)] h-full flex flex-col justify-between"
+              spotlightColor="rgba(99,102,241,0.05)"
+            >
+              <div>
+                <div className="bento-pill mb-5">↳ Project Requirements Intake</div>
+                <p className="text-sm text-[#686C78] mb-8 leading-relaxed">
+                  Submit your project requirements below. We review specs and respond with architectural scope proposals within 24 hours.
+                </p>
 
-            {/* Form */}
-            <AnimatePresence mode="wait">
-              {status === "success" ? (
-                <motion.div
-                  key="success"
-                  initial={{ opacity: 0, scale: 0.96 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.96 }}
-                  transition={{ duration: 0.3 }}
-                  className="flex flex-col items-center justify-center text-center space-y-4 py-12 border border-[#1e2028] p-8 bg-[#0D0E12]"
-                >
-                  <motion.div
-                    initial={{ scale: 0, rotate: -30 }}
-                    animate={{ scale: 1, rotate: 0 }}
-                    transition={{ type: "spring", stiffness: 260, damping: 18 }}
-                  >
-                    <CheckCircle2 className="w-12 h-12 text-[#4ADE80]" />
-                  </motion.div>
-                  <h3 className="text-lg font-bold text-white">Message Transmitted</h3>
-                  <p className="text-xs text-[#C4C9D4] leading-relaxed">
-                    Thanks for reaching out. We&apos;ll get back to you within 24 hours.
-                  </p>
-                  <button
-                    onClick={() => setStatus("idle")}
-                    className="font-mono text-[0.6rem] text-[#818CF8] hover:text-[#A5B4FC] uppercase tracking-widest transition-colors"
-                  >
-                    ↳ Send another message
-                  </button>
-                </motion.div>
-              ) : (
-                <motion.form
-                  key="form"
-                  onSubmit={handleSubmit}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
-                  transition={{ duration: 0.25 }}
-                  className="space-y-5"
-                >
-                  {status === "error" && (
+                <AnimatePresence mode="wait">
+                  {status === "success" ? (
                     <motion.div
-                      initial={{ opacity: 0, x: -8 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      className="border border-red-400/30 text-red-400 p-3 flex items-center text-xs font-mono"
+                      key="success"
+                      initial={{ opacity: 0, scale: 0.95 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.95 }}
+                      transition={{ duration: 0.25 }}
+                      className="flex flex-col items-center justify-center text-center space-y-4 py-16 rounded-2xl bg-[#FAF7F2] border border-black/[0.06]"
                     >
-                      <AlertCircle className="w-4 h-4 mr-2" />
-                      ERROR: Transmission failed. Please try again or email us directly.
+                      <motion.div
+                        initial={{ scale: 0 }}
+                        animate={{ scale: 1 }}
+                        transition={{ type: "spring", stiffness: 280, damping: 18 }}
+                      >
+                        <CheckCircle2 className="w-14 h-14 text-[#059669]" strokeWidth={1.5} />
+                      </motion.div>
+                      <h3 className="text-xl font-bold text-[#0F1014]">Transmission Received</h3>
+                      <p className="text-sm text-[#686C78] max-w-sm leading-relaxed">
+                        Thank you. Your project brief has been delivered to lead engineering. Expect a reply within 24 hours.
+                      </p>
+                      <button
+                        onClick={() => setStatus("idle")}
+                        className="btn-secondary text-xs mt-2"
+                      >
+                        ↳ Send Another Brief
+                      </button>
                     </motion.div>
+                  ) : (
+                    <motion.form
+                      key="form"
+                      onSubmit={handleSubmit}
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -10 }}
+                      transition={{ duration: 0.2 }}
+                      className="space-y-5"
+                    >
+                      {status === "error" && (
+                        <div className="rounded-xl bg-red-50 border border-red-100 text-red-800 p-4 flex items-center text-sm">
+                          <AlertCircle className="w-4 h-4 mr-3 text-red-500 shrink-0" />
+                          Submission failed. Please email rolla.aiagency@gmail.com directly.
+                        </div>
+                      )}
+
+                      <div>
+                        <label htmlFor="contact-name" className={labelClass}>
+                          Full Name *
+                        </label>
+                        <input
+                          type="text"
+                          id="contact-name"
+                          required
+                          value={formData.name}
+                          onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                          className={inputClass}
+                          placeholder="e.g. Alexander Vance"
+                        />
+                      </div>
+
+                      <div>
+                        <label htmlFor="contact-email" className={labelClass}>
+                          Work Email *
+                        </label>
+                        <input
+                          type="email"
+                          id="contact-email"
+                          required
+                          value={formData.email}
+                          onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                          className={inputClass}
+                          placeholder="alexander@company.com"
+                        />
+                      </div>
+
+                      <div>
+                        <label htmlFor="contact-business" className={labelClass}>
+                          Company / Organization Name
+                        </label>
+                        <input
+                          type="text"
+                          id="contact-business"
+                          value={formData.business}
+                          onChange={(e) => setFormData({ ...formData, business: e.target.value })}
+                          className={inputClass}
+                          placeholder="Acme Technologies Corp"
+                        />
+                      </div>
+
+                      <div>
+                        <label htmlFor="contact-message" className={labelClass}>
+                          Project Scope & Target Objectives *
+                        </label>
+                        <textarea
+                          id="contact-message"
+                          required
+                          rows={4}
+                          value={formData.message}
+                          onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                          className={`${inputClass} resize-none`}
+                          placeholder="Describe the system to build, key capabilities, target timeline, and existing tech stack..."
+                        />
+                      </div>
+
+                      <motion.button
+                        type="submit"
+                        disabled={status === "loading"}
+                        whileHover={status === "loading" ? undefined : { scale: 1.02 }}
+                        whileTap={status === "loading" ? undefined : { scale: 0.98 }}
+                        className="w-full btn-primary text-center justify-center py-4 cursor-pointer"
+                      >
+                        {status === "loading" ? (
+                          <>
+                            <Loader2 className="w-5 h-5 animate-spin mr-2" />
+                            Transmitting Specifications...
+                          </>
+                        ) : (
+                          <>
+                            Transmit Brief to Engineering
+                            <Send className="w-4 h-4 ml-2" />
+                          </>
+                        )}
+                      </motion.button>
+                    </motion.form>
                   )}
-
-                  <div>
-                    <label htmlFor="contact-name" className={labelClass}>
-                      Full Name
-                    </label>
-                    <input
-                      type="text"
-                      id="contact-name"
-                      required
-                      value={formData.name}
-                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      className={inputClass}
-                      placeholder="Jane Doe"
-                    />
-                  </div>
-
-                  <div>
-                    <label htmlFor="contact-email" className={labelClass}>
-                      Email Address
-                    </label>
-                    <input
-                      type="email"
-                      id="contact-email"
-                      required
-                      value={formData.email}
-                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      className={inputClass}
-                      placeholder="jane@company.com"
-                    />
-                  </div>
-
-                  <div>
-                    <label htmlFor="contact-business" className={labelClass}>
-                      Business / Company Name
-                    </label>
-                    <input
-                      type="text"
-                      id="contact-business"
-                      required
-                      value={formData.business}
-                      onChange={(e) => setFormData({ ...formData, business: e.target.value })}
-                      className={inputClass}
-                      placeholder="Acme Corp"
-                    />
-                  </div>
-
-                  <div>
-                    <label htmlFor="contact-message" className={labelClass}>
-                      Project Requirements
-                    </label>
-                    <textarea
-                      id="contact-message"
-                      required
-                      rows={4}
-                      value={formData.message}
-                      onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                      className={`${inputClass} resize-none`}
-                      placeholder="Describe what you want to build, key features, target timeline..."
-                    />
-                  </div>
-
-                  <motion.button
-                    type="submit"
-                    disabled={status === "loading"}
-                    whileHover={status === "loading" ? undefined : { scale: 1.01 }}
-                    whileTap={status === "loading" ? undefined : { scale: 0.98 }}
-                    className="w-full btn-primary flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
-                  >
-                    {status === "loading" ? (
-                      <>
-                        <Loader2 className="w-3.5 h-3.5 animate-spin" />
-                        Transmitting...
-                      </>
-                    ) : (
-                      "Send Message ↳"
-                    )}
-                  </motion.button>
-                </motion.form>
-              )}
-            </AnimatePresence>
+                </AnimatePresence>
+              </div>
+            </SpotlightCard>
           </motion.div>
         </div>
       </div>

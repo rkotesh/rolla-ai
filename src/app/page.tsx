@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Navigation from "@/components/Navigation";
 import Hero from "@/components/Hero";
+import MarqueeBanner from "@/components/MarqueeBanner";
 import IndiaAdvantageBanner from "@/components/IndiaAdvantageBanner";
 import ProblemSolution from "@/components/ProblemSolution";
 import Services from "@/components/Services";
@@ -41,6 +42,7 @@ export default function Home() {
     <main className="w-full relative bg-rolla-bg">
       <Navigation />
       <Hero />
+      <MarqueeBanner />
       <IndiaAdvantageBanner />
       <ProblemSolution />
       <Services />

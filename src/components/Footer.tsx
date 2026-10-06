@@ -4,9 +4,6 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { GithubIcon, LinkedinIcon } from "./SocialIcons";
 
-/* ─────────────────────────────────────────────────────────────
-   UNIQUE ROLLA LOGO MARK
-───────────────────────────────────────────────────────────── */
 function RollaLogoMark({ className = "w-7 h-7" }: { className?: string }) {
   return (
     <svg
@@ -16,12 +13,12 @@ function RollaLogoMark({ className = "w-7 h-7" }: { className?: string }) {
       xmlns="http://www.w3.org/2000/svg"
       aria-hidden="true"
     >
-      <circle cx="22" cy="22" r="19" stroke="currentColor" strokeWidth="1.6" />
-      <line x1="12" y1="12" x2="12" y2="32" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" />
-      <line x1="12" y1="12" x2="26" y2="12" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" />
-      <line x1="26" y1="12" x2="24" y2="22" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" />
-      <line x1="12" y1="22" x2="24" y2="22" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" />
-      <line x1="24" y1="22" x2="38" y2="38" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" />
+      <circle cx="22" cy="22" r="19" stroke="currentColor" strokeWidth="2.2" />
+      <line x1="12" y1="12" x2="12" y2="32" stroke="currentColor" strokeWidth="2.8" strokeLinecap="round" />
+      <line x1="12" y1="12" x2="26" y2="12" stroke="currentColor" strokeWidth="2.8" strokeLinecap="round" />
+      <line x1="26" y1="12" x2="24" y2="22" stroke="currentColor" strokeWidth="2.8" strokeLinecap="round" />
+      <line x1="12" y1="22" x2="24" y2="22" stroke="currentColor" strokeWidth="2.8" strokeLinecap="round" />
+      <line x1="24" y1="22" x2="38" y2="38" stroke="currentColor" strokeWidth="2.8" strokeLinecap="round" />
     </svg>
   );
 }
@@ -33,7 +30,7 @@ const footerCols = [
       { name: "Custom Web Apps", href: "/#services" },
       { name: "E-Commerce Solutions", href: "/#services" },
       { name: "API Integrations", href: "/#services" },
-      { name: "UI/UX Design", href: "/#services" },
+      { name: "UI/UX Design Systems", href: "/#services" },
     ],
   },
   {
@@ -41,25 +38,25 @@ const footerCols = [
     links: [
       { name: "MERN Stack", href: "/#tools" },
       { name: "Java & Spring Boot", href: "/#tools" },
-      { name: "Performance Optimization", href: "/#services" },
-      { name: "SEO Engineering", href: "/#services" },
+      { name: "Performance Engineering", href: "/#services" },
+      { name: "Technical SEO Setup", href: "/#services" },
     ],
   },
   {
     title: "Company",
     links: [
-      { name: "About / Founder", href: "/#about" },
-      { name: "Case Studies", href: "/#results" },
-      { name: "How It Works", href: "/#how-it-works" },
-      { name: "Pricing", href: "/#pricing" },
+      { name: "Founder & Team", href: "/#about" },
+      { name: "Client Case Studies", href: "/#results" },
+      { name: "Engineering Process", href: "/#how-it-works" },
+      { name: "Pricing Infrastructure", href: "/#pricing" },
     ],
   },
   {
-    title: "Get Started",
+    title: "Engage",
     links: [
-      { name: "Book a Call", href: "/#contact" },
-      { name: "Contact Us", href: "/#contact" },
-      { name: "Industries", href: "/#industries" },
+      { name: "Schedule Call", href: "/#contact" },
+      { name: "Inquiry Form", href: "/#contact" },
+      { name: "Target Industries", href: "/#industries" },
       { name: "rolla.aiagency@gmail.com", href: "mailto:rolla.aiagency@gmail.com" },
     ],
   },
@@ -67,51 +64,45 @@ const footerCols = [
 
 export default function Footer() {
   return (
-    <motion.footer
-      initial={{ opacity: 0, y: 24 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.2 }}
-      transition={{ duration: 0.55, ease: "easeOut" }}
-      className="bg-rolla-bg border-t border-[#1e2028] pt-16 pb-8 relative"
-    >
+    <footer className="bg-[#F4EFE6]/80 border-t border-black/[0.07] pt-20 pb-10 relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Top row */}
-        <div className="grid grid-cols-1 md:grid-cols-5 gap-10 mb-16">
+        <div className="grid grid-cols-1 md:grid-cols-5 gap-12 mb-16">
           {/* Brand col */}
           <div className="md:col-span-1">
-            <Link href="/" className="flex items-center gap-2.5 mb-4 group">
-              <div className="text-white group-hover:text-[#A5B4FC] transition-colors duration-300">
-                <RollaLogoMark className="w-[28px] h-[28px]" />
+            <Link href="/" className="flex items-center gap-3 mb-5 group">
+              <div className="text-[#0F1014] group-hover:text-[#2554F6] transition-colors duration-200">
+                <RollaLogoMark className="w-[30px] h-[30px]" />
               </div>
-              <span className="text-white font-semibold text-[15px] tracking-tight leading-none select-none">
-                Rolla
+              <span className="text-[#0F1014] font-bold text-xl tracking-tight leading-none select-none">
+                Rolla<span className="text-[#2554F6]">.</span>
               </span>
             </Link>
-            <p className="text-[0.7rem] text-[#C4C9D4] leading-relaxed mb-5 max-w-[180px]">
-              Custom websites & web applications built for growth. India-based. Global quality.
+            <p className="text-sm text-[#686C78] leading-relaxed mb-6 max-w-[220px]">
+              Custom web applications and enterprise software built for exponential scale.
             </p>
-            <div className="flex gap-3">
+            <div className="flex gap-2.5">
               <motion.a
-                whileHover={{ y: -2, scale: 1.1 }}
-                whileTap={{ scale: 0.96 }}
+                whileHover={{ scale: 1.1, y: -2 }}
+                whileTap={{ scale: 0.95 }}
                 href="https://linkedin.com/in/sankulakoteswararao"
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="LinkedIn"
-                className="border border-[#252830] hover:border-[#6366F1]/50 p-2 transition-colors"
+                className="w-9 h-9 rounded-xl bg-white border border-black/[0.08] text-[#33363F] hover:text-[#2554F6] hover:border-[#2554F6]/30 flex items-center justify-center transition-all duration-200 shadow-[0_2px_8px_rgba(15,16,20,0.06)]"
               >
-                <LinkedinIcon className="w-3.5 h-3.5 text-[#C4C9D4] hover:text-[#A5B4FC]" />
+                <LinkedinIcon className="w-4 h-4" />
               </motion.a>
               <motion.a
-                whileHover={{ y: -2, scale: 1.1 }}
-                whileTap={{ scale: 0.96 }}
+                whileHover={{ scale: 1.1, y: -2 }}
+                whileTap={{ scale: 0.95 }}
                 href="https://github.com/rkotesh/"
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="GitHub"
-                className="border border-[#252830] hover:border-[#6366F1]/50 p-2 transition-colors"
+                className="w-9 h-9 rounded-xl bg-white border border-black/[0.08] text-[#33363F] hover:text-[#0F1014] hover:border-black/20 flex items-center justify-center transition-all duration-200 shadow-[0_2px_8px_rgba(15,16,20,0.06)]"
               >
-                <GithubIcon className="w-3.5 h-3.5 text-[#C4C9D4] hover:text-[#A5B4FC]" />
+                <GithubIcon className="w-4 h-4" />
               </motion.a>
             </div>
           </div>
@@ -119,15 +110,15 @@ export default function Footer() {
           {/* Link columns */}
           {footerCols.map((col) => (
             <div key={col.title}>
-              <p className="font-mono text-[0.6rem] text-[#818CF8] uppercase tracking-widest mb-4">
+              <p className="font-mono text-[0.65rem] text-[#2554F6] uppercase tracking-widest mb-4 font-semibold">
                 ↳ {col.title}
               </p>
-              <ul className="space-y-2.5">
+              <ul className="space-y-3">
                 {col.links.map((link) => (
                   <li key={link.name}>
                     <Link
                       href={link.href}
-                      className="text-xs text-[#C4C9D4] hover:text-white transition-colors font-sans"
+                      className="inline-block text-sm text-[#686C78] hover:text-[#0F1014] hover:translate-x-0.5 transition-all duration-150"
                     >
                       {link.name}
                     </Link>
@@ -139,19 +130,19 @@ export default function Footer() {
         </div>
 
         {/* Bottom row */}
-        <div className="border-t border-[#1e2028] pt-6 flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="font-mono text-[0.6rem] text-[#8a91a0] uppercase tracking-widest">
-            © {new Date().getFullYear()} Rolla Digital Engineering. All rights reserved.
+        <div className="border-t border-black/[0.07] pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+          <p className="font-mono text-xs text-[#686C78] uppercase tracking-wider">
+            © {new Date().getFullYear()} Rolla Digital Engineering. All Rights Reserved.
           </p>
-          <p className="font-mono text-[0.6rem] text-[#8a91a0] uppercase tracking-wider">
-            Founded by{" "}
-            <span className="text-[#C4C9D4]">Koteswararao Sankula</span>
+          <p className="font-mono text-xs text-[#686C78] uppercase tracking-wider">
+            Built by{" "}
+            <span className="text-[#0F1014] font-semibold">Koteswararao Sankula</span>
             {" "}·{" "}
             Co-founded by{" "}
-            <span className="text-[#C4C9D4]">Narendra Kumar</span>
+            <span className="text-[#0F1014] font-semibold">Narendra Kumar</span>
           </p>
         </div>
       </div>
-    </motion.footer>
+    </footer>
   );
 }

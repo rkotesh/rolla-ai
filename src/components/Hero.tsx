@@ -1,12 +1,13 @@
 "use client";
 
-import { motion, useScroll, useTransform, type Variants, AnimatePresence } from "framer-motion";
+import { motion, useScroll, useTransform, type Variants } from "framer-motion";
 import Link from "next/link";
-import { useRef, useEffect, useCallback, useState } from "react";
+import { useRef, useEffect, useState } from "react";
+import { SpotlightCard } from "./SpotlightCard";
+import { ArrowUpRight, CheckCircle2, Sparkles, Terminal, Activity, Layers } from "lucide-react";
 
 /* ─────────────────────────────────────────────────────────────
-   FLOATING PARTICLE FIELD
-   Lightweight canvas-based particles for depth and elegance
+   ANIMATED PARTICLES
 ───────────────────────────────────────────────────────────── */
 function ParticleField() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -27,15 +28,15 @@ function ParticleField() {
 
     const spawn = () => {
       particles.length = 0;
-      const count = Math.floor((w * h) / 18000);
+      const count = Math.floor((w * h) / 19000);
       for (let i = 0; i < count; i++) {
         particles.push({
           x: Math.random() * w,
           y: Math.random() * h,
-          r: Math.random() * 1.5 + 0.5,
-          vx: (Math.random() - 0.5) * 0.22,
-          vy: (Math.random() - 0.5) * 0.22,
-          alpha: Math.random() * 0.5 + 0.15,
+          r: Math.random() * 1.8 + 0.6,
+          vx: (Math.random() - 0.5) * 0.2,
+          vy: (Math.random() - 0.5) * 0.2,
+          alpha: Math.random() * 0.35 + 0.1,
         });
       }
     };
@@ -51,7 +52,7 @@ function ParticleField() {
         if (p.y > h) p.y = 0;
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(99,102,241,${p.alpha})`;
+        ctx.fillStyle = `rgba(37, 84, 246, ${p.alpha * 0.4})`;
         ctx.fill();
       }
       raf = requestAnimationFrame(draw);
@@ -74,7 +75,7 @@ function ParticleField() {
 }
 
 /* ─────────────────────────────────────────────────────────────
-   ANIMATED COUNTER — counts up on mount
+   ANIMATED COUNTER
 ───────────────────────────────────────────────────────────── */
 function Counter({ target, suffix = "" }: { target: number; suffix?: string }) {
   const [val, setVal] = useState(0);
@@ -86,7 +87,7 @@ function Counter({ target, suffix = "" }: { target: number; suffix?: string }) {
     const start = performance.now();
     const tick = (now: number) => {
       const t = Math.min((now - start) / dur, 1);
-      const eased = 1 - Math.pow(1 - t, 3); // ease out cubic
+      const eased = 1 - Math.pow(1 - t, 3);
       setVal(Math.round(eased * target));
       if (t < 1) frame = requestAnimationFrame(tick);
     };
@@ -102,361 +103,263 @@ function Counter({ target, suffix = "" }: { target: number; suffix?: string }) {
   return <span ref={ref}>{val}{suffix}</span>;
 }
 
-/* ─────────────────────────────────────────────────────────────
-   SYSTEM DIAGRAM (terminal window graphic)
-───────────────────────────────────────────────────────────── */
-function SystemDiagram() {
-  const nodes = [
-    { label: "Discovery", sub: "Requirements",  x: 20,  y: 50,  delay: 0.3 },
-    { label: "Design",    sub: "UI/UX Arch.",   x: 175, y: 18,  delay: 0.5 },
-    { label: "Build",     sub: "Full-Stack",    x: 330, y: 50,  delay: 0.7 },
-    { label: "Deploy",    sub: "Production",    x: 175, y: 110, delay: 0.9 },
-  ];
-  const edges = [
-    { x1: 100, y1: 64, x2: 166, y2: 31 },
-    { x1: 202, y1: 18, x2: 320, y2: 50 },
-    { x1: 335, y1: 72, x2: 215, y2: 100 },
-    { x1: 170, y1: 110, x2: 98,  y2: 78 },
-  ];
-
-  return (
-    <svg viewBox="0 0 430 180" className="w-full" xmlns="http://www.w3.org/2000/svg">
-      <defs>
-        <pattern id="diag-grid" width="32" height="32" patternUnits="userSpaceOnUse">
-          <path d="M32 0L0 0 0 32" fill="none" stroke="#1e2028" strokeWidth="0.5" />
-        </pattern>
-        <marker id="arr" markerWidth="5" markerHeight="5" refX="2.5" refY="2.5" orient="auto">
-          <polygon points="0 0, 5 2.5, 0 5" fill="#6366F1" opacity="0.7" />
-        </marker>
-      </defs>
-      <rect width="430" height="180" fill="url(#diag-grid)" />
-
-      {/* Edges */}
-      {edges.map((e, i) => (
-        <motion.line
-          key={i} x1={e.x1} y1={e.y1} x2={e.x2} y2={e.y2}
-          stroke="#6366F1" strokeWidth="1" strokeDasharray="5 3"
-          markerEnd="url(#arr)" opacity={0}
-          animate={{ opacity: 0.55 }}
-          transition={{ delay: 0.6 + i * 0.18, duration: 0.5 }}
-        />
-      ))}
-
-      {/* Nodes */}
-      {nodes.map((n, i) => (
-        <motion.g
-          key={i}
-          initial={{ opacity: 0, scale: 0.5 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: n.delay, type: "spring", stiffness: 220, damping: 24 }}
-        >
-          <rect x={n.x} y={n.y - 8} width="80" height="38" rx="1" fill="#0d0e12" stroke="#252830" strokeWidth="1" />
-          <rect x={n.x} y={n.y - 8} width="80" height="2" fill="#6366F1" />
-          <motion.circle cx={n.x + 71} cy={n.y - 4} r={3} fill="#4ADE80"
-            animate={{ opacity: [0.4, 1, 0.4] }}
-            transition={{ duration: 2, repeat: Infinity, delay: i * 0.4 }}
-          />
-          <text x={n.x + 40} y={n.y + 9}  textAnchor="middle" fill="#FFFFFF" fontSize="8.5" fontFamily="monospace" fontWeight="600">{n.label}</text>
-          <text x={n.x + 40} y={n.y + 22} textAnchor="middle" fill="#8a91a0" fontSize="6"   fontFamily="monospace">{n.sub}</text>
-        </motion.g>
-      ))}
-    </svg>
-  );
-}
-
-/* ─────────────────────────────────────────────────────────────
-   STAGGER VARIANTS
-───────────────────────────────────────────────────────────── */
 const stagger: Variants = {
   hidden:  {},
-  visible: { transition: { staggerChildren: 0.11, delayChildren: 0.08 } },
+  visible: { transition: { staggerChildren: 0.1, delayChildren: 0.05 } },
 };
 const fade: Variants = {
-  hidden:  { opacity: 0, y: 28 },
-  visible: { opacity: 1, y: 0  },
+  hidden:  { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.55, ease: [0.16, 1, 0.3, 1] } },
 };
 
-/* ─────────────────────────────────────────────────────────────
-   HERO
-───────────────────────────────────────────────────────────── */
 export default function Hero() {
   const sectionRef = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({ target: sectionRef, offset: ["start start", "end start"] });
-  const yText   = useTransform(scrollYProgress, [0, 1], ["0%", "20%"]);
-  const opacity = useTransform(scrollYProgress, [0, 0.65], [1, 0]);
+  const yText   = useTransform(scrollYProgress, [0, 1], ["0%", "14%"]);
+  const opacity = useTransform(scrollYProgress, [0, 0.75], [1, 0]);
+
+  const [activeTab, setActiveTab] = useState<"architecture" | "specs" | "audit">("architecture");
 
   return (
-    <section ref={sectionRef} className="relative min-h-screen flex items-center pt-[60px] overflow-hidden bg-[#08090C]">
-
-      {/* ── Background layers ── */}
-      <div className="absolute inset-0 bg-grid opacity-55 pointer-events-none" />
+    <section ref={sectionRef} className="relative min-h-screen flex items-center pt-28 sm:pt-32 pb-20 overflow-hidden bg-[#FAF7F2]">
+      {/* Background Ambience */}
+      <div className="absolute inset-0 bg-subtle-grid pointer-events-none opacity-80" />
       <ParticleField />
 
-      {/* Breathing glow orbs */}
-      <motion.div
-        animate={{ opacity: [0.05, 0.12, 0.05], scale: [1, 1.1, 1] }}
-        transition={{ duration: 9, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute -top-32 -left-32 w-[700px] h-[700px] rounded-full bg-[#6366F1] blur-[130px] pointer-events-none"
-      />
-      <motion.div
-        animate={{ opacity: [0.03, 0.07, 0.03], scale: [1, 1.08, 1] }}
-        transition={{ duration: 11, repeat: Infinity, ease: "easeInOut", delay: 4 }}
-        className="absolute bottom-0 right-0 w-[550px] h-[550px] rounded-full bg-[#818CF8] blur-[140px] pointer-events-none"
-      />
+      {/* Soft Apple Radial Glows */}
+      <div className="absolute top-20 left-1/4 w-[600px] h-[600px] rounded-full bg-[#2554F6]/[0.035] blur-[140px] pointer-events-none" />
+      <div className="absolute bottom-10 right-1/4 w-[500px] h-[500px] rounded-full bg-[#6366F1]/[0.03] blur-[140px] pointer-events-none" />
 
-      {/* Radial vignette */}
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{ background: "radial-gradient(ellipse 75% 65% at 50% 45%, transparent, #08090C 72%)" }}
-      />
+      {/* Content */}
+      <motion.div style={{ y: yText, opacity }} className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
 
-      {/* ── Content ── */}
-      <motion.div style={{ y: yText, opacity }} className="relative z-10 w-full">
-        <div className="max-w-[1440px] mx-auto px-5 sm:px-8 lg:px-14 py-20 lg:py-0 lg:min-h-screen flex items-center">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center w-full">
-
-            {/* ════════ LEFT — COPY ════════ */}
-            <motion.div variants={stagger} initial="hidden" animate="visible">
-
-              {/* Status pill */}
-              <motion.div variants={fade} className="flex items-center gap-2.5 mb-10">
-                <motion.span
-                  animate={{ opacity: [0.4, 1, 0.4] }}
-                  transition={{ duration: 2, repeat: Infinity }}
-                  className="inline-block w-2 h-2 rounded-full bg-[#4ADE80]"
-                />
-                <span className="font-mono text-[0.62rem] text-[#4ADE80] uppercase tracking-[0.2em]">
-                  Now Accepting New Clients · 2026
-                </span>
-              </motion.div>
-
-              {/* ── HEADLINE ──
-                  Pure white on #08090C → maximum contrast
-                  Serif italic for elegance on "Software of" line
-              */}
-              <motion.h1
-                variants={fade}
-                className="font-bold tracking-tight leading-[0.93] mb-8"
-              >
-                {/* Line 1 — solid white, large */}
-                <span
-                  className="block text-white"
-                  style={{ fontSize: "clamp(2.8rem, 6vw, 5.2rem)" }}
-                >
-                  Custom Web
-                </span>
-
-                {/* Line 2 — indigo gradient, serif italic */}
-                <span
-                  className="block font-serif italic"
-                  style={{
-                    fontSize: "clamp(2.8rem, 6vw, 5.2rem)",
-                    background: "linear-gradient(95deg, #c7d2fe 0%, #818CF8 45%, #6366F1 100%)",
-                    WebkitBackgroundClip: "text",
-                    WebkitTextFillColor: "transparent",
-                    backgroundClip: "text",
-                  }}
-                >
-                  Software of
-                </span>
-
-                {/* Line 3 — white + trademark */}
-                <span
-                  className="block text-white"
-                  style={{ fontSize: "clamp(2.8rem, 6vw, 5.2rem)" }}
-                >
-                  Tomorrow.
-                  <sup className="font-sans font-light text-[#6366F1] ml-1" style={{ fontSize: "0.32em", verticalAlign: "super" }}>
-                    ™
-                  </sup>
-                </span>
-              </motion.h1>
-
-              {/* Divider line */}
-              <motion.div
-                variants={fade}
-                className="w-12 h-[1px] bg-gradient-to-r from-[#6366F1] to-transparent mb-8"
-              />
-
-              {/* Subheading — #C4C9D4 for readability on dark bg */}
-              <motion.p
-                variants={fade}
-                className="text-[#C4C9D4] text-base leading-[1.75] mb-12 max-w-[510px]"
-              >
-                Rolla builds high-performance websites and web applications
-                tailored to your business — so you launch faster, convert better,
-                and scale without limits. India-based engineering.
-                Startup-friendly pricing.
-              </motion.p>
-
-              {/* CTAs */}
-              <motion.div variants={fade} className="flex flex-col sm:flex-row items-start gap-3 mb-14">
-                <Link
-                  href="#contact"
-                  id="hero-cta-primary"
-                  className="
-                    group relative overflow-hidden
-                    inline-flex items-center gap-2
-                    bg-white text-black
-                    text-[13px] font-semibold px-7 py-3.5
-                    transition-all duration-250
-                    hover:bg-[#6366F1] hover:text-white
-                  "
-                >
-                  Start Your Project
-                  <motion.span
-                    className="inline-block"
-                    whileHover={{ x: 4, y: -4 }}
-                    transition={{ type: "spring", stiffness: 400, damping: 20 }}
-                  >
-                    ↗
-                  </motion.span>
-                </Link>
-                <Link
-                  href="#how-it-works"
-                  id="hero-cta-secondary"
-                  className="
-                    inline-flex items-center gap-2
-                    border border-[#2a2d38] text-[#C4C9D4]
-                    hover:border-[#6366F1] hover:text-white
-                    text-[13px] font-medium px-7 py-3.5
-                    transition-all duration-250
-                  "
-                >
-                  How It Works
-                </Link>
-              </motion.div>
-
-              {/* Animated stats */}
-              <motion.div variants={fade} className="flex flex-wrap gap-10">
-                {[
-                  { target: 50, suffix: "%",   label: "Cost savings vs US/UK" },
-                  { target: 2,  suffix: "s",   label: "Avg page load time" },
-                  { target: 100, suffix: "%",  label: "Bespoke — no templates" },
-                ].map((s, i) => (
-                  <motion.div
-                    key={i}
-                    whileHover={{ y: -3 }}
-                    transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                    className="flex flex-col"
-                  >
-                    {/* Counter in bold white — high contrast */}
-                    <span className="font-mono text-[1.55rem] font-bold text-white leading-none">
-                      <Counter target={s.target} suffix={s.suffix} />
-                    </span>
-                    <span className="font-mono text-[0.57rem] text-[#C4C9D4] uppercase tracking-[0.16em] mt-1.5">
-                      {s.label}
-                    </span>
-                  </motion.div>
-                ))}
-              </motion.div>
+          {/* ════════ LEFT: EDITORIAL COPY ════════ */}
+          <motion.div variants={stagger} initial="hidden" animate="visible" className="lg:col-span-7">
+            
+            {/* Linear Pill Badge */}
+            <motion.div variants={fade} className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-white/90 border border-black/[0.08] shadow-xs mb-8">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#16A34A] opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-[#16A34A]"></span>
+              </span>
+              <span className="font-mono text-[0.68rem] text-[#0F1014] uppercase tracking-widest font-bold">
+                Accepting Selected Clients · 2026
+              </span>
+              <span className="w-1 h-1 rounded-full bg-black/20" />
+              <span className="text-[0.72rem] text-[#2554F6] font-semibold flex items-center gap-1">
+                India Advantage <Sparkles className="w-3 h-3" />
+              </span>
             </motion.div>
 
-            {/* ════════ RIGHT — TERMINAL ════════ */}
-            <motion.div
-              initial={{ opacity: 0, x: 50, scale: 0.94 }}
-              animate={{ opacity: 1, x: 0, scale: 1 }}
-              transition={{ duration: 0.85, delay: 0.55, ease: "easeOut" }}
-              className="hidden lg:block"
+            {/* Display Headline */}
+            <motion.h1
+              variants={fade}
+              className="text-5xl sm:text-6xl md:text-7xl font-extrabold tracking-tight text-[#0F1014] leading-[1.02] mb-8"
             >
-              <motion.div
-                whileHover={{ y: -8 }}
-                transition={{ type: "spring", stiffness: 180, damping: 28 }}
+              Custom web applications,{" "}
+              <span className="font-serif italic font-normal text-[#2554F6] block mt-1">
+                architected for scale.
+              </span>
+            </motion.h1>
+
+            {/* Subtitle */}
+            <motion.p
+              variants={fade}
+              className="text-lg sm:text-xl text-[#33363F] leading-relaxed mb-10 max-w-xl font-normal"
+            >
+              Rolla designs and engineers high-throughput websites and full-stack software for modern businesses. Built with Java, Spring Boot, and Next.js. Startup-friendly milestone rates.
+            </motion.p>
+
+            {/* CTAs */}
+            <motion.div variants={fade} className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3.5 mb-14">
+              <Link
+                href="#contact"
+                className="btn-primary flex items-center gap-2"
               >
-                {/* Ambient glow behind terminal */}
-                <div className="absolute inset-0 translate-x-3 translate-y-3 bg-[#6366F1] opacity-[0.07] blur-2xl" />
-
-                {/* Terminal */}
-                <div className="relative border border-[#1e2028]">
-                  {/* Title bar */}
-                  <div className="flex items-center gap-2 px-4 py-2.5 bg-[#0d0e12] border-b border-[#1e2028]">
-                    <div className="flex gap-1.5">
-                      <div className="w-2.5 h-2.5 rounded-full bg-[#FF5F57]" />
-                      <div className="w-2.5 h-2.5 rounded-full bg-[#FEBC2E]" />
-                      <div className="w-2.5 h-2.5 rounded-full bg-[#28C840]" />
-                    </div>
-                    <span className="font-mono text-[0.57rem] text-[#8a91a0] ml-2">rolla — pipeline/core.ts</span>
-                    <div className="ml-auto flex items-center gap-1.5">
-                      <motion.span
-                        animate={{ opacity: [0.5, 1, 0.5] }}
-                        transition={{ duration: 1.8, repeat: Infinity }}
-                        className="w-1.5 h-1.5 rounded-full bg-[#4ADE80]"
-                      />
-                      <span className="font-mono text-[0.52rem] text-[#4ADE80] uppercase tracking-wider">LIVE</span>
-                    </div>
-                  </div>
-
-                  {/* Diagram */}
-                  <div className="bg-[#0d0e12] p-5">
-                    <SystemDiagram />
-                    <div className="mt-2 flex items-center justify-between">
-                      <span className="font-mono text-[0.55rem] text-[#6366F1] uppercase tracking-widest">
-                        sys.pipeline.v2.1
-                      </span>
-                      <span className="font-mono text-[0.55rem] text-[#4ADE80] uppercase tracking-widest">
-                        ● All systems operational
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* Code block */}
-                  <div className="bg-[#0a0b0e] border-t border-[#1e2028] p-5 space-y-1.5 font-mono text-[0.62rem]">
-                    {[
-                      { ln: "01", kw: "#6366F1", code: "import",  rest: "{ Project } from 'rolla/core';" },
-                      { ln: "02", kw: "#A5B4FC", code: "const",   rest: "client = await Project.init();" },
-                      { ln: "03", kw: "#4ADE80", code: "await",   rest: "client.design({ bespoke: true });" },
-                      { ln: "04", kw: "#4ADE80", code: "await",   rest: "client.build({ stack: 'MERN' });" },
-                      { ln: "05", kw: "#F59E0B", code: "return",  rest: "client.deploy({ env: 'production' });" },
-                    ].map((l, i) => (
-                      <motion.div
-                        key={i}
-                        initial={{ opacity: 0, x: -10 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: 1.3 + i * 0.12 }}
-                        className="flex gap-4"
-                      >
-                        <span className="text-[#252830] select-none w-4 text-right shrink-0">{l.ln}</span>
-                        <span className="text-[#C4C9D4]">
-                          <span style={{ color: l.kw }}>{l.code} </span>
-                          {l.rest}
-                        </span>
-                      </motion.div>
-                    ))}
-                    {/* Blinking cursor */}
-                    <motion.div
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ delay: 2.0 }}
-                      className="flex gap-4"
-                    >
-                      <span className="text-[#252830] select-none w-4 text-right shrink-0">06</span>
-                      <motion.span
-                        className="inline-block w-[5px] h-[10px] bg-[#6366F1]"
-                        animate={{ opacity: [1, 0, 1] }}
-                        transition={{ duration: 0.9, repeat: Infinity }}
-                      />
-                    </motion.div>
-                  </div>
-                </div>
-              </motion.div>
+                <span>Start Your Project</span>
+                <ArrowUpRight className="w-4 h-4" />
+              </Link>
+              <Link
+                href="#services"
+                className="btn-secondary"
+              >
+                Explore Capabilities
+              </Link>
             </motion.div>
-          </div>
-        </div>
-      </motion.div>
 
-      {/* ── Scroll cue ── */}
-      <motion.div
-        className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 2.2 }}
-      >
-        <motion.div
-          animate={{ scaleY: [0, 1, 0], y: [0, 20, 0] }}
-          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-          className="w-[1px] h-10 bg-gradient-to-b from-[#6366F1] to-transparent origin-top"
-        />
-        <span className="font-mono text-[0.5rem] text-[#3a3d4e] uppercase tracking-[0.22em]">Scroll</span>
+            {/* Linear Bento Metric Pills */}
+            <motion.div
+              variants={fade}
+              className="grid grid-cols-3 gap-4 pt-8 border-t border-black/[0.08]"
+            >
+              {[
+                { target: 50, suffix: "%", label: "Cost Savings vs US/UK" },
+                { target: 2,  suffix: "s", label: "Average Render Time" },
+                { target: 100, suffix: "%", label: "Custom · Zero Templates" },
+              ].map((stat, i) => (
+                <div key={i} className="flex flex-col">
+                  <span className="text-3xl sm:text-4xl font-extrabold text-[#0F1014] tracking-tight">
+                    <Counter target={stat.target} suffix={stat.suffix} />
+                  </span>
+                  <span className="text-xs text-[#686C78] font-medium mt-1">
+                    {stat.label}
+                  </span>
+                </div>
+              ))}
+            </motion.div>
+          </motion.div>
+
+          {/* ════════ RIGHT: APPLE BENTO INTERACTIVE CONSOLE ════════ */}
+          <motion.div
+            initial={{ opacity: 0, y: 30, scale: 0.97 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ duration: 0.7, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+            className="lg:col-span-5"
+          >
+            <SpotlightCard className="p-2 sm:p-3">
+              {/* Inner container */}
+              <div className="bg-[#FAF7F2]/70 rounded-[22px] border border-black/[0.05] p-6 flex flex-col justify-between min-h-[460px]">
+                
+                {/* Header Switcher */}
+                <div>
+                  <div className="flex items-center justify-between mb-6 pb-4 border-b border-black/[0.06]">
+                    <div className="flex items-center gap-2">
+                      <div className="w-3 h-3 rounded-full bg-[#0F1014]/15" />
+                      <div className="w-3 h-3 rounded-full bg-[#0F1014]/15" />
+                      <div className="w-3 h-3 rounded-full bg-[#0F1014]/15" />
+                    </div>
+
+                    {/* Apple Style Segmented Control */}
+                    <div className="flex items-center bg-white/90 p-1 rounded-full border border-black/[0.06] shadow-xs">
+                      {[
+                        { id: "architecture", label: "Pipeline" },
+                        { id: "specs", label: "Stack" },
+                        { id: "audit", label: "Vitals" },
+                      ].map((tab) => (
+                        <button
+                          key={tab.id}
+                          onClick={() => setActiveTab(tab.id as typeof activeTab)}
+                          className={`px-3 py-1 rounded-full text-xs font-semibold transition-all ${
+                            activeTab === tab.id
+                              ? "bg-[#0F1014] text-white shadow-xs"
+                              : "text-[#686C78] hover:text-[#0F1014]"
+                          }`}
+                        >
+                          {tab.label}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Tab Body */}
+                  {activeTab === "architecture" && (
+                    <motion.div
+                      key="arch"
+                      initial={{ opacity: 0, y: 8 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="space-y-4"
+                    >
+                      <div className="p-4 bg-white rounded-2xl border border-black/[0.06] shadow-xs">
+                        <div className="flex items-center justify-between mb-2">
+                          <span className="text-xs font-mono font-bold text-[#2554F6]">01 / INITIALIZE</span>
+                          <span className="text-[0.68rem] bg-emerald-50 text-emerald-700 px-2 py-0.5 rounded-full font-semibold">Verified</span>
+                        </div>
+                        <p className="text-sm font-bold text-[#0F1014]">Client Funnel & Scope Wireframe</p>
+                        <p className="text-xs text-[#686C78] mt-1">Interactive roadmap with milestone deliverables.</p>
+                      </div>
+
+                      <div className="p-4 bg-white rounded-2xl border border-black/[0.06] shadow-xs">
+                        <div className="flex items-center justify-between mb-2">
+                          <span className="text-xs font-mono font-bold text-[#2554F6]">02 / BUILD & AUDIT</span>
+                          <span className="text-[0.68rem] bg-blue-50 text-blue-700 px-2 py-0.5 rounded-full font-semibold">Spring Boot 3</span>
+                        </div>
+                        <p className="text-sm font-bold text-[#0F1014]">Multi-tenant Backend & PostgreSQL</p>
+                        <p className="text-xs text-[#686C78] mt-1">Hardened API routing with continuous staging previews.</p>
+                      </div>
+
+                      <div className="p-4 bg-white rounded-2xl border border-black/[0.06] shadow-xs">
+                        <div className="flex items-center justify-between mb-2">
+                          <span className="text-xs font-mono font-bold text-[#2554F6]">03 / PRODUCTION</span>
+                          <span className="text-[0.68rem] bg-purple-50 text-purple-700 px-2 py-0.5 rounded-full font-semibold">Edge CDN</span>
+                        </div>
+                        <p className="text-sm font-bold text-[#0F1014]">Deploy & Zero-Downtime Launch</p>
+                        <p className="text-xs text-[#686C78] mt-1">100% code ownership handed over with documentation.</p>
+                      </div>
+                    </motion.div>
+                  )}
+
+                  {activeTab === "specs" && (
+                    <motion.div
+                      key="specs"
+                      initial={{ opacity: 0, y: 8 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="p-5 bg-white rounded-2xl border border-black/[0.06] shadow-xs space-y-3 font-mono text-xs"
+                    >
+                      <div className="flex items-center justify-between py-1.5 border-b border-black/[0.05]">
+                        <span className="text-[#686C78]">Backend Framework</span>
+                        <span className="font-bold text-[#0F1014]">Java 21 · Spring Boot</span>
+                      </div>
+                      <div className="flex items-center justify-between py-1.5 border-b border-black/[0.05]">
+                        <span className="text-[#686C78]">Frontend Layer</span>
+                        <span className="font-bold text-[#0F1014]">React · Next.js · Tailwind</span>
+                      </div>
+                      <div className="flex items-center justify-between py-1.5 border-b border-black/[0.05]">
+                        <span className="text-[#686C78]">Relational DB</span>
+                        <span className="font-bold text-[#0F1014]">PostgreSQL · Prisma</span>
+                      </div>
+                      <div className="flex items-center justify-between py-1.5">
+                        <span className="text-[#686C78]">Payments</span>
+                        <span className="font-bold text-[#0F1014]">Stripe Connect API</span>
+                      </div>
+                    </motion.div>
+                  )}
+
+                  {activeTab === "audit" && (
+                    <motion.div
+                      key="audit"
+                      initial={{ opacity: 0, y: 8 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="space-y-4"
+                    >
+                      <div className="p-5 bg-white rounded-2xl border border-black/[0.06] shadow-xs flex items-center justify-between">
+                        <div>
+                          <span className="text-xs text-[#686C78] font-medium">Core Web Vitals Score</span>
+                          <p className="text-3xl font-extrabold text-emerald-600 mt-0.5">100 / 100</p>
+                        </div>
+                        <CheckCircle2 className="w-9 h-9 text-emerald-500" />
+                      </div>
+
+                      <div className="grid grid-cols-2 gap-3">
+                        <div className="p-4 bg-white rounded-2xl border border-black/[0.06] shadow-xs">
+                          <span className="text-[0.68rem] text-[#686C78] uppercase font-bold">First Contentful Paint</span>
+                          <p className="text-xl font-bold text-[#0F1014] mt-1">0.4s</p>
+                        </div>
+                        <div className="p-4 bg-white rounded-2xl border border-black/[0.06] shadow-xs">
+                          <span className="text-[0.68rem] text-[#686C78] uppercase font-bold">Largest Contentful</span>
+                          <p className="text-xl font-bold text-[#0F1014] mt-1">0.8s</p>
+                        </div>
+                      </div>
+                    </motion.div>
+                  )}
+                </div>
+
+                {/* Footer Bar */}
+                <div className="mt-8 pt-4 border-t border-black/[0.06] flex items-center justify-between text-xs">
+                  <div className="flex items-center gap-2 text-[#33363F] font-semibold">
+                    <Activity className="w-4 h-4 text-[#2554F6]" />
+                    <span>Real-Time Engine Status</span>
+                  </div>
+                  <span className="text-emerald-700 font-bold bg-emerald-100/60 px-2.5 py-0.5 rounded-full text-[0.68rem]">
+                    Optimal
+                  </span>
+                </div>
+
+              </div>
+            </SpotlightCard>
+          </motion.div>
+
+        </div>
       </motion.div>
     </section>
   );

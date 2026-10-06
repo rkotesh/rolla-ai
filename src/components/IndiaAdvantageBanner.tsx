@@ -2,35 +2,38 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { ArrowUpRight, Globe } from "lucide-react";
 
 export default function IndiaAdvantageBanner() {
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ delay: 0.2 }}
-      className="bg-[#0D0E12] border-y border-[#1e2028] py-2.5"
-    >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-6 text-center">
-          <div className="flex items-center gap-2">
-            <span className="font-mono text-[0.6rem] text-[#818CF8] uppercase tracking-widest">
-              ↳ Announcement
+    <div className="py-6 bg-[#FAF7F2]">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6">
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.4 }}
+          className="bg-white/90 border border-black/[0.08] rounded-2xl p-4 sm:px-6 shadow-xs flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left"
+        >
+          <div className="flex items-center gap-3 flex-wrap justify-center sm:justify-start">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#2554F6]/10 text-[#2554F6] text-xs font-bold uppercase tracking-wider">
+              <Globe className="w-3.5 h-3.5" />
+              Global Engineering Hub
             </span>
-            <span className="text-[#1e2028]">|</span>
-            <p className="text-xs text-[#C4C9D4] font-sans">
-              India-based elite engineering — typically{" "}
-              <span className="text-[#A5B4FC] font-semibold">40–60% less</span> than US or UK agencies. Agency quality. Startup prices.
+            <p className="text-sm font-semibold text-[#0F1014]">
+              India-based elite engineering — typically <span className="text-[#2554F6] font-bold">40–60% less</span> than US/UK agencies. Zero compromise on quality.
             </p>
           </div>
+
           <Link
             href="#pricing"
-            className="font-mono text-[0.6rem] text-[#818CF8] hover:text-[#A5B4FC] uppercase tracking-widest transition-colors flex items-center gap-1 whitespace-nowrap"
+            className="inline-flex items-center gap-1 text-xs font-bold text-[#0F1014] hover:text-[#2554F6] whitespace-nowrap bg-[#FAF7F2] px-4 py-2 rounded-full border border-black/[0.08] hover:border-[#2554F6] transition-all"
           >
-            View Pricing ↳
+            <span>Compare Rates</span>
+            <ArrowUpRight className="w-3.5 h-3.5" />
           </Link>
-        </div>
+        </motion.div>
       </div>
-    </motion.div>
+    </div>
   );
 }
