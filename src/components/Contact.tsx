@@ -131,10 +131,10 @@ export default function Contact() {
                   </span>
                 </div>
                 <a
-                  href="mailto:rolla.aiagency@gmail.com"
+                  href="mailto:srkotesh23@gmail.com"
                   className="text-sm font-bold text-[#0F1014] hover:text-[#2554F6] transition-colors"
                 >
-                  rolla.aiagency@gmail.com
+                  srkotesh23@gmail.com
                 </a>
                 <p className="font-mono text-[0.6rem] text-[#059669] mt-1.5 uppercase tracking-wider font-semibold flex items-center gap-1.5">
                   <span className="w-1.5 h-1.5 bg-[#059669] rounded-full animate-pulse inline-block" />
@@ -203,7 +203,7 @@ export default function Contact() {
                       {status === "error" && (
                         <div className="rounded-xl bg-red-50 border border-red-100 text-red-800 p-4 flex items-center text-sm">
                           <AlertCircle className="w-4 h-4 mr-3 text-red-500 shrink-0" />
-                          Submission failed. Please email rolla.aiagency@gmail.com directly.
+                          Submission failed. Please email srkotesh23@gmail.com directly.
                         </div>
                       )}
 

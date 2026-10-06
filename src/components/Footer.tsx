@@ -57,7 +57,7 @@ const footerCols = [
       { name: "Schedule Call", href: "/#contact" },
       { name: "Inquiry Form", href: "/#contact" },
       { name: "Target Industries", href: "/#industries" },
-      { name: "rolla.aiagency@gmail.com", href: "mailto:rolla.aiagency@gmail.com" },
+      { name: "srkotesh23@gmail.com", href: "mailto:srkotesh23@gmail.com" },
     ],
   },
 ];
