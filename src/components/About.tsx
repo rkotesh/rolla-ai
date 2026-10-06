@@ -2,7 +2,6 @@
 
 import { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
-import Image from "next/image";
 import * as THREE from "three";
 import { GithubIcon, LinkedinIcon } from "./SocialIcons";
 
@@ -289,16 +288,11 @@ export default function About() {
                   whileInView={{ opacity: 1, scale: 1 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.7, delay: 0.35, ease: "easeOut" }}
-                  className="absolute inset-[10%] overflow-hidden rounded-full border-2 border-white shadow-[0_0_0_1px_rgba(37,84,246,0.2),0_16px_40px_rgba(37,84,246,0.15)]"
+                  className="absolute inset-[10%] overflow-hidden rounded-full border-2 border-white shadow-[0_0_0_1px_rgba(37,84,246,0.2),0_16px_40px_rgba(37,84,246,0.15)] flex items-center justify-center bg-gradient-to-br from-[#2554F6] to-[#6366F1]"
                 >
-                  <Image
-                    src="/images/koteswararao-sankula.png"
-                    alt="Koteswararao Sankula"
-                    fill
-                    sizes="(min-width: 768px) 360px, 260px"
-                    className="object-cover object-[50%_28%] transition-transform duration-500 hover:scale-110"
-                    priority
-                  />
+                  <span className="text-white font-bold text-5xl sm:text-6xl tracking-tight select-none">
+                    KS
+                  </span>
                   <div className="absolute inset-0 bg-gradient-to-t from-[#0F1014]/20 via-transparent to-transparent pointer-events-none" />
                 </motion.div>
               </motion.div>
