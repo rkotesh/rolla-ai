@@ -22,8 +22,67 @@ const jetbrains = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Rolla | Custom Web Software. Engineered for Scale.",
-  description: "Rolla builds high-performance websites and web applications that empower businesses to launch, scale, and thrive. Custom engineering. India-based. Startup-friendly pricing.",
+  metadataBase: new URL("https://rolla.dev"),
+  title: {
+    default: "Rolla | Custom Web Software. Engineered for Scale.",
+    template: "%s | Rolla",
+  },
+  description:
+    "Rolla builds high-performance websites and web applications that empower businesses to launch, scale, and thrive. Custom software engineering. India-based. Startup-friendly pricing.",
+  applicationName: "Rolla",
+  authors: [
+    { name: "Koteswararao Sankula", url: "https://linkedin.com/in/sankulakoteswararao" },
+  ],
+  creator: "Koteswararao Sankula",
+  publisher: "Rolla Software Solutions",
+  keywords: [
+    "custom web development",
+    "software solutions company",
+    "web application development India",
+    "MERN stack development",
+    "Java Spring Boot developer",
+    "full stack development",
+    "SaaS development",
+    "React developer India",
+    "startup web development",
+    "enterprise software solutions",
+  ],
+  referrer: "origin-when-cross-origin",
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+  openGraph: {
+    type: "website",
+    locale: "en_IN",
+    url: "https://rolla.dev",
+    siteName: "Rolla Software Solutions",
+    title: "Rolla | Custom Web Software. Engineered for Scale.",
+    description:
+      "Rolla builds high-performance websites and web applications that empower businesses to launch, scale, and thrive. Custom software engineering. India-based. Startup-friendly pricing.",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Rolla | Custom Web Software. Engineered for Scale.",
+    description:
+      "Rolla builds high-performance websites and web applications that empower businesses to launch, scale, and thrive. Custom software engineering. India-based.",
+    creator: "@rolla_dev",
+  },
+  alternates: {
+    canonical: "https://rolla.dev",
+  },
 };
 
 export default function RootLayout({

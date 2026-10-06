@@ -74,7 +74,7 @@ export default function Pricing() {
             <span className="font-serif italic font-normal text-[#2554F6]">Indian engineering value.</span>
           </h2>
           <p className="text-base sm:text-lg text-[#686C78]">
-            Agency-quality software at a fraction of Western costs. Clear scopes, guaranteed milestone deliverables, and zero surprise fees.
+            Enterprise-quality software at a fraction of Western costs. Clear scopes, guaranteed milestone deliverables, and zero surprise fees.
           </p>
         </motion.div>
 

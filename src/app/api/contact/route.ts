@@ -93,7 +93,7 @@ async function sendEmailNotification(data: ContactSubmission) {
         </div>
       </div>
       <div style="background:#f9fafb;padding:16px 32px;border-top:1px solid #e5e7eb;text-align:center;">
-        <p style="font-size:12px;color:#9ca3af;margin:0;">Rolla Web Development Agency</p>
+        <p style="font-size:12px;color:#9ca3af;margin:0;">Rolla Software Solutions</p>
       </div>
     </div>
   `;

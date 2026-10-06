@@ -15,25 +15,36 @@ import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
-  title: "Rolla | Custom Website & Web Application Development",
+  title: "Custom Website & Web Application Development",
   description:
-    "Rolla is a digital agency that builds beautiful, high-performance websites and web applications tailored to your business — so you stand out, engage users, and scale faster.",
+    "Rolla is a software solutions company that builds beautiful, high-performance websites and web applications tailored to your business — so you stand out, engage users, and scale faster.",
   keywords: [
-    "web development agency",
-    "custom web applications",
-    "java developer",
-    "spring boot developer",
-    "mern stack developer",
-    "react developer",
+    "custom web development company",
+    "software solutions company India",
+    "web application development",
+    "Java Spring Boot developer",
+    "MERN stack developer",
+    "React developer",
     "full stack web development",
-    "digital agency India",
+    "SaaS development India",
+    "startup software company",
+    "enterprise web solutions",
   ],
   openGraph: {
     title: "Rolla | Custom Website & Web Application Development",
     description:
       "We design and build bespoke high-performance websites and web applications. First consultation is free.",
     type: "website",
-    url: "https://rolla.agency",
+    url: "https://rolla.dev",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Rolla | Custom Website & Web Application Development",
+    description:
+      "We design and build bespoke high-performance websites and web applications. First consultation is free.",
+  },
+  alternates: {
+    canonical: "https://rolla.dev",
   },
 };
 

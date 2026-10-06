@@ -154,7 +154,7 @@ export default function Footer() {
         {/* Bottom row */}
         <div className="border-t border-black/[0.07] pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="font-mono text-xs text-[#686C78] uppercase tracking-wider">
-            © {new Date().getFullYear()} Rolla Digital Engineering. All Rights Reserved.
+            © {new Date().getFullYear()} Rolla Software Solutions. All Rights Reserved.
           </p>
           <p className="font-mono text-xs text-[#686C78] uppercase tracking-wider">
             Built by{" "}
